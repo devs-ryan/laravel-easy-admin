@@ -12,7 +12,8 @@ class AppModelsList
     public static function models() 
     {
         return [
-            //
+            'App.User',
+            
         ];
     }
 }

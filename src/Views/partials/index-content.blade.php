@@ -25,7 +25,7 @@
                                     <i class="fas fa-eye"></i>
                                 @endif
                             </a>
-                            @if(in_array('update', $allowed))
+                            @if(in_array('delete', $allowed))
                                 <form class="float-right" action="/easy-admin/{{$url_model}}/{{ $row->id }}" method="post">
                                     @csrf
                                     @method('DELETE')
