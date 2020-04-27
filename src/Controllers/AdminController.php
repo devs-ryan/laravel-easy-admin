@@ -81,6 +81,7 @@ class AdminController extends Controller
         
         //create fields
         $fields = $appModel::create();
+        $required_fields = $this->validationService->getRequiredFields($model_path);
         
         //return view
         return view('easy-admin::create')
@@ -88,7 +89,8 @@ class AdminController extends Controller
             ->with('allowed', $allowed)
             ->with('url_model', $url_model)
             ->with('nav_items', $nav_items)
-            ->with('fields', $fields);
+            ->with('fields', $fields)
+            ->with('required_fields', $required_fields);
     }
 
     /**
@@ -137,6 +139,7 @@ class AdminController extends Controller
         
         //update fields
         $fields = $appModel::update();
+        $required_fields = $this->validationService->getRequiredFields($model_path);
         
         //find model
         $data = $model_path::findOrFail($id);
@@ -149,6 +152,7 @@ class AdminController extends Controller
             ->with('url_model', $url_model)
             ->with('nav_items', $nav_items)
             ->with('fields', $fields)
+            ->with('required_fields', $required_fields)
             ->with('data', $data);
     }
 
