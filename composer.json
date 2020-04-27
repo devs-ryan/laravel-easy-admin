@@ -1,0 +1,14 @@
+{
+    "name": "raysirsharp/laravel-easy-admin",
+    "description": "A simple admin panel for Laravel projects.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Claxton",
+            "email": "raysirsharp@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
