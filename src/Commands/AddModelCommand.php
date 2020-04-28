@@ -3,6 +3,7 @@
 namespace Raysirsharp\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
+use Exception;
 
 class AddModelCommand extends Command
 {
@@ -47,17 +48,52 @@ class AddModelCommand extends Command
 
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
         
+        //get namespace
         $namespace = $this->ask("Enter the model namespace(EG. App\Models\):");
         if (in_array($namespace, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }
+        $namespace = $this->filterInput($namespace, true);
         
+        //get model
         $model = $this->ask("Enter the model name:");
         if (in_array($namespace, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }
+        $model = $this->filterInput($model);
+        
+        //check if model/namespace is valid
+        $model_path = $namespace . $model;
+        $this->info('Adding Model to Easy Admin..' . $model_path);
+        if (!class_exists($model_path)) {
+            $this->info('Model does not exist.. terminating.');
+            return;
+        }
+        
+        //check if package file has already (create otherwise)
+        
+        
+        //check if App file exists already (create otherwise)
+    }
+    
+    /**
+     * Filter Namespace.
+     *
+     * @return mixed
+     */
+    private function filterInput($input, $namespace = false)
+    {
+        $input = preg_replace('/\s+/', '', $input);
+        $input = str_replace('/', '\\', $input);
+        $input = preg_replace('/(\\\\)+/', '\\', $input);
+        
+        //add trailing slash to namespace if not included
+        if ($input[strlen($input) - 1] != '\\' && $namespace) {
+            $input .= '\\'; 
+        }
+        return $input;
     }
 }
 
