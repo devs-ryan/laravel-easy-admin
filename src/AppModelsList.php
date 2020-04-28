@@ -13,7 +13,6 @@ class AppModelsList
     {
         return [
             'App.User',
-            
         ];
     }
 }

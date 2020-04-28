@@ -19,6 +19,15 @@ class LaravelEasyAdminServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Assets' => public_path('raysirsharp/LaravelEasyAdmin'),
         ], 'public');
+        
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Commands\AddModelCommand::class,
+                Commands\RemoveModelCommand::class,
+                Commands\AddNamespaceCommand::class,
+                Commands\RemoveNamespaceCommand::class,
+            ]);
+        }
     }
 
     /**

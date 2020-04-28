@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Raysirsharp\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
 
@@ -18,7 +18,14 @@ class AddModelCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Add a model to the easy admin UI';
+    
+    /**
+     * Exit Commands.
+     *
+     * @var array
+     */
+    protected $exit_commands = ['q', 'quit', 'exit'];
 
     /**
      * Create a new command instance.
@@ -37,6 +44,36 @@ class AddModelCommand extends Command
      */
     public function handle()
     {
-        //
+
+        $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
+        
+        $namespace = $this->ask("Enter the model namespace(EG. App\Models\):");
+        if (in_array($namespace, $this->exit_commands)) {
+            $this->info("Command exit code entered.. terminating.");
+            return;
+        }
+        
+        $model = $this->ask("Enter the model name:");
+        if (in_array($namespace, $this->exit_commands)) {
+            $this->info("Command exit code entered.. terminating.");
+            return;
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
