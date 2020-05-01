@@ -7,28 +7,27 @@
             {{ ucwords(str_replace('_', ' ', $field)) }}:
         </label>
         <div class="col-sm-12">
-            @if($field != 'password')
-                <textarea
-                @if((!in_array('update', $allowed) and Request::is('easy-admin/*/*/edit')) or (!in_array('create', $allowed) and !Request::is('easy-admin/*/*/edit')))
-                    disabled 
-                @endif
-                name="{{ $field }}" rows="1" class="form-control">{{ old($field) ?? $data->$field ?? '' }}</textarea>
-            @else
-                @if(Request::is('easy-admin/*/*/edit'))
-                    <input 
-                    @if((!in_array('update', $allowed) and Request::is('easy-admin/*/*/edit')) or (!in_array('create', $allowed) and !Request::is('easy-admin/*/*/edit')))
-                        disabled 
-                    @endif
-                    class="form-control" type="password" name="{{ $field }}" value="{{ old($field) ?? '**********' }}">
-                    <small>Remove stars to update password otherwise it will remain 'as is'</small>
-                @else
-                    <input 
-                    @if((!in_array('update', $allowed) and Request::is('easy-admin/*/*/edit')) or (!in_array('create', $allowed) and !Request::is('easy-admin/*/*/edit')))
-                        disabled 
-                    @endif
-                    class="form-control" type="password" name="{{ $field }}" value="{{ old($field) ?? '' }}">
-                @endif
-            @endif
+            @switch(Raysirsharp\LaravelEasyAdmin\Services\HelperService::inputType($field, $model_path))
+                @case('password')
+                    @include('easy-admin::partials.form-inputs.password')
+                    @break
+                @case('boolean')
+                    @include('easy-admin::partials.form-inputs.boolean')
+                    @break
+                @case('decimal')
+                @case('integer')
+                    @include('easy-admin::partials.form-inputs.number')
+                    @break
+                @case('date')
+                    @include('easy-admin::partials.form-inputs.date')
+                    @break
+                @case('timestamp')
+                    @include('easy-admin::partials.form-inputs.timestamp')
+                    @break
+                @default
+                    @include('easy-admin::partials.form-inputs.text')
+                    @break
+            @endswitch
         </div>
     </div>
 @endforeach

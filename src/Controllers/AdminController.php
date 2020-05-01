@@ -40,20 +40,26 @@ class AdminController extends Controller
      */
     public function index($model)
     {
+        //gather info for action
         $url_model = $model;
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
         $nav_items = $this->helperService->getModelsForNav();
-        
         $appModel = "App\\EasyAdmin\\" . $model;
         $index_columns = $appModel::index();
         $allowed = $appModel::allowed();
-        
-        $data = $model_path::paginate(25);
-        
+      
+        //get data
+        if ($model_path::first()->id) 
+            $data = $model_path::orderByDesc('id')->paginate(25);
+        else if ($model_path::first()->create_at) 
+            $data = $model_path::orderByDesc('create_at')->paginate(25);
+        else $data = $model_path::paginate(25);
+          
         return view('easy-admin::index')
             ->with('data', $data)
             ->with('model', $model)
+            ->with('model_path', $model_path)
             ->with('nav_items', $nav_items)
             ->with('title', 'Index')
             ->with('index_columns', $index_columns)
@@ -86,6 +92,7 @@ class AdminController extends Controller
         //return view
         return view('easy-admin::create')
             ->with('model', $model)
+            ->with('model_path', $model_path)
             ->with('allowed', $allowed)
             ->with('url_model', $url_model)
             ->with('nav_items', $nav_items)
@@ -148,6 +155,7 @@ class AdminController extends Controller
         return view('easy-admin::edit')
             ->with('id', $id)
             ->with('model', $model)
+            ->with('model_path', $model_path)
             ->with('allowed', $allowed)
             ->with('url_model', $url_model)
             ->with('nav_items', $nav_items)

@@ -8,6 +8,61 @@ use Exception;
 class HelperService
 {
     /**
+     * Find the form input type
+     *
+     * @param int $price
+     * @return decimal
+     */
+    public static function inputType($field, $model)
+    {
+        $record = new $model;
+        $table = $record->getTable();
+        $column_type = '';
+        
+        //find column type
+        $columns = DB::select('SHOW COLUMNS FROM ' . $table);
+        foreach($columns as $column) {
+            if ($column->Field == $field) {
+                $column_type = $column->Type;
+                break;
+            }
+        }
+
+        //convert to options:
+        //int, float, boolean, date, timestamp, password, text (default)
+        
+        //check password
+        if ($field == 'password') {
+            return 'password';
+        }
+        //check boolean
+        if ($column_type == 'tinyint(1)') {
+            return 'boolean';
+        }
+        //check integer
+        if (strpos($column_type, 'int') !== false) {
+            return 'integer';
+        }
+        //check decimal
+        foreach(['double', 'decimal', 'float'] as $check) {
+            if (strpos($column_type, $check) !== false) {
+                return 'decimal';
+            }
+        }
+        //check timestamp
+        if (strpos($column_type, 'timestamp') !== false) {
+            return 'timestamp';
+        }
+        //check date
+        if (strpos($column_type, 'date') !== false) {
+            return 'date';
+        }
+
+        //default to text
+        return 'text';
+    }
+    
+    /**
      * Convert the URL model to the app model
      *
      * @return Array
