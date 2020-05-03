@@ -24,6 +24,11 @@ class AdminController extends Controller
      */
     protected $validationService;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {  
         $this->helperService = new HelperService;

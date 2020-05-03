@@ -15,7 +15,19 @@ class FileService
      * @var class
      */
     protected $helperService;
-
+    
+    /**
+     * Template for public model classes
+     *
+     * @var class
+     */
+    protected $public_model_template;
+    
+    /**
+     * Create a new service instance.
+     *
+     * @return void
+     */
     public function __construct()
     {  
         $this->helperService = new HelperService;

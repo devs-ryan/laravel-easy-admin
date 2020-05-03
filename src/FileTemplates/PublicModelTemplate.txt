@@ -1,0 +1,115 @@
+<?php
+
+namespace App\EasyAdmin;
+
+/**
+ * EasyAdmin - {{model_name}}
+ * 
+ * Comment of uncomment attributes for this model to alter the EasyAdmin GUI
+ * Support this package: www.some-link.com
+ */
+class User 
+{
+    
+    /**
+     * The methods allowed for this model
+     * Note: Index/View are always included, remove model
+     ******* from Easy Admin to hide completely.
+     *
+     * @return Array
+     */
+    public static function allowed()
+    {
+        return [
+            'create',
+            'update',
+            'delete',
+        ];
+    }
+    
+    /**
+     * Fields included in search.
+     *
+     * @return Array
+     */
+    public static function search()
+    {
+        return [
+            {{model_fields}}
+        ];
+    }
+    
+    /**
+     * Fields allowed to be created.
+     * Note: Any fields not in this array must be nullable
+     ******* or have default set.
+     *
+     * @return Array
+     */
+    public static function create()
+    {
+        return [
+            {{model_fields}}
+        ];
+    }
+    
+    /**
+     * Fields shown in index table.
+     * Note: For the sake of not overloading the
+     ******* table for smaller screen sizes it is
+     ******* recommended to include only critical fields.
+     *
+     * @return Array
+     */
+    public static function index()
+    {
+        return [
+            {{model_fields}}
+        ];
+    }
+    
+    /**
+     * Fields allowed to be updated OR viewed.
+     * View only when allowed() does not contain 'update'
+     *
+     * @return Array
+     */
+    public static function update()
+    {
+        return [
+            {{model_fields}}
+        ];
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//EOF
