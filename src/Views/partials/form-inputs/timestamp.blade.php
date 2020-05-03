@@ -5,4 +5,8 @@
 @if(in_array($field, $required_fields))
     required
 @endif
-class="form-control" type="datetime-local" name="{{ $field }}" value="{{ old($field) ?? Carbon\Carbon::parse($data->$field)->format('Y-m-d\TH:i') ?? '' }}">
+@if(Request::is('easy-admin/*/*/edit'))
+    class="form-control" type="datetime-local" name="{{ $field }}" value="{{ old($field) ?? Carbon\Carbon::parse($data->$field)->format('Y-m-d\TH:i') ?? '' }}">
+@else
+    class="form-control" type="datetime-local" name="{{ $field }}" value="{{ old($field) ?? '' }}">
+@endif

@@ -6,9 +6,9 @@ namespace App\EasyAdmin;
  * EasyAdmin - {{model_name}}
  * 
  * Comment of uncomment attributes for this model to alter the EasyAdmin GUI
- * Support this package: www.some-link.com
+ * Support this package: https://github.com/raysirsharp/laravel-easy-admin
  */
-class User 
+class {{model_name}}
 {
     
     /**
@@ -28,18 +28,6 @@ class User
     }
     
     /**
-     * Fields included in search.
-     *
-     * @return Array
-     */
-    public static function search()
-    {
-        return [
-            {{model_fields}}
-        ];
-    }
-    
-    /**
      * Fields allowed to be created.
      * Note: Any fields not in this array must be nullable
      ******* or have default set.
@@ -49,7 +37,7 @@ class User
     public static function create()
     {
         return [
-            {{model_fields}}
+            {{form_model_fields}}
         ];
     }
     
@@ -64,7 +52,7 @@ class User
     public static function index()
     {
         return [
-            {{model_fields}}
+            {{index_model_fields}}
         ];
     }
     
@@ -77,13 +65,10 @@ class User
     public static function update()
     {
         return [
-            {{model_fields}}
+            {{form_model_fields}}
         ];
     }
 }
-
-
-
 
 
 

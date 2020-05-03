@@ -12,7 +12,7 @@ class AppModelsList
     public static function models() 
     {
         return [
-            //
+            //Models Here - Format: Namespace.Model
         ];
     }
 }

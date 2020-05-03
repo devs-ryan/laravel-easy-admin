@@ -66,9 +66,10 @@ class AdminController extends Controller
         $allowed = $appModel::allowed();
       
         //get data
-        if ($model_path::first()->id) 
+        $check_model = $model_path::first();
+        if ($check_model && $check_model->id) 
             $data = $model_path::orderByDesc('id')->paginate(50);
-        else if ($model_path::first()->create_at) 
+        else if ($check_model && $check_model->create_at) 
             $data = $model_path::orderByDesc('create_at')->paginate(50);
         else $data = $model_path::paginate(50);
           

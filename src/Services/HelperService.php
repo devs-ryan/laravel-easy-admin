@@ -1,9 +1,10 @@
 <?php
 namespace Raysirsharp\LaravelEasyAdmin\Services;
 
-use Illuminate\Support\Facades\DB;
 use Raysirsharp\LaravelEasyAdmin\AppModelsList;
+use Illuminate\Support\Facades\DB;
 use Exception;
+use Throwable;
 
 
 class HelperService
@@ -144,7 +145,33 @@ class HelperService
      */
     public function getAllModels()
     {
-        return AppModelsList::models();
+        try {
+            return AppModelsList::models();
+        }
+        catch (Throwable $t) {
+            throw new Exception('Parse Error: AppModelsList.php has been corrupted.');
+        }
+    }
+    
+    /**
+     * Get public model file
+     *
+     * @return Array
+     */
+    public function getPublicModel($model_path)
+    {
+        $model = $this->stripPathFromModel($model_path);
+        $app_model = "App\\EasyAdmin\\" . $model;
+        
+        try {
+            if (class_exists($app_model)) {
+                return $app_model;
+            }
+            throw new Exception('Error: Public model does not exist.');
+        }
+        catch (Throwable $t) {
+            throw new Exception('Error: Public model does not exist.');
+        }
     }
     
     /**
@@ -155,7 +182,7 @@ class HelperService
      */
     public function getAllConvertedModels()
     {
-        $models = AppModelsList::models();
+        $models = $this->getAllModels();
         $converted = [];
         foreach ($models as $model) {
             array_push($converted, str_replace('.', '\\', $model));

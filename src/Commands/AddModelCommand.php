@@ -3,8 +3,9 @@
 namespace Raysirsharp\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
-use Exception;
 use Raysirsharp\LaravelEasyAdmin\Services\FileService;
+use Exception;
+
 
 class AddModelCommand extends Command
 {
@@ -54,6 +55,11 @@ class AddModelCommand extends Command
      */
     public function handle()
     {
+        //check AppModelsList corrupted
+        if ($this->FileService->checkIsModelsListCorrupted()) {
+            $this->info("Raysirsharp\LaravelEasyAdmin\AppModelsList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
+            return;
+        }
 
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
         
@@ -83,12 +89,22 @@ class AddModelCommand extends Command
         
         //check if package file has already (create otherwise)
         if ($this->FileService->checkModelExists($model_path)) {
-            $this->info('Model already added to Easy Admin, checking for \App\EasyAdmin file..');
+            $this->info('Model already added to EasyAdmin, checking for \App\EasyAdmin file..');
         }
         else {
             $this->FileService->addModelToList($namespace, $model);
+            $this->info('Model already added to EasyAdmin models list file..');
         }
         //check if App file exists already (create otherwise)
+        if ($this->FileService->checkPublicModelExists($model_path)) {
+            $this->info('\App\EasyAdmin public file already exists..');
+        }
+        else {
+            $this->FileService->addPublicModel($model_path);
+            $this->info('\App\EasyAdmin public file created.');
+        }
+        
+        $this->info('Model added successfully!');
     }
     
     /**
