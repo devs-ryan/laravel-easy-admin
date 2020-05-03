@@ -13,6 +13,7 @@ class AppModelsList
     {
         return [
             'App.User',
+            'App.BlogPost',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace Raysirsharp\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
 use Exception;
+use Raysirsharp\LaravelEasyAdmin\Services\FileService;
 
 class AddModelCommand extends Command
 {
@@ -27,6 +28,13 @@ class AddModelCommand extends Command
      * @var array
      */
     protected $exit_commands = ['q', 'quit', 'exit'];
+    
+    /**
+     * Helper Service.
+     *
+     * @var class
+     */
+    protected $fileService;
 
     /**
      * Create a new command instance.
@@ -36,6 +44,7 @@ class AddModelCommand extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->FileService = new FileService;
     }
 
     /**
@@ -49,7 +58,7 @@ class AddModelCommand extends Command
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
         
         //get namespace
-        $namespace = $this->ask("Enter the model namespace(EG. App\Models\):");
+        $namespace = $this->ask("Enter the model namespace(EG. App\Models\)");
         if (in_array($namespace, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
@@ -57,7 +66,7 @@ class AddModelCommand extends Command
         $namespace = $this->filterInput($namespace, true);
         
         //get model
-        $model = $this->ask("Enter the model name:");
+        $model = $this->ask("Enter the model name");
         if (in_array($namespace, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
@@ -73,8 +82,12 @@ class AddModelCommand extends Command
         }
         
         //check if package file has already (create otherwise)
-        
-        
+        if ($this->FileService->checkModelExists($model_path)) {
+            $this->info('Model already added to Easy Admin, checking for \App\EasyAdmin file..');
+        }
+        else {
+            $this->FileService->addModelToList($namespace, $model);
+        }
         //check if App file exists already (create otherwise)
     }
     

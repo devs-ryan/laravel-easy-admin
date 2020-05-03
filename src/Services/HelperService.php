@@ -1,5 +1,6 @@
 <?php
 namespace Raysirsharp\LaravelEasyAdmin\Services;
+
 use Illuminate\Support\Facades\DB;
 use Raysirsharp\LaravelEasyAdmin\AppModelsList;
 use Exception;
@@ -137,12 +138,29 @@ class HelperService
 
     /**
      * Return all models added to admin area
+     * Format Namespace.Model
      *
      * @return Array
      */
     public function getAllModels()
     {
         return AppModelsList::models();
+    }
+    
+    /**
+     * Return all models added to admin area
+     * Format Namespace\Model
+     *
+     * @return Array
+     */
+    public function getAllConvertedModels()
+    {
+        $models = AppModelsList::models();
+        $converted = [];
+        foreach ($models as $model) {
+            array_push($converted, str_replace('.', '\\', $model));
+        }
+        return $converted;
     }
     
     /**

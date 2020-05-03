@@ -10,7 +10,18 @@ use Raysirsharp\LaravelEasyAdmin\Services\ValidationService;
 class AdminController extends Controller
 {
     
+    /**
+     * Helper Service.
+     *
+     * @var class
+     */
     protected $helperService;
+    
+    /**
+     * Validation Service.
+     *
+     * @var class
+     */
     protected $validationService;
 
     public function __construct()
@@ -51,10 +62,10 @@ class AdminController extends Controller
       
         //get data
         if ($model_path::first()->id) 
-            $data = $model_path::orderByDesc('id')->paginate(25);
+            $data = $model_path::orderByDesc('id')->paginate(50);
         else if ($model_path::first()->create_at) 
-            $data = $model_path::orderByDesc('create_at')->paginate(25);
-        else $data = $model_path::paginate(25);
+            $data = $model_path::orderByDesc('create_at')->paginate(50);
+        else $data = $model_path::paginate(50);
           
         return view('easy-admin::index')
             ->with('data', $data)
