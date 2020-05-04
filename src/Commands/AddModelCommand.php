@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Raysirsharp\LaravelEasyAdmin\Services\FileService;
 use Exception;
 
-
 class AddModelCommand extends Command
 {
     /**
@@ -93,7 +92,7 @@ class AddModelCommand extends Command
         }
         else {
             $this->FileService->addModelToList($namespace, $model);
-            $this->info('Model already added to EasyAdmin models list file..');
+            $this->info('Model added to EasyAdmin models list file..');
         }
         //check if App file exists already (create otherwise)
         if ($this->FileService->checkPublicModelExists($model_path)) {
@@ -101,7 +100,7 @@ class AddModelCommand extends Command
         }
         else {
             $this->FileService->addPublicModel($model_path);
-            $this->info('\App\EasyAdmin public file created.');
+            $this->info('\App\EasyAdmin public file created..');
         }
         
         $this->info('Model added successfully!');
