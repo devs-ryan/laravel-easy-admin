@@ -13,7 +13,7 @@ class AppModelsList
     {
         return [
             //Models Here - Format: Namespace.Model
-            'App.BlogPost',
+            'App.User',
         ];
     }
 }

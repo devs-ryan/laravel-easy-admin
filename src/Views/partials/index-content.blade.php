@@ -1,23 +1,31 @@
 <div class="card">
-    <div class="card-body p-0">
+    <div class="card-body p-0 table-responsive">
         <table class="table mb-0 table-hover sortable">
             <thead class="thead-light">
                 <tr>
                     @foreach($index_columns as $index_column)
                         <th scope="col">{{ ucfirst($index_column) }}</th>
                     @endforeach
-                    <th scope="col">Actions</th>
+                    <th scope="col" style="min-width: 114px !important;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($data as $row)
                     <tr>
-                        @foreach($row->toArray() as $key => $column)
+                        @foreach($row->makeVisible($index_columns)->toArray() as $key => $column)
                             @if(in_array($key, $index_columns))
-                                <td>{{ $column }}</td>
+                                <td>
+                                    @if($column == null)
+                                        NULL
+                                    @elseif($column == '')
+                                        EMPTY
+                                    @else
+                                        {{ $column }}
+                                    @endif
+                                </td>
                             @endif
                         @endforeach
-                        <th style="width: 114px;">
+                        <th>
                             <a href="/easy-admin/{{$url_model}}/{{ $row->id }}/edit" class="btn btn-info" role="button">
                                 @if(in_array('update', $allowed))
                                    <i class="fas fa-edit"></i>

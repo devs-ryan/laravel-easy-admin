@@ -80,7 +80,7 @@ class RemoveModelCommand extends Command
         
         //check if model/namespace is valid
         $model_path = $namespace . $model;
-        $this->info('Adding Model to Easy Admin..' . $model_path);
+        $this->info('Removing Model from Easy Admin..' . $model_path);
         if (!class_exists($model_path)) {
             $this->info('Model does not exist.. terminating.');
             return;
@@ -88,6 +88,7 @@ class RemoveModelCommand extends Command
         
         //check if package file has already (create otherwise)
         if ($this->FileService->checkModelExists($model_path)) {
+            $this->FileService->removeModelFromList($namespace, $model);
             $this->info('Removed EasyAdmin models list file..');
         }
         else {
@@ -95,10 +96,11 @@ class RemoveModelCommand extends Command
         }
         //check if App file exists already (create otherwise)
         if ($this->FileService->checkPublicModelExists($model_path)) {
+            $this->FileService->removePublicModel($model_path);
             $this->info('\App\EasyAdmin public file removed..');
         }
         else {
-            $this->info('\App\EasyAdmin public not found..');
+            $this->info('\App\EasyAdmin public file not found..');
         }
         
         $this->info('Model removed successfully!');

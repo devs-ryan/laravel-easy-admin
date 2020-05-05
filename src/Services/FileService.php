@@ -107,7 +107,7 @@ class FileService
     /**
      * Add Model into EasyAdmin models list
      *
-     * @param string $model
+     * @param string $namespace, $model
      * @return void
      */
     public function addModelToList($namespace, $model)
@@ -126,11 +126,35 @@ class FileService
             }
         }
     }
+  
+    /**
+     * Remove Model from EasyAdmin models list
+     *
+     * @param string $namespace, $model
+     * @return void
+     */
+    public function removeModelFromList($namespace, $model)
+    {
+        $path = str_replace('/Services', '', __DIR__).'/AppModelsList.php';
+        $handle = fopen($path, "r") or  die("Unable to open file!");
+        $remove = rtrim($namespace, '\\') . '.' . $model . "',\n";
+        $overwrite_string = "";
+        
+        if ($handle) {
+            while (($line = fgets($handle)) !== false) {
+                if (strpos($line, $remove) === false) {
+                    $overwrite_string .= $line;
+                }
+            }
+            fclose($handle);
+        }
+        file_put_contents($path, $overwrite_string) or die("Unable to write to file!");
+    }
     
     /**
      * Add Model into app Models
      *
-     * @param string $model
+     * @param string $model_path
      * @return void
      */
     public function addPublicModel($model_path)
@@ -156,6 +180,19 @@ class FileService
         file_put_contents($write_path, $text) or die("Unable to write to file!");
     }
     
+    /**
+     * Remove Model from app Models
+     *
+     * @param string $model_path
+     * @return void
+     */
+    public function removePublicModel($model_path)
+    {
+        $model = $this->helperService->stripPathFromModel($model_path);
+        $write_path = app_path() . '/EasyAdmin/' . $model . '.php';
+        unlink($write_path);
+    }
+    
     /////////////////////////////////////
     //FILTER FUNCTIONS FOR ABOVE METHOD//
     /////////////////////////////////////
@@ -163,6 +200,7 @@ class FileService
     {
         $fields = trim($fields);
         $fields = str_replace('\'id', '//\'id', $fields);
+        $fields = str_replace('\'remember_token', '//\'remember_token', $fields);
         $fields = str_replace('\'created_at', '//\'created_at', $fields);
         $fields = str_replace('\'updated_at', '//\'updated_at', $fields);
         
@@ -171,6 +209,8 @@ class FileService
     private function indexFilter($fields)
     {
         $fields = trim($fields);
+        $fields = str_replace('\'password', '//\'password', $fields);
+        $fields = str_replace('\'remember_token', '//\'remember_token', $fields);
         $fields = str_replace('\'created_at', '//\'created_at', $fields);
         $fields = str_replace('\'updated_at', '//\'updated_at', $fields);
         
