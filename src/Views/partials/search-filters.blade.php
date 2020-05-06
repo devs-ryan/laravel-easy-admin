@@ -1,9 +1,13 @@
 <div class="card mb-3 bg-light">
     <div class="card-header">
-        <i class="fas fa-search"></i> 
-        Search Filters
+        <div class="row">
+            <div class="col-9">
+                <i class="fas fa-search"></i> 
+                Search Filters
+            </div>
+            <div class="col-3 text-right">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+        </div>
     </div>
-      <div class="card-body pt-2">
-          FILTERS HERE (make small)
-      </div>
 </div>
