@@ -201,6 +201,7 @@ class FileService
         $fields = trim($fields);
         $fields = str_replace('\'id', '//\'id', $fields);
         $fields = str_replace('\'remember_token', '//\'remember_token', $fields);
+        $fields = str_replace('\'email_verified_at', '//\'email_verified_at', $fields);
         $fields = str_replace('\'created_at', '//\'created_at', $fields);
         $fields = str_replace('\'updated_at', '//\'updated_at', $fields);
         
@@ -211,6 +212,7 @@ class FileService
         $fields = trim($fields);
         $fields = str_replace('\'password', '//\'password', $fields);
         $fields = str_replace('\'remember_token', '//\'remember_token', $fields);
+        $fields = str_replace('\'email_verified_at', '//\'email_verified_at', $fields);
         $fields = str_replace('\'created_at', '//\'created_at', $fields);
         $fields = str_replace('\'updated_at', '//\'updated_at', $fields);
         

@@ -15,9 +15,9 @@
                         @foreach($row->makeVisible($index_columns)->toArray() as $key => $column)
                             @if(in_array($key, $index_columns))
                                 <td>
-                                    @if($column == null)
+                                    @if($column === null)
                                         NULL
-                                    @elseif($column == '')
+                                    @elseif($column === '')
                                         EMPTY
                                     @else
                                         {{ $column }}

@@ -1,5 +1,5 @@
 @if(env('EASY_ADMIN_SUPPORT_EMAIL') != NULL)
-    <div class="card mb-3 bg-light">
+    <div class="card mb-3 bg-light collapse-filter">
         <div class="card-header">
             <i class="fas fa-info-circle"></i>
             Need Help?
