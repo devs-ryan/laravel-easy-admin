@@ -4,7 +4,7 @@
 @section('title', $model)
 
 @section('content')
-    <div class="container m-0 p-3" style="max-width: 100% !important;">
+    <div class="container-fluid m-0 p-3" style="width: 100% !important;">
         <div class="row">
             <div class="col-md-3">
                 @include('easy-admin::partials.search-filters')
@@ -15,9 +15,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-
-@section('scripts')
-
 @endsection

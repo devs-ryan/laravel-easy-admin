@@ -10,4 +10,7 @@
             </div>
         </div>
     </div>
+    <div class="card-body">
+        Filters Here
+    </div>
 </div>

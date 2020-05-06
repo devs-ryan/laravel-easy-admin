@@ -1,6 +1,6 @@
 <div class="form-check form-check-inline">
     <input 
-    @if($data->$field == true)
+    @if(isset($data) && $data->$field == true)
         checked
     @endif
     @if(in_array($field, $required_fields))
@@ -13,7 +13,7 @@
 </div>
 <div class="form-check form-check-inline">
     <input 
-    @if($data->$field == false)
+    @if(isset($data) && $data->$field == false)
         checked
     @endif
     @if(in_array($field, $required_fields))
@@ -27,7 +27,7 @@
 @if(!in_array($field, $required_fields))
     <div class="form-check form-check-inline">
         <input 
-        @if($data->$field === NULL)
+        @if(isset($data) && $data->$field === NULL)
             checked
         @endif
         class="form-check-input" type="radio" name="{{ $field }}" value="">
