@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Raysirsharp\LaravelEasyAdmin\Services\HelperService;
 use Raysirsharp\LaravelEasyAdmin\Services\ValidationService;
+use Auth;
 
 class AdminController extends Controller
 {
@@ -33,6 +34,14 @@ class AdminController extends Controller
     {  
         $this->helperService = new HelperService;
         $this->validationService = new ValidationService;
+        
+        //EasyAdmin Middleware
+        $this->middleware(function ($request, $next) {
+            if (Auth::check()) {
+                return $next($request);
+            }
+            return redirect('/easy-admin/login');
+        });
     }
     
     /**

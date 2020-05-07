@@ -1,4 +1,4 @@
-@extends('easy-admin::partials.layout')
+@extends('easy-admin::layouts.main')
 
 
 @section('title', $model . '- Create')

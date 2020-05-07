@@ -39,6 +39,7 @@ class LaravelEasyAdminServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->make('Raysirsharp\LaravelEasyAdmin\Controllers\AdminController');
+        $this->app->make('Raysirsharp\LaravelEasyAdmin\Controllers\AuthController');
 
         $this->loadViewsFrom(__DIR__.'/Views', 'easy-admin');
     }

@@ -1,4 +1,4 @@
-@extends('easy-admin::partials.layout')
+@extends('easy-admin::layouts.main')
 
 
 @section('title', env('EASY_ADMIN_APP_NAME', 'Laravel Easy Admin'))
