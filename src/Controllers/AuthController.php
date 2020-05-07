@@ -26,7 +26,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         //validate
-        $request->validate(
+        $credentials = $request->validate(
             [
                 'email' => 'email|required|max:255',
                 'password' => 'required|min:6'
@@ -35,11 +35,12 @@ class AuthController extends Controller
         
         //attempt login
         if (Auth::attempt($credentials)) {
-            
+            return redirect('/easy-admin')
+                ->with('message', 'Login successful!');
         }
         //else return with message
         return redirect()->back()
-            ->with('message', 'Login failed!');
+            ->with('message', 'Login failed! Credentials provided are not valid.');
     }
     
     /**
@@ -47,10 +48,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Redirect
      */
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        Session::flush();
+        $request->session()->flush();
         return redirect('/easy-admin/login')
             ->with('message', 'Logout successful!');
     }

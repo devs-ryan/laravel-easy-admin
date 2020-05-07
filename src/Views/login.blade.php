@@ -26,16 +26,20 @@
                                 @csrf
                                 <div class="form-group">
                                     <label>Email address</label>
-                                    <input type="email" class="form-control" placeholder="Enter email">
+                                    <input name="email" type="email" class="form-control" placeholder="Enter email">
                                     <small class="form-text text-danger">
-                                        {{ $email_error ?? '' }}
+                                        @error('email')
+                                            {{ $message }}
+                                        @enderror
                                     </small>
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input type="password" class="form-control" placeholder="Password">
+                                    <input name="password" type="password" class="form-control" placeholder="Password">
                                     <small class="form-text text-danger">
-                                        {{ $password_error ?? '' }}
+                                        @error('password')
+                                            {{ $message }}
+                                        @enderror
                                     </small>
                                 </div>
                                 <button type="submit" class="btn btn-primary"><i class="far fa-check-square"></i> Submit</button>

@@ -10,7 +10,7 @@
         <ul class="navbar-nav ml-auto">
             @if(count($nav_items) > 0)
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link text-info dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-compass"></i> Navigation
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -22,12 +22,13 @@
             @endif
             <li class="nav-item">
                 <div class="nav-link">
-                    <small><i class="fas fa-user"></i> rya88cla@hotmail.com</small>
+                    <span class="text-info pr-3"><i class="fas fa-user"></i> {{ Auth::user()->email ?? Auth::user()->name ?? '' }}</span>
                 </div>
             </li>
             <li class="nav-item">
                 <form action="/easy-admin/logout" method="post">
-                    <button type="button" class="btn btn-link px-0">
+                    @csrf
+                    <button type="submit" class="btn btn-link px-0 text-decoration-none text-warning">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </form>
