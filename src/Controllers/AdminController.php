@@ -38,7 +38,16 @@ class AdminController extends Controller
         //EasyAdmin Middleware
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
-                return $next($request);
+                if (Auth::user()->is_easy_admin) {
+                    return $next($request);
+                }
+                else {
+                    Auth::logout();
+                    $request->session()->flush();
+                    return redirect('/easy-admin/login')
+                        ->with('message', 'Access Denied! Request Easy Admin permission to continue.');
+                }
+                
             }
             return redirect('/easy-admin/login');
         });
