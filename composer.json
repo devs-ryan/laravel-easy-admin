@@ -9,16 +9,22 @@
             "email": "raysirsharp@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Raysirsharp\\LaravelEasyAdmin\\": "src/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
-                "Raysirsharp\\LaravelEasyAdmin\\LaravelEasyAdminServiceProvider"
+                "Raysirsharp\\LaravelEasyAdmin\\ServiceProvider"
             ]
         }
     },
-    "minimum-stability": "dev",
     "require": {
         "php": "^7.2",
-        "laravel/framework": "^7.0"
-    }
+        "laravel/framework": "^7.0",
+        "illuminate/console": "^5.0|^6.0|^7.0"
+    },
+    "minimum-stability": "dev"
 }
