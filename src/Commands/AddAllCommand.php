@@ -37,6 +37,7 @@ class AddAllCommand extends Command
      */
     public function handle()
     {
-        //
+        $this->info('This feature is coming soon!');
+        $this->info('Please use `easy-admin:add-model` to add models one at a time for now.');
     }
 }
