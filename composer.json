@@ -9,6 +9,13 @@
             "email": "raysirsharp@gmail.com"
         }
     ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Raysirsharp\\LaravelEasyAdmin\\LaravelEasyAdminServiceProvider"
+            ],
+        }
+    },
     "minimum-stability": "dev",
     "require": {}
 }
