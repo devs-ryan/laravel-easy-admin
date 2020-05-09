@@ -13,7 +13,7 @@
         "laravel": {
             "providers": [
                 "Raysirsharp\\LaravelEasyAdmin\\LaravelEasyAdminServiceProvider"
-            ],
+            ]
         }
     },
     "minimum-stability": "dev",
