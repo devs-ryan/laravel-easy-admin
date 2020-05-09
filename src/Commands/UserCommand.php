@@ -20,7 +20,7 @@ class UserCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Add a user to EasyAdmin, append "--remove" for removing a user.';
+    protected $description = 'Add a user to EasyAdmin, append "--remove" for removing a user';
     
     /**
      * Exit Commands.

@@ -27,6 +27,7 @@ class LaravelEasyAdminServiceProvider extends ServiceProvider
                 Commands\AddAllCommand::class,
                 Commands\ResetModelsCommand::class,
                 Commands\UserCommand::class,
+                Commands\CreateUserCommand::class,
             ]);
         }
     }
