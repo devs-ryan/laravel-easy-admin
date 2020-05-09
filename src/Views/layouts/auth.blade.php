@@ -20,7 +20,7 @@
 	<header>
 	    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="/easy-admin">
-                <img src="{{ asset('raysirsharp/LaravelEasyAdmin/img/easy-admin.ico') }}" alt="Laravel Easy Admin">
+                <img src="{{ asset('raysirsharp/LaravelEasyAdmin/img/easy-admin.png') }}" alt="Laravel Easy Admin">
                 {{ env('EASY_ADMIN_APP_NAME', 'Laravel Easy Admin') }}
             </a>
             @if(env('APP_URL'))
