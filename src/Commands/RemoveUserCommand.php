@@ -4,9 +4,8 @@ namespace Raysirsharp\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
-class UserCommand extends Command
+class RemoveUserCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -73,12 +72,7 @@ class UserCommand extends Command
             return;
         }
         
-        //check migration has been run
-        if (!Schema::hasColumn('users', 'is_easy_admin')) {
-            $this->info("`is_easy_admin` column not found in users table..");
-            $this->info("run `php artisan migrate` before using this command.. terminating");
-            return;
-        }
+
         
         //update user
         if ($email_entered)

@@ -18,7 +18,7 @@ class AddAllCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Add all models within app to the easy admin GUI';
+    protected $description = 'Add all models within app to the Easy Admin GUI';
 
     /**
      * Create a new command instance.

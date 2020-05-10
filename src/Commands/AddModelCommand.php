@@ -20,7 +20,7 @@ class AddModelCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Add a model to the easy admin UI';
+    protected $description = 'Add a model to the Easy Admin UI';
     
     /**
      * Exit Commands.

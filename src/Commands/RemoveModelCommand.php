@@ -20,7 +20,7 @@ class RemoveModelCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Remove a model from the easy admin UI';
+    protected $description = 'Remove a model from the Easy Admin UI';
     
     /**
      * Exit Commands.

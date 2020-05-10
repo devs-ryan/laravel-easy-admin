@@ -21,7 +21,7 @@ class ResetModelsCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Reset the EasyAdmin models file';
+    protected $description = 'Reset the Easy Admin models file';
     
     /**
      * Helper Service.

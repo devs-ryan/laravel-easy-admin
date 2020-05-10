@@ -21,7 +21,7 @@ class CreateUserCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create and add a user to EasyAdmin';
+    protected $description = 'Create and add a user to Easy Admin';
     
     /**
      * Exit Commands.
