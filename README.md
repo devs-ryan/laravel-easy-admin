@@ -19,3 +19,21 @@ Laravel Easy Admin leverages a powerful set of artisan commands to add/remove re
 - `composer require raysirsharp/laravel-easy-admin`
 - `php artisan vendor:publish --tag=public --force`
 - `php artisan migrate` (Your app is assumed to have a users table at this point)
+
+## Usage
+
+#### Creating an Easy Admin user
+- `php artisan easy-admin:create-user`
+- Follow the prompts to create a new user account with Easy Admin access
+
+#### Remove a user from the database
+- `php artisan easy-admin:remove-user`
+- Follow the prompts to remove a user from the database
+
+#### Grant an existing user Easy Admin Access
+- `php artisan easy-admin:user`
+- Enter a user_id or email to grant access
+
+#### Remove an existing user from Easy Admin Access
+- `php artisan easy-admin:user --remove`
+- Enter a user_id or email to remove access
