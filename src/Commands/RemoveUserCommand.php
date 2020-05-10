@@ -12,14 +12,21 @@ class RemoveUserCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'easy-admin:user {--remove}';
+    protected $signature = 'easy-admin:remove-user';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add a user to Easy Admin, append "--remove" for removing a user';
+    protected $description = 'Remove a user from the database';
+    
+    /**
+     * Continue Commands.
+     *
+     * @var array
+     */
+    protected $continue_commands = ['y', 'yes'];
     
     /**
      * Exit Commands.
@@ -45,15 +52,10 @@ class RemoveUserCommand extends Command
      */
     public function handle()
     {
-        $remove_option = $this->option('remove');
-        $email_entered = true;
-        if ($remove_option) $action = 'removed from';
-        else $action = 'added to';
-        
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
         
         //get user input
-        $user_input = $this->ask("Enter a user email or id to be" . $action . 'Easy Admin');
+        $user_input = $this->ask("Enter a user email or id to be removed from the database");
         if (in_array($user_input, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
@@ -63,7 +65,6 @@ class RemoveUserCommand extends Command
         $user = DB::table('users')->where('email', $user_input)->first();
         if (!$user) {
             $user = DB::table('users')->where('id', $user_input)->first();
-            $email_entered = false;
         }
         
         //check user found
@@ -72,14 +73,17 @@ class RemoveUserCommand extends Command
             return;
         }
         
-
+        $continue = $this->ask("You are about to permanently remove a user from the database, continue? [y]es or [n]o");
         
-        //update user
-        if ($email_entered)
-            DB::table('users')->where('email', $user_input)->update(['is_easy_admin' => !$remove_option]);
-        else
-            DB::table('users')->where('id', $user_input)->update(['is_easy_admin' => !$remove_option]);
-        $this->info("User was updated successfully!");
+        //continue check
+        if (!in_array(strtolower($continue), $this->continue_commands)) {
+             $this->info("Command exit code entered.. terminating.");
+        }
+        else {
+            //delete user
+            DB::table('users')->where('id', $user->id)->delete();
+            $this->info("User was removed successfully!");
+        }
         
     }
 }
