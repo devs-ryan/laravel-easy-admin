@@ -20,7 +20,7 @@ Laravel Easy Admin leverages a powerful set of artisan commands to add/remove re
 - `composer require raysirsharp/laravel-easy-admin`
 - `php artisan vendor:publish --tag=public --force`
 - `php artisan migrate` (Your app is assumed to have a users table at this point)
-- Access from http(s)://your-project-url.com/easy-admin
+- Access from <a href="https://github.com/raysirsharp/laravel-easy-admin">http(s)://your-project-url.com/easy-admin</a>
 
 ## Usage
 
