@@ -37,3 +37,24 @@ Laravel Easy Admin leverages a powerful set of artisan commands to add/remove re
 #### Remove an existing user from Easy Admin Access
 - `php artisan easy-admin:user --remove`
 - Enter a user_id or email to remove access
+
+#### Add a model resource to Easy Admin
+After running this command a CRUD resource will be added to the Easy Admin UI for the model specified.
+- `php artisan easy-admin:add-model`
+- Follow the prompts for namespace E.G. "App" and model name E.G. "User"
+- This will generate a new file in the base projects app/EasyAdmin directory, where you can comment out any functionality you do not wish to provide to the Easy Admin UI
+
+#### Remove a model resource from Easy Admin
+- `php artisan easy-admin:remove-model`
+- Follow the prompts for namespace E.G. "App" and model name E.G. "User"
+- This will remove the model from showing in the UI and delete the app/EasyAdmin file for it as well
+
+#### Add all model resources to Easy Admin
+This is not currently working, but on my TODO list.
+
+#### Reset Easy Admin
+In case you would like to return Easy Admin to the original state, use the command below.
+- `php artisan easy-admin:reset`
+
+## Limitations
+This admin panel assumes that you follow the standard Laravel naming conventions for models, and database tables. If you create migrations/models using `php artisan make:model {ModelName} -m` it should work, otherwise it may not.
