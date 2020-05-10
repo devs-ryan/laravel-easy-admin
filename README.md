@@ -65,4 +65,4 @@ The users table is expected to contain some fields that ship with the Laravel ba
 All model resources must contain and `id` attribute in their database table for the routing to function.
 
 ## Licence
-MIT
+Laravel Easy Admin is open-sourced software licensed under the [MIT license](LICENSE.md).
