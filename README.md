@@ -59,3 +59,6 @@ In case you would like to return Easy Admin to the original state, use the comma
 
 ## Limitations
 This admin panel assumes that you follow the standard Laravel naming conventions for models and database tables. If you create migrations/models using `php artisan make:model {ModelName} -m` it should work, otherwise it may not.
+
+## Licence
+MIT
