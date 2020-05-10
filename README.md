@@ -13,7 +13,7 @@
 
 Laravel Easy Admin is a back end UI designed for developers, root users with decent database knowledge or basic projects. It is not meant to serve as a complete Admin panel with full capabilities (see <a href="https://nova.laravel.com/">Lavavel Nova</a> if this is what you are looking for). On the contrary it is mean to act as a basic admin panel, with limited customizability, that can get up and running within minutes.
 
-Laravel Easy Admin leverages a powerful set of artisan commands to add/remove resources. Additionally public files where functionality can be removed or via commenting out code are meant to give basic ability for customizations. If you need a quick and dirty admin panel for you project, this package is for you! :)
+Laravel Easy Admin leverages a powerful set of artisan commands to add/remove resources. This is combined with public files where functionality can be removed or added via commenting/uncommenting code which allows Easy Admin to give basic ability for customization. If you need a quick and dirty admin panel for your project, this package is for you! :)
 
 
 ## Installation
