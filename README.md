@@ -1,12 +1,12 @@
 <h2 align="center">Laravel Easy Admin</h2>
 <h3 align="center">~ A simple admin panel for Laravel projects.</h3>
 <br><br>
-<p align="center"><a href="https://packagist.org/packages/raysirsharp/laravel-easy-admin"><img src="https://raw.githubusercontent.com/raysirsharp/img-storage/master/easy-admin-header.png"></a></p>
+<p align="center"><a target="_blank" href="https://packagist.org/packages/raysirsharp/laravel-easy-admin"><img src="https://raw.githubusercontent.com/raysirsharp/img-storage/master/easy-admin-header.png"></a></p>
 <p align="center">
-<a href="https://laravel.com/"><img src="https://img.shields.io/badge/Built%20For-Laravel-orange" alt="Built For Laravel"></a>
-<a href="https://packagist.org/packages/raysirsharp/laravel-easy-admin"><img src="https://img.shields.io/badge/Current%20Version-0.1.1-blue" alt="Version"></a>
-<a href="https://packagist.org/packages/raysirsharp/laravel-easy-admin"><img src="https://img.shields.io/badge/License-MIT-green" alt="License"></a>
-<a href="https://packagist.org/packages/raysirsharp/laravel-easy-admin"><img src="https://img.shields.io/badge/Requires-Laravel%20%5E7.0-red" alt="Requires"></a>
+<a target="_blank" href="https://laravel.com/"><img src="https://img.shields.io/badge/Built%20For-Laravel-orange" alt="Built For Laravel"></a>
+<a target="_blank" href="https://packagist.org/packages/raysirsharp/laravel-easy-admin"><img src="https://img.shields.io/badge/Current%20Version-0.1.1-blue" alt="Version"></a>
+<a target="_blank" href="https://packagist.org/packages/raysirsharp/laravel-easy-admin"><img src="https://img.shields.io/badge/License-MIT-green" alt="License"></a>
+<a target="_blank" href="https://laravel.com/"><img src="https://img.shields.io/badge/Requires-Laravel%20%5E7.0-red" alt="Requires"></a>
 </p>
 
 ## What is Laravel Easy Admin
