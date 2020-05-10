@@ -58,7 +58,11 @@ In case you would like to return Easy Admin to the original state, use the comma
 - `php artisan easy-admin:reset`
 
 ## Limitations
-This admin panel assumes that you follow the standard Laravel naming conventions for models and database tables. If you create migrations/models using `php artisan make:model {ModelName} -m` it should work, otherwise it may not.
+This admin panel assumes that you follow the standard Laravel naming conventions for models and database tables. If you create migrations/models using `php artisan make:model {ModelName} -m` it should work, otherwise it may not. 
+
+The users table is expected to contain some fields that ship with the Laravel base install, such as `email` and `password`. 
+
+All model resources must contain and `id` attribute in their database table for the routing to function.
 
 ## Licence
 MIT
