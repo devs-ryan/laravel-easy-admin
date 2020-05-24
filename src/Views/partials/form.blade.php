@@ -1,6 +1,6 @@
 @foreach($fields as $field)
     <div class="form-group row">
-        <label for="inputPassword" class="col-sm-12 col-form-label">
+        <label class="col-sm-12 col-form-label">
             @if(in_array($field, $required_fields))
                 *
             @endif

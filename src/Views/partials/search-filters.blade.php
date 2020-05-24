@@ -11,6 +11,32 @@
         </div>
     </div>
     <div class="card-body collapse-filter">
-        Filters Here
+        <form action="get">
+            @foreach($index_columns as $index_column)
+                @switch(Raysirsharp\LaravelEasyAdmin\Services\HelperService::inputType($index_column, $model_path))
+                    @case('password')
+                        {{-- Do not include search for password --}}
+                        @break
+                    @case('boolean')
+                        @include('easy-admin::partials.search-form-inputs.boolean')
+                        @break
+                    @case('decimal')
+                    @case('integer')
+                       @include('easy-admin::partials.search-form-inputs.number')
+                        @break
+                    @case('date')
+                        @include('easy-admin::partials.search-form-inputs.date')
+                        @break
+                    @case('timestamp')
+                         @include('easy-admin::partials.search-form-inputs.timestamp')
+                        @break
+                    @default
+                        @include('easy-admin::partials.search-form-inputs.text')
+                        @break
+                @endswitch
+               
+                
+            @endforeach
+        </form>
     </div>
 </div>

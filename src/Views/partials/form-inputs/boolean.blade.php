@@ -6,7 +6,7 @@
     @if(in_array($field, $required_fields))
         required
     @endif
-    class="form-check-input" type="radio" name="{{ $field }}" value="1" checked>
+    class="form-check-input" type="radio" name="{{ $field }}" value="1">
     <label class="form-check-label">
         True
     </label>
