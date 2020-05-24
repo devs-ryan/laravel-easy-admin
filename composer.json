@@ -22,9 +22,8 @@
         }
     },
     "require": {
-        "php": "^7.2",
-        "laravel/framework": "^7.0",
-        "illuminate/console": "^5.0|^6.0|^7.0"
+        "php": ">=7.2",
+        "laravel/framework": ">=7.0"
     },
     "minimum-stability": "dev"
 }
