@@ -4,6 +4,7 @@ namespace Raysirsharp\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
 use Raysirsharp\LaravelEasyAdmin\Services\FileService;
+use Raysirsharp\LaravelEasyAdmin\Services\HelperService;
 use Exception;
 
 class AddModelCommand extends Command
@@ -30,11 +31,18 @@ class AddModelCommand extends Command
     protected $exit_commands = ['q', 'quit', 'exit'];
     
     /**
-     * Helper Service.
+     * File Service.
      *
      * @var class
      */
     protected $fileService;
+    
+    /**
+     * Helper Service.
+     *
+     * @var class
+     */
+    protected $helperService;
 
     /**
      * Create a new command instance.
@@ -45,6 +53,7 @@ class AddModelCommand extends Command
     {
         parent::__construct();
         $this->FileService = new FileService;
+        $this->helperService = new HelperService;
     }
 
     /**
@@ -85,6 +94,13 @@ class AddModelCommand extends Command
             $this->info('Model does not exist.. terminating.');
             return;
         }
+      
+        //check if model has `id` column
+        if (!$this->helperService->checkModelHasId($model_path)) {
+            $this->info('This version of East Admin only supports models with the `id` field present.. terminating.');
+            return;
+        }
+        
         
         //check if package file has already (create otherwise)
         if ($this->FileService->checkModelExists($model_path)) {

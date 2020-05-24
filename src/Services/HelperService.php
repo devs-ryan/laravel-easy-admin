@@ -205,6 +205,43 @@ class HelperService
             }
         }
         return strtolower($link);
-    }    
+    }
+    
+    /**
+     * Check if model has ID field
+     *
+     * @return boolean
+     */
+    public function checkModelHasId($model_path)
+    {
+        $record = new $model_path;
+        $table = $record->getTable();
+        
+        $columns = DB::select('SHOW COLUMNS FROM ' . $table);
+        
+        foreach($columns as $column_data) {
+            if ($column_data->Field == 'id') {
+                return true;
+            }
+        }
+        return false;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
