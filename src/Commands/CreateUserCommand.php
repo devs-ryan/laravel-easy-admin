@@ -64,7 +64,7 @@ class CreateUserCommand extends Command
             if ($input == 'password') {
                 $answers[$input] = Hash::make($answer);
             }
-            else {
+            else if ($input != 'is_easy_admin') {
                 $answers[$input] = $answer;
             }
         }
