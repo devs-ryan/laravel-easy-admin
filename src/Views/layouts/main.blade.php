@@ -13,7 +13,7 @@
 	<link rel="stylesheet" href="{{ asset('raysirsharp/LaravelEasyAdmin/css/laravel-easy-admin.min.css') }}">
 	<link rel="icon" type="image/x-icon" href="{{ asset('raysirsharp/LaravelEasyAdmin/img/easy-admin.ico') }}"/>
 	<script type="text/javascript" src="{{ asset('raysirsharp/LaravelEasyAdmin/js/laravel-easy-admin.min.js') }}"></script>
-	@yield('styles')
+	@stack('styles')
 </head>
 
 <body>
@@ -26,7 +26,7 @@
 	<footer>
 	    @include('easy-admin::partials.footer')
 	</footer>
-	@yield('scripts')
+	@stack('scripts')
 </body>
 
 </html>

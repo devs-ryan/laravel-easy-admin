@@ -17,7 +17,7 @@
     </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     function toggleCollapseSearch() {
         if ($("#search-filter-sidebar").hasClass("col-md-3")) {
@@ -66,4 +66,4 @@
         }
     }
 </script>
-@endsection
+@endpush

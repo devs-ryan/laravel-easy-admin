@@ -16,8 +16,16 @@
                     </a>
                 @endforeach
                 @if(count($nav_items) == 0)
-                    Your admin panel does not currently have any assets added to it. Contact your system adming to add new assets or lean how by visiting: <br>
-                    <a href="https://github.com/raysirsharp/laravel-easy-admin" target="_blank">https://github.com/raysirsharp/laravel-easy-admin</a>
+                    <i>Your admin panel does not currently have any assets added to it.</i> <br>
+                    <p> 
+                        Contact you system admin
+                        @if(env('EASY_ADMIN_SUPPORT_EMAIL') != NULL)
+                            <a target="_blank" href="mailto:{{ env('EASY_ADMIN_SUPPORT_EMAIL') }}?subject=Easy Admin Help Request">{{ env('EASY_ADMIN_SUPPORT_EMAIL') }}</a>
+                        @endif 
+                        to add new assets or lean how by visiting: <br>
+                         <a href="https://github.com/raysirsharp/laravel-easy-admin" target="_blank">https://github.com/raysirsharp/laravel-easy-admin</a>
+                    </p>
+                   
                 @endif
             </ul>
         </div>

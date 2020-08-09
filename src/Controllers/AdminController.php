@@ -70,9 +70,10 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index($model)
+    public function index($model, Request $request)
     {
         //gather info for action
         $url_model = $model;
@@ -85,11 +86,20 @@ class AdminController extends Controller
       
         //get data
         $check_model = $model_path::first();
-        if ($check_model && $check_model->id) 
-            $data = $model_path::orderByDesc('id')->paginate(50);
-        else if ($check_model && $check_model->create_at) 
-            $data = $model_path::orderByDesc('create_at')->paginate(50);
-        else $data = $model_path::paginate(50);
+        if ($check_model && $check_model->id)
+            $data = $model_path::orderByDesc('id');
+        else if ($check_model && $check_model->create_at)
+            $data = $model_path::orderByDesc('create_at');
+        else $data = $model_path::all();
+        
+        //apply filters
+        foreach($request->all() as $filter => $value) {
+            if ($value === null || !$check_model->$filter) continue;
+            $data = $data->where($filter, 'LIKE', "%$value%");
+        }
+        
+        //paginate
+        $data =$data->paginate(50);
           
         return view('easy-admin::index')
             ->with('data', $data)
