@@ -94,7 +94,23 @@ class AdminController extends Controller
         
         //apply filters
         foreach($request->all() as $filter => $value) {
-            if ($value === null || !$check_model->$filter) continue;
+            if ($value === null) continue;
+            
+            if (strpos($filter, '__from') !== false) { //from comparison
+                $filter = str_replace('__from', '', $filter);
+                if (!$check_model->$filter) continue;
+                $data = $data->where($filter, '>=', date($value));
+                continue;
+            }
+            if (strpos($filter, '__to') !== false) { //from comparison
+                $filter = str_replace('__to', '', $filter);
+                if (!$check_model->$filter) continue;
+                $data = $data->where($filter, '<=', date($value));
+                continue;
+            }
+            
+            // regular comparison
+            if (!$check_model->$filter) continue;
             $data = $data->where($filter, 'LIKE', "%$value%");
         }
         
