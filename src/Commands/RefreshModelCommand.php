@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 use Raysirsharp\LaravelEasyAdmin\Services\FileService;
 use Exception;
 
-class RemoveModelCommand extends Command
+class RefreshModelCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'easy-admin:remove-model';
+    protected $signature = 'easy-admin:refresh-model';
 
     /**
      * The console command description.
@@ -86,15 +86,7 @@ class RemoveModelCommand extends Command
             return;
         }
         
-        //check if package file has already (create otherwise)
-        if ($this->FileService->checkModelExists($model_path)) {
-            $this->FileService->removeModelFromList($namespace, $model);
-            $this->info('Removed EasyAdmin models list file..');
-        }
-        else {
-            $this->info('Model not found in EasyAdmin models list, checking for \App\EasyAdmin file..');
-        }
-        //check if App file exists
+        //check if App file exists already (create otherwise)
         if ($this->FileService->checkPublicModelExists($model_path)) {
             $this->FileService->removePublicModel($model_path);
             $this->info('\App\EasyAdmin public file removed..');
@@ -103,7 +95,11 @@ class RemoveModelCommand extends Command
             $this->info('\App\EasyAdmin public file not found..');
         }
         
-        $this->info('Model removed successfully!');
+        //create new App file
+        $this->FileService->addPublicModel($model_path);
+        $this->info('\App\EasyAdmin public file created..');
+        
+        $this->info('Model refreshed successfully!');
     }
     
     /**
