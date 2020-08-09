@@ -57,6 +57,11 @@ After running this command a CRUD resource will be added to the Easy Admin UI fo
 - Follow the prompts for namespace E.G. "App" and model name E.G. "User"
 - This will remove the model from showing in the UI and delete the app/EasyAdmin file for it as well
 
+#### Refresh a model resource in Easy Admin
+- `php artisan easy-admin:refresh-model`
+- Follow the prompts for namespace E.G. "App" and model name E.G. "User"
+- This will reload the public file in the app/EasyAdmin directory to the default and load/remove any fields that have changed in the model
+
 #### Add all model resources to Easy Admin
 This is not currently working, but on my TODO list.
 
