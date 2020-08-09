@@ -38,6 +38,9 @@
             
             //hide filter content
             $(".collapse-filter").addClass("d-none");
+            
+            //show hint icon
+            $("#collapsed-filter-hint").removeClass("d-none");
         }
         else if ($("#search-filter-sidebar").hasClass("col-md-1")) {
             
@@ -57,6 +60,9 @@
             
             //show filter content
             $(".collapse-filter").removeClass("d-none");
+            
+            //remove hint icon
+            $("#collapsed-filter-hint").addClass("d-none");
         }
     }
 </script>

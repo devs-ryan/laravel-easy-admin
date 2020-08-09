@@ -2,16 +2,17 @@
     <div class="card-header">
         <div class="row">
             <div class="col-9 collapse-filter">
-                <i class="fas fa-search"></i> 
+                <i class="fas fa-search"></i>
                 Search Filters
             </div>
-            <div id="search-filter-collapsed" class="col-3 text-right">
-                <i id="search-filter-chevron" class="fas fa-chevron-left" onclick="toggleCollapseSearch()"></i>
+            <div id="search-filter-collapsed" class="col-3">
+                <i class="fas fa-search d-none" id="collapsed-filter-hint"></i>
+                <i id="search-filter-chevron" class="fas fa-chevron-left float-right pt-1" onclick="toggleCollapseSearch()"></i>
             </div>
         </div>
     </div>
     <div class="card-body collapse-filter">
-        <form action="get">
+        <form method="get" action="">
             @foreach($index_columns as $index_column)
                 @switch(Raysirsharp\LaravelEasyAdmin\Services\HelperService::inputType($index_column, $model_path))
                     @case('password')
@@ -37,6 +38,11 @@
                
                 
             @endforeach
+            
+
+            <button class="btn btn-primary" type="submit" aria-pressed="true">
+                <i class="fas fa-search"></i> Search
+            </button>
         </form>
     </div>
 </div>
