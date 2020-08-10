@@ -70,6 +70,13 @@ class CreateUserCommand extends Command
         }
         $answers['is_easy_admin'] = true;
         
+        //set time stamps
+        $date_time = new \DateTime();
+        if ($this->hasColumn('created_at'))
+            $answers['created_at'] = $date_time->format('Y-m-d H:i:s');
+        if ($this->hasColumn('updated_at'))
+            $answers['updated_at'] = $date_time->format('Y-m-d H:i:s');
+        
         //create new user
         try {
             DB::table('users')->insert($answers);
@@ -98,6 +105,21 @@ class CreateUserCommand extends Command
             }
         }
         return $required;
+    }
+    
+    /**
+     * Check if created_at exists.
+     *
+     * @return boolean
+     */
+    private function hasColumn($check_exists)
+    {
+        $columns = DB::select('SHOW COLUMNS FROM users');
+
+        foreach($columns as $column_data) {
+            if ($column_data->Field == $check_exists) return true;
+        }
+        return false;
     }
 }
 
