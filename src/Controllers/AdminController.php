@@ -90,7 +90,7 @@ class AdminController extends Controller
             $data = $model_path::orderByDesc('id');
         else if ($check_model && $check_model->create_at)
             $data = $model_path::orderByDesc('create_at');
-        else $data = $model_path::all();
+        else $data = $model_path::query();
         
         //apply filters
         foreach($request->all() as $filter => $value) {
@@ -115,7 +115,7 @@ class AdminController extends Controller
         }
         
         //paginate
-        $data =$data->paginate(50);
+        $data = $data->paginate(50);
           
         return view('easy-admin::index')
             ->with('data', $data)
