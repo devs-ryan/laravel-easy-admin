@@ -281,7 +281,11 @@ class AdminController extends Controller
         //find model
         $data = $model_path::findOrFail($id);
         
-        //find model
+        //do not allow user to delete themselves
+        if ($model === 'User' && $data == Auth::user())
+            abort(403, 'Unauthorized action, cannot delete the currently authenticated user.');
+
+        //delete model
         $message = $this->validationService->deleteModel($data);
         
         //return redirect
