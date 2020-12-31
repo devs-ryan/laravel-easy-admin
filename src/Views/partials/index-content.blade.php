@@ -23,7 +23,7 @@
                                         ($column == true || $column == false) &&
                                         (Raysirsharp\LaravelEasyAdmin\Services\HelperService::inputType($key, $model_path) === 'boolean')
                                     )
-                                        {{ ($column === 1) ? 'true' : 'false' }}
+                                        {{ ($column == true) ? 'true' : 'false' }}
                                     @else
                                         {{ $column }}
                                     @endif
