@@ -8,7 +8,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'easy-admin', 'namespace' => 
     
     //EasyAdmin Routes
     Route::get('/', 'AdminController@home');
-	Route::get('{model}/index', 'AdminController@index');
+    Route::get('{model}/index', 'AdminController@index');
     Route::get('{model}/create', 'AdminController@create');
     Route::post('{model}', 'AdminController@store');
     Route::get('{model}/{id}/edit', 'AdminController@edit');
