@@ -22,21 +22,21 @@ class AddModelCommand extends Command
      * @var string
      */
     protected $description = 'Add a model to the Easy Admin UI';
-    
+
     /**
      * Exit Commands.
      *
      * @var array
      */
     protected $exit_commands = ['q', 'quit', 'exit'];
-    
+
     /**
      * File Service.
      *
      * @var class
      */
     protected $fileService;
-    
+
     /**
      * Helper Service.
      *
@@ -63,22 +63,23 @@ class AddModelCommand extends Command
      */
     public function handle()
     {
-        //check AppModelsList corrupted
-        if ($this->FileService->checkIsModelsListCorrupted()) {
-            $this->info("Raysirsharp\LaravelEasyAdmin\AppModelsList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
+        //check AppModelList corrupted
+        if ($this->FileService->checkIsModelListCorrupted()) {
+            $this->info("App\EasyAdmin\AppModelList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
             return;
         }
 
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
-        
+
         //get namespace
-        $namespace = $this->ask("Enter the model namespace(EG. App\Models\)");
+        $namespace = $this->ask("Enter the model namespace(Default: App\Models\)");
         if (in_array($namespace, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }
+        if ($namespace == '') $namespace = 'App\Models';
         $namespace = $this->filterInput($namespace, true);
-        
+
         //get model
         $model = $this->ask("Enter the model name");
         if (in_array($namespace, $this->exit_commands)) {
@@ -86,7 +87,7 @@ class AddModelCommand extends Command
             return;
         }
         $model = $this->filterInput($model);
-        
+
         //check if model/namespace is valid
         $model_path = $namespace . $model;
         $this->info('Adding Model to Easy Admin..' . $model_path);
@@ -94,14 +95,14 @@ class AddModelCommand extends Command
             $this->info('Model does not exist.. terminating.');
             return;
         }
-      
+
         //check if model has `id` column
         if (!$this->helperService->checkModelHasId($model_path)) {
             $this->info('This version of East Admin only supports models with the `id` field present.. terminating.');
             return;
         }
-        
-        
+
+
         //check if package file has already (create otherwise)
         if ($this->FileService->checkModelExists($model_path)) {
             $this->info('Model already added to EasyAdmin, checking for \App\EasyAdmin file..');
@@ -118,10 +119,10 @@ class AddModelCommand extends Command
             $this->FileService->addPublicModel($model_path);
             $this->info('\App\EasyAdmin public file created..');
         }
-        
+
         $this->info('Model added successfully!');
     }
-    
+
     /**
      * Filter Namespace.
      *
@@ -132,10 +133,10 @@ class AddModelCommand extends Command
         $input = preg_replace('/\s+/', '', $input);
         $input = str_replace('/', '\\', $input);
         $input = preg_replace('/(\\\\)+/', '\\', $input);
-        
+
         //add trailing slash to namespace if not included
-        if ($input[strlen($input) - 1] != '\\' && $namespace) {
-            $input .= '\\'; 
+        if ($input != '' && $input[strlen($input) - 1] != '\\' && $namespace) {
+            $input .= '\\';
         }
         return $input;
     }

@@ -1,18 +1,50 @@
 <?php
 
-namespace Raysirsharp\LaravelEasyAdmin;
+namespace App\EasyAdmin;
 
-class AppModelsList
+class AppModelList
 {
     /**
      * Return array of models and namespaces
      *
      * @return Array
      */
-    public static function models() 
+    public static function models()
     {
         return [
             //Models Here - Format: Namespace.Model
         ];
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>
+//EOF

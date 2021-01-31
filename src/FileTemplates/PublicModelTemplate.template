@@ -4,13 +4,13 @@ namespace App\EasyAdmin;
 
 /**
  * EasyAdmin - {{model_name}}
- * 
+ *
  * Comment of uncomment attributes for this model to alter the EasyAdmin GUI
  * Support this package: https://github.com/raysirsharp/laravel-easy-admin
  */
 class {{model_name}}
 {
-    
+
     /**
      * The methods allowed for this model
      * Note: Index/View are always included, remove model
@@ -26,7 +26,7 @@ class {{model_name}}
             'delete',
         ];
     }
-    
+
     /**
      * Fields allowed to be created.
      * Note: Any fields not in this array must be nullable
@@ -40,7 +40,7 @@ class {{model_name}}
             {{form_model_fields}}
         ];
     }
-    
+
     /**
      * Fields shown in index table.
      * Note: For the sake of not overloading the
@@ -55,7 +55,7 @@ class {{model_name}}
             {{index_model_fields}}
         ];
     }
-    
+
     /**
      * Fields allowed to be updated OR viewed.
      * View only when allowed() does not contain 'update'
@@ -96,5 +96,5 @@ class {{model_name}}
 
 
 
-
+?>
 //EOF

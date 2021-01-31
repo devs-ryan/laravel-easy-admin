@@ -22,21 +22,21 @@ class ResetModelsCommand extends Command
      * @var string
      */
     protected $description = 'Reset the Easy Admin models file';
-    
+
     /**
      * Helper Service.
      *
      * @var class
      */
     protected $fileService;
-    
+
     /**
      * Continue Commands.
      *
      * @var array
      */
     protected $continue_commands = ['y', 'yes'];
-    
+
     /**
      * Exit Commands.
      *
@@ -64,20 +64,20 @@ class ResetModelsCommand extends Command
     {
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
         $continue = $this->ask("This will reset EasyAdmin completely, continue? [y]es or [n]o");
-        
+
         //exit code check
         if (in_array($continue, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }
-        
+
         //continue check
         if (!in_array(strtolower($continue), $this->continue_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }
-        
-        $this->FileService->resetAppModelsList();
+
+        $this->FileService->resetAppModelList();
         $this->FileService->removeAppDirectory();
         $this->FileService->createAppDirectory();
         $this->info('EasyAdmin models reset successfully.');

@@ -9,50 +9,50 @@ use Throwable;
 
 class FileService
 {
-    
+
     /**
      * Helper Service.
      *
      * @var class
      */
     protected $helperService;
-    
+
     /**
      * Template for public model classes
      *
      * @var class
      */
     protected $public_model_template;
-    
+
     /**
      * Template for app models list
      *
      * @var class
      */
     protected $app_model_list_template;
-    
+
     /**
      * Create a new service instance.
      *
      * @return void
      */
     public function __construct()
-    {  
+    {
         $this->helperService = new HelperService;
-        
-        $path = str_replace('/Services', '', __DIR__).'/FileTemplates/PublicModelTemplate.txt';
+
+        $path = str_replace('/Services', '', __DIR__).'/FileTemplates/PublicModelTemplate.template';
         $this->public_model_template = file_get_contents($path) or die("Unable to open file!");
-        
-        $path = str_replace('/Services', '', __DIR__).'/FileTemplates/AppModelList.txt';
+
+        $path = str_replace('/Services', '', __DIR__).'/FileTemplates/AppModelList.template';
         $this->app_model_list_template = file_get_contents($path) or die("Unable to open file!");
     }
-    
+
     /**
-     * Check if AppModelsList is corrupted
+     * Check if AppModelList is corrupted
      *
      * @return boolean
      */
-    public function checkIsModelsListCorrupted()
+    public function checkIsModelListCorrupted()
     {
         try {
             $this->helperService->getAllModels();
@@ -62,31 +62,31 @@ class FileService
         }
         return false;
     }
-    
+
     /**
-     * Reset AppModelsList file
+     * Reset AppModelList file
      *
      * @return void
      */
-    public function resetAppModelsList()
+    public function resetAppModelList()
     {
-        $write_path = str_replace('/Services', '', __DIR__).'/AppModelsList.php';
+        $write_path = app_path('EasyAdmin/AppModelList.php');
         file_put_contents($write_path, $this->app_model_list_template) or die("Unable to write to file!");
     }
-    
+
     /**
      * Check if a model has already been added to easy admin
      *
      * @param string $model
      * @return boolean
      */
-    public function checkModelExists($model) 
+    public function checkModelExists($model)
     {
         $models = $this->helperService->getAllConvertedModels();
         if (in_array($model, $models)) return true;
         return false;
     }
-    
+
     /**
      * Check if a public class for this model already exists
      *
@@ -94,7 +94,7 @@ class FileService
      * @return boolean
      */
     public function checkPublicModelExists($model_path)
-    {    
+    {
         try {
             $this->helperService->getPublicModel($model_path);
         }
@@ -103,7 +103,7 @@ class FileService
         }
         return true;
     }
-    
+
     /**
      * Add Model into EasyAdmin models list
      *
@@ -112,8 +112,8 @@ class FileService
      */
     public function addModelToList($namespace, $model)
     {
-        //add model to AppModelsList file
-        $path = str_replace('/Services', '', __DIR__).'/AppModelsList.php';
+        //add model to AppModelList file
+        $path = app_path('EasyAdmin/AppModelList.php');
 
         $package_file = file_get_contents($path) or die("Unable to open file!");
 
@@ -126,7 +126,7 @@ class FileService
             }
         }
     }
-  
+
     /**
      * Remove Model from EasyAdmin models list
      *
@@ -135,11 +135,11 @@ class FileService
      */
     public function removeModelFromList($namespace, $model)
     {
-        $path = str_replace('/Services', '', __DIR__).'/AppModelsList.php';
+        $path = app_path('EasyAdmin/AppModelList.php');
         $handle = fopen($path, "r") or  die("Unable to open file!");
         $remove = rtrim($namespace, '\\') . '.' . $model . "',\n";
         $overwrite_string = "";
-        
+
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
                 if (strpos($line, $remove) === false) {
@@ -150,7 +150,7 @@ class FileService
         }
         file_put_contents($path, $overwrite_string) or die("Unable to write to file!");
     }
-    
+
     /**
      * Add Model into app Models
      *
@@ -161,17 +161,17 @@ class FileService
     {
         $model = $this->helperService->stripPathFromModel($model_path);
         $write_path = app_path() . '/EasyAdmin/' . $model . '.php';
-        
+
         //get attributes
         $record = new $model_path;
         $table = $record->getTable();
-        
+
         $fields = '';
         $columns = DB::select('SHOW COLUMNS FROM ' . $table);
         foreach($columns as $column) {
             $fields .= "'$column->Field',\n            ";
         }
-        
+
         //comment out fields
         $text = str_replace("{{form_model_fields}}", $this->formFilter($fields), $this->public_model_template);
         $text = str_replace("{{index_model_fields}}", $this->indexFilter($fields), $text);
@@ -179,7 +179,7 @@ class FileService
         $this->createAppDirectory(); //if doesnt exist create public directory
         file_put_contents($write_path, $text) or die("Unable to write to file!");
     }
-    
+
     /**
      * Remove Model from app Models
      *
@@ -192,7 +192,7 @@ class FileService
         $write_path = app_path() . '/EasyAdmin/' . $model . '.php';
         unlink($write_path);
     }
-    
+
     /////////////////////////////////////
     //FILTER FUNCTIONS FOR ABOVE METHOD//
     /////////////////////////////////////
@@ -204,7 +204,7 @@ class FileService
         $fields = str_replace('\'email_verified_at', '//\'email_verified_at', $fields);
         $fields = str_replace('\'created_at', '//\'created_at', $fields);
         $fields = str_replace('\'updated_at', '//\'updated_at', $fields);
-        
+
         return $fields;
     }
     private function indexFilter($fields)
@@ -215,11 +215,11 @@ class FileService
         $fields = str_replace('\'email_verified_at', '//\'email_verified_at', $fields);
         $fields = str_replace('\'created_at', '//\'created_at', $fields);
         $fields = str_replace('\'updated_at', '//\'updated_at', $fields);
-        
+
         return $fields;
     }
-    
-    
+
+
     /**
      * Remove the App/EasyAdmin directory
      *
@@ -227,7 +227,7 @@ class FileService
      */
     public function removeAppDirectory() {
         $dir = app_path() . '/EasyAdmin';
-        
+
         $it = new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS);
         $files = new \RecursiveIteratorIterator($it,
                      \RecursiveIteratorIterator::CHILD_FIRST);
@@ -240,7 +240,7 @@ class FileService
         }
         rmdir($dir);
     }
-    
+
     /**
      * Create the App/EasyAdmin directory
      *
@@ -251,7 +251,7 @@ class FileService
         if (!file_exists($dir)) {
             mkdir($dir);
         }
-    } 
+    }
 }
 
 

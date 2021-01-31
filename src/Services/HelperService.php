@@ -1,7 +1,7 @@
 <?php
 namespace Raysirsharp\LaravelEasyAdmin\Services;
 
-use Raysirsharp\LaravelEasyAdmin\AppModelsList;
+use App\EasyAdmin\AppModelList;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Throwable;
@@ -20,7 +20,7 @@ class HelperService
         $record = new $model;
         $table = $record->getTable();
         $column_type = '';
-        
+
         //find column type
         $columns = DB::select('SHOW COLUMNS FROM ' . $table);
         foreach($columns as $column) {
@@ -32,7 +32,7 @@ class HelperService
 
         //convert to options:
         //int, float, boolean, date, timestamp, password, text (default)
-        
+
         //check password
         if ($field == 'password') {
             return 'password';
@@ -63,13 +63,13 @@ class HelperService
         //default to text
         return 'text';
     }
-    
+
     /**
      * Convert the URL model to the app model
      *
      * @return Array
      */
-    public function convertUrlModel($url_model) 
+    public function convertUrlModel($url_model)
     {
         $model = '';
         $pieces = explode('-', $url_model);
@@ -78,17 +78,17 @@ class HelperService
         }
 
         $app_models = $this->getAllModels();
-        
+
         foreach ($app_models as $app_model) {
             //parse model
             $pieces = explode('.', $app_model);
             if (count($pieces) != 2) {
-                throw new Exception('Parse error in AppModelsList');
+                throw new Exception('Parse error in AppModelList');
             }
             //check form match
             $app_model = $pieces[1];
             $name_space = $pieces[0];
-            
+
             if ($app_model == $model) {
                 return $name_space . '\\' . $model;
             }
@@ -96,10 +96,10 @@ class HelperService
                 return $name_space . '\\' . rtrim($model, 's');
             }
         }
-        
+
         throw new Exception('Model not found: ' . $url_model);
     }
-    
+
     /**
      * Return all models added to admin area (without full path)
      *
@@ -109,12 +109,12 @@ class HelperService
     {
         $models = [];
         $all_models = $this->getAllModels();
-        
+
         foreach ($all_models as $model) {
             //parse model
             $pieces = explode('.', $model);
             if (count($pieces) != 2) {
-                throw new Exception('Parse error in AppModelsList');
+                throw new Exception('Parse error in AppModelList');
             }
             //check form match
             $app_model = $pieces[1];
@@ -123,7 +123,7 @@ class HelperService
         }
         return $models;
     }
-    
+
     /**
      * Strip the model away from the models full path
      *
@@ -132,7 +132,7 @@ class HelperService
     public function stripPathFromModel($model)
     {
         $pieces = explode('\\', $model);
-        $length = count($pieces); 
+        $length = count($pieces);
 
         return $pieces[$length - 1];
     }
@@ -145,14 +145,15 @@ class HelperService
      */
     public function getAllModels()
     {
+        return AppModelList::models();
         try {
-            return AppModelsList::models();
+            return AppModelList::models();
         }
         catch (Throwable $t) {
-            throw new Exception('Parse Error: AppModelsList.php has been corrupted.');
+            throw new Exception('Parse Error: AppModelList.php has been corrupted.');
         }
     }
-    
+
     /**
      * Get public model file
      *
@@ -162,7 +163,7 @@ class HelperService
     {
         $model = $this->stripPathFromModel($model_path);
         $app_model = "App\\EasyAdmin\\" . $model;
-        
+
         try {
             if (class_exists($app_model)) {
                 return $app_model;
@@ -173,7 +174,7 @@ class HelperService
             throw new Exception('Error: Public model does not exist.');
         }
     }
-    
+
     /**
      * Return all models added to admin area
      * Format Namespace\Model
@@ -189,7 +190,7 @@ class HelperService
         }
         return $converted;
     }
-    
+
     /**
      * Convert Model to Link
      *
@@ -206,7 +207,7 @@ class HelperService
         }
         return strtolower($link);
     }
-    
+
     /**
      * Check if model has ID field
      *
@@ -216,9 +217,9 @@ class HelperService
     {
         $record = new $model_path;
         $table = $record->getTable();
-        
+
         $columns = DB::select('SHOW COLUMNS FROM ' . $table);
-        
+
         foreach($columns as $column_data) {
             if ($column_data->Field == 'id') {
                 return true;

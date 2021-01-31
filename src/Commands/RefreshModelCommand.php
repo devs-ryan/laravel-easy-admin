@@ -21,14 +21,14 @@ class RefreshModelCommand extends Command
      * @var string
      */
     protected $description = 'Remove a model from the Easy Admin UI';
-    
+
     /**
      * Exit Commands.
      *
      * @var array
      */
     protected $exit_commands = ['q', 'quit', 'exit'];
-    
+
     /**
      * Helper Service.
      *
@@ -54,22 +54,23 @@ class RefreshModelCommand extends Command
      */
     public function handle()
     {
-        //check AppModelsList corrupted
-        if ($this->FileService->checkIsModelsListCorrupted()) {
-            $this->info("Raysirsharp\LaravelEasyAdmin\AppModelsList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
+        //check AppModelList corrupted
+        if ($this->FileService->checkIsModelListCorrupted()) {
+            $this->info("App\EasyAdmin\AppModelList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
             return;
         }
 
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
-        
+
         //get namespace
-        $namespace = $this->ask("Enter the model namespace(EG. App\Models\)");
+        $namespace = $this->ask("Enter the model namespace(Default: App\Models\)");
         if (in_array($namespace, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }
+        if ($namespace == '') $namespace = 'App\Models';
         $namespace = $this->filterInput($namespace, true);
-        
+
         //get model
         $model = $this->ask("Enter the model name");
         if (in_array($namespace, $this->exit_commands)) {
@@ -77,7 +78,7 @@ class RefreshModelCommand extends Command
             return;
         }
         $model = $this->filterInput($model);
-        
+
         //check if model/namespace is valid
         $model_path = $namespace . $model;
         $this->info('Removing Model from Easy Admin..' . $model_path);
@@ -85,7 +86,7 @@ class RefreshModelCommand extends Command
             $this->info('Model does not exist.. terminating.');
             return;
         }
-        
+
         //check if App file exists already (create otherwise)
         if ($this->FileService->checkPublicModelExists($model_path)) {
             $this->FileService->removePublicModel($model_path);
@@ -94,14 +95,14 @@ class RefreshModelCommand extends Command
         else {
             $this->info('\App\EasyAdmin public file not found..');
         }
-        
+
         //create new App file
         $this->FileService->addPublicModel($model_path);
         $this->info('\App\EasyAdmin public file created..');
-        
+
         $this->info('Model refreshed successfully!');
     }
-    
+
     /**
      * Filter Namespace.
      *
@@ -112,10 +113,10 @@ class RefreshModelCommand extends Command
         $input = preg_replace('/\s+/', '', $input);
         $input = str_replace('/', '\\', $input);
         $input = preg_replace('/(\\\\)+/', '\\', $input);
-        
+
         //add trailing slash to namespace if not included
-        if ($input[strlen($input) - 1] != '\\' && $namespace) {
-            $input .= '\\'; 
+        if ($input != '' && $input[strlen($input) - 1] != '\\' && $namespace) {
+            $input .= '\\';
         }
         return $input;
     }
