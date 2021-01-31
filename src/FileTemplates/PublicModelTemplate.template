@@ -96,5 +96,5 @@ class {{model_name}}
     }
 }
 
+
 ?>
-//EOF
