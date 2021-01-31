@@ -9,6 +9,18 @@ use Throwable;
 
 class HelperService
 {
+
+    /**
+     * Check wysiwyg
+     *
+     * @param int $price
+     * @return decimal
+     */
+    public static function checkWysiwyg($field, $model)
+    {
+        // todo
+    }
+
     /**
      * Find the form input type
      *
