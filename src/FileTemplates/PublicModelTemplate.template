@@ -68,33 +68,33 @@ class {{model_name}}
             {{form_model_fields}}
         ];
     }
+
+    /**
+     * Fields expected to bet treated as images.
+     * Fields to be type 'string' to store path data
+     *
+     * @return Array
+     */
+    public static function images()
+    {
+        return [
+            // 'field_name' => 'storage/path'
+        ];
+    }
+
+    /**
+     * Fields expected to bet treated as wysiwyg editors.
+     * Fields to be type 'text' to store path data
+     *
+     * @return Array
+     */
+    public static function wysiwyg_editors()
+    {
+        return [
+            // 'field_name'
+        ];
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ?>
 //EOF
