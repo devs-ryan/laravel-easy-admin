@@ -10,14 +10,14 @@ use Auth;
 
 class AdminController extends Controller
 {
-    
+
     /**
      * Helper Service.
      *
      * @var class
      */
     protected $helperService;
-    
+
     /**
      * Validation Service.
      *
@@ -31,10 +31,10 @@ class AdminController extends Controller
      * @return void
      */
     public function __construct()
-    {  
+    {
         $this->helperService = new HelperService;
         $this->validationService = new ValidationService;
-        
+
         //EasyAdmin Middleware
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
@@ -47,12 +47,12 @@ class AdminController extends Controller
                     return redirect('/easy-admin/login')
                         ->with('message', 'Access Denied! Request Easy Admin permission to continue.');
                 }
-                
+
             }
             return redirect('/easy-admin/login');
         });
     }
-    
+
     /**
      * Display landing page.
      *
@@ -61,12 +61,12 @@ class AdminController extends Controller
     public function home()
     {
         $nav_items = $this->helperService->getModelsForNav();
-        
+
         return view('easy-admin::home')
             ->with('nav_items', $nav_items)
             ->with('title', 'Home');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -83,7 +83,7 @@ class AdminController extends Controller
         $appModel = "App\\EasyAdmin\\" . $model;
         $index_columns = $appModel::index();
         $allowed = $appModel::allowed();
-      
+
         //get data
         $check_model = $model_path::first();
         if ($check_model && $check_model->id)
@@ -91,11 +91,11 @@ class AdminController extends Controller
         else if ($check_model && $check_model->create_at)
             $data = $model_path::orderByDesc('create_at');
         else $data = $model_path::query();
-        
+
         //apply filters
         foreach($request->all() as $filter => $value) {
             if ($value === null) continue;
-            
+
             if (strpos($filter, '__from') !== false) { //from comparison
                 $filter = str_replace('__from', '', $filter);
                 if (!$check_model->$filter) continue;
@@ -108,15 +108,15 @@ class AdminController extends Controller
                 $data = $data->where($filter, '<=', date($value));
                 continue;
             }
-            
+
             // regular comparison
             if (!$check_model->$filter) continue;
             $data = $data->where($filter, 'LIKE', "%$value%");
         }
-        
+
         //paginate
         $data = $data->paginate(50);
-          
+
         return view('easy-admin::index')
             ->with('data', $data)
             ->with('model', $model)
@@ -134,22 +134,22 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create($model)
-    {   
+    {
         //gather info for action
         $url_model = $model;
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
         $nav_items = $this->helperService->getModelsForNav();
         $appModel = "App\\EasyAdmin\\" . $model;
-        
+
         //check allowed
         $allowed = $appModel::allowed();
         if (!in_array('create', $allowed)) abort(403, 'Unauthorized action.');
-        
+
         //create fields
         $fields = $appModel::create();
         $required_fields = $this->validationService->getRequiredFields($model_path);
-        
+
         //return view
         return view('easy-admin::create')
             ->with('model', $model)
@@ -158,7 +158,8 @@ class AdminController extends Controller
             ->with('url_model', $url_model)
             ->with('nav_items', $nav_items)
             ->with('fields', $fields)
-            ->with('required_fields', $required_fields);
+            ->with('required_fields', $required_fields)
+            ->with('wysiwyg_fields', $appModel::wysiwyg_editors());
     }
 
     /**
@@ -168,22 +169,22 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store($model, Request $request)
-    {        
+    {
         //gather info for view
-        $input = $request->except(['_token']);
+        $input = $request->except(['_token', 'files']);
         $url_model = $model;
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
         $nav_items = $this->helperService->getModelsForNav();
         $appModel = "App\\EasyAdmin\\" . $model;
-        
+
         //check allowed
         $allowed = $appModel::allowed();
         if (!in_array('create', $allowed)) abort(403, 'Unauthorized action.');
-        
+
         //create
         $message = $this->validationService->createModel($input, $model_path);
-        
+
         //return redirect
         return redirect('/easy-admin/'. $url_model .'/create')
             ->with('message', $message);
@@ -203,15 +204,15 @@ class AdminController extends Controller
         $model = $this->helperService->stripPathFromModel($model_path);
         $nav_items = $this->helperService->getModelsForNav();
         $appModel = "App\\EasyAdmin\\" . $model;
-        $allowed = $appModel::allowed();    
-        
+        $allowed = $appModel::allowed();
+
         //update fields
         $fields = $appModel::update();
         $required_fields = $this->validationService->getRequiredFields($model_path);
-        
+
         //find model
         $data = $model_path::findOrFail($id);
-        
+
         //return view
         return view('easy-admin::edit')
             ->with('id', $id)
@@ -222,7 +223,8 @@ class AdminController extends Controller
             ->with('nav_items', $nav_items)
             ->with('fields', $fields)
             ->with('required_fields', $required_fields)
-            ->with('data', $data);
+            ->with('data', $data)
+            ->with('wysiwyg_fields', $appModel::wysiwyg_editors());
     }
 
     /**
@@ -241,18 +243,18 @@ class AdminController extends Controller
         $model = $this->helperService->stripPathFromModel($model_path);
         $nav_items = $this->helperService->getModelsForNav();
         $appModel = "App\\EasyAdmin\\" . $model;
-        $allowed = $appModel::allowed();    
-        
+        $allowed = $appModel::allowed();
+
         //check allowed
         $allowed = $appModel::allowed();
         if (!in_array('update', $allowed)) abort(403, 'Unauthorized action.');
-        
+
         //find model
         $data = $model_path::findOrFail($id);
-        
+
         //update
         $message = $this->validationService->updateModel($input, $data);
-        
+
         //return redirect
         return redirect('/easy-admin/'. $url_model .'/'. $id .'/edit')
             ->with('message', $message);
@@ -272,26 +274,26 @@ class AdminController extends Controller
         $model = $this->helperService->stripPathFromModel($model_path);
         $nav_items = $this->helperService->getModelsForNav();
         $appModel = "App\\EasyAdmin\\" . $model;
-        $allowed = $appModel::allowed();    
-        
+        $allowed = $appModel::allowed();
+
         //check allowed
         $allowed = $appModel::allowed();
         if (!in_array('delete', $allowed)) abort(403, 'Unauthorized action.');
-        
+
         //find model
         $data = $model_path::findOrFail($id);
-        
+
         //do not allow user to delete themselves
         if ($model === 'User' && $data == Auth::user())
             return redirect()->back()->with('message', 'Unauthorized action, cannot delete the currently authenticated user.');
 
         //delete model
         $message = $this->validationService->deleteModel($data);
-        
+
         //return redirect
         return redirect('/easy-admin/'. $url_model .'/index')
             ->with('message', $message);
     }
 
 }
-    
+
