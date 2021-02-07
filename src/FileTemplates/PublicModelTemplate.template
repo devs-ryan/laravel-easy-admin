@@ -72,11 +72,12 @@ class {{model_name}}
     /**
      * Fields expected to bet treated as images.
      * Fields to be type 'string' to store path data
-     * Will be stored in 'public/raysirsharp/LaravelEasyAdmin/storage/img'
+     * Images will be stored in 'public/raysirsharp/LaravelEasyAdmin/storage/img'
+     * Filess will be stored in 'public/raysirsharp/LaravelEasyAdmin/storage/files'
      *
      * @return Array
      */
-    public static function images()
+    public static function files()
     {
         return [
             // 'field_name'
