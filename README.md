@@ -70,6 +70,11 @@ This is not currently working, but on my TODO list.
 In case you would like to return Easy Admin to the original state, use the command below.
 - `php artisan easy-admin:reset`
 
+
+#### List Image Sizes
+Lists the supported image sizes that are generated when uploading an image file.
+- `php artisan easy-admin:image-sizes`
+
 ## Limitations
 This admin panel assumes that you follow the standard Laravel naming conventions for models and database tables. If you create migrations/models using `php artisan make:model {ModelName} -m` it should work, otherwise it may not. 
 

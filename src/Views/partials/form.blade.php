@@ -25,7 +25,11 @@
                     @include('easy-admin::partials.form-inputs.timestamp')
                     @break
                 @default
-                    @include('easy-admin::partials.form-inputs.text')
+                    @if (in_array($field, $file_fields))
+                        @include('easy-admin::partials.form-inputs.file')
+                    @else
+                        @include('easy-admin::partials.form-inputs.text')
+                    @endif
                     @break
             @endswitch
         </div>

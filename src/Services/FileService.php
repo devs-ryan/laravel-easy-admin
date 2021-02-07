@@ -31,6 +31,23 @@ class FileService
      */
     protected $app_model_list_template;
 
+
+    /**
+     * Image resize
+     *
+     * @var class
+     */
+    public $image_sizes = [
+        'thumbnail' => '150|150',
+        'small' => '300|auto',
+        'medium' => '600|auto',
+        'large' => '1200|auto',
+        'xtra_large' => '2400|auto',
+        'square' => '600|600',
+        'square_large' => '1200|1200',
+        'original' => 'size not altered'
+    ];
+
     /**
      * Create a new service instance.
      *
