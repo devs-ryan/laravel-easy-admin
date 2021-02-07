@@ -77,9 +77,9 @@ class ResetModelsCommand extends Command
             return;
         }
 
-        $this->FileService->resetAppModelList();
         $this->FileService->removeAppDirectory();
         $this->FileService->createAppDirectory();
+        $this->FileService->resetAppModelList();
         $this->info('EasyAdmin models reset successfully.');
     }
 }
