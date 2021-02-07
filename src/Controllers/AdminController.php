@@ -150,6 +150,9 @@ class AdminController extends Controller
         $fields = $appModel::create();
         $required_fields = $this->validationService->getRequiredFields($model_path);
 
+        // wysiwyg_editors
+        $wysiwyg_editors = $appModel::wysiwyg_editors();
+
         //return view
         return view('easy-admin::create')
             ->with('model', $model)
@@ -159,7 +162,7 @@ class AdminController extends Controller
             ->with('nav_items', $nav_items)
             ->with('fields', $fields)
             ->with('required_fields', $required_fields)
-            ->with('wysiwyg_fields', $appModel::wysiwyg_editors());
+            ->with('wysiwyg_fields', $wysiwyg_editors);
     }
 
     /**
@@ -210,6 +213,9 @@ class AdminController extends Controller
         $fields = $appModel::update();
         $required_fields = $this->validationService->getRequiredFields($model_path);
 
+        // wysiwyg_editors
+        $wysiwyg_editors = $appModel::wysiwyg_editors();
+
         //find model
         $data = $model_path::findOrFail($id);
 
@@ -224,7 +230,7 @@ class AdminController extends Controller
             ->with('fields', $fields)
             ->with('required_fields', $required_fields)
             ->with('data', $data)
-            ->with('wysiwyg_fields', $appModel::wysiwyg_editors());
+            ->with('wysiwyg_fields', $wysiwyg_editors);
     }
 
     /**
