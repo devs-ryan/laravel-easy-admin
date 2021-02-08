@@ -178,19 +178,18 @@ class AdminController extends Controller
     public function store($model, Request $request)
     {
         //gather info for view
-        $input = $request->except(['_token', 'files']);
         $url_model = $model;
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
-        $nav_items = $this->helperService->getModelsForNav();
         $appModel = "App\\EasyAdmin\\" . $model;
 
         //check allowed
         $allowed = $appModel::allowed();
+        $file_fields = $appModel::files();
         if (!in_array('create', $allowed)) abort(403, 'Unauthorized action.');
 
         //create
-        $message = $this->validationService->createModel($input, $model_path);
+        $message = $this->validationService->createModel($request, $model_path, $model, $file_fields);
 
         //return redirect
         return redirect('/easy-admin/'. $url_model .'/create')
@@ -251,23 +250,22 @@ class AdminController extends Controller
     public function update($model, Request $request, $id)
     {
         //gather info for action
-        $input = $request->except(['_token', '_method']);
         $url_model = $model;
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
-        $nav_items = $this->helperService->getModelsForNav();
         $appModel = "App\\EasyAdmin\\" . $model;
         $allowed = $appModel::allowed();
 
         //check allowed
         $allowed = $appModel::allowed();
+        $file_fields = $appModel::files();
         if (!in_array('update', $allowed)) abort(403, 'Unauthorized action.');
 
         //find model
         $data = $model_path::findOrFail($id);
 
         //update
-        $message = $this->validationService->updateModel($input, $data);
+        $message = $this->validationService->updateModel($request, $data, $model, $file_fields);
 
         //return redirect
         return redirect('/easy-admin/'. $url_model .'/'. $id .'/edit')
@@ -286,12 +284,12 @@ class AdminController extends Controller
         $url_model = $model;
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
-        $nav_items = $this->helperService->getModelsForNav();
         $appModel = "App\\EasyAdmin\\" . $model;
         $allowed = $appModel::allowed();
 
         //check allowed
         $allowed = $appModel::allowed();
+        $file_fields = $appModel::files();
         if (!in_array('delete', $allowed)) abort(403, 'Unauthorized action.');
 
         //find model
@@ -302,7 +300,7 @@ class AdminController extends Controller
             return redirect()->back()->with('message', 'Unauthorized action, cannot delete the currently authenticated user.');
 
         //delete model
-        $message = $this->validationService->deleteModel($data);
+        $message = $this->validationService->deleteModel($data, $model, $file_fields);
 
         //return redirect
         return redirect('/easy-admin/'. $url_model .'/index')

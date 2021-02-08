@@ -3,6 +3,7 @@ namespace Raysirsharp\LaravelEasyAdmin\Services;
 
 use Illuminate\Support\Facades\DB;
 use Raysirsharp\LaravelEasyAdmin\Services\HelperService;
+use Intervention\Image\Facades\Image;
 use Exception;
 use Throwable;
 
@@ -38,11 +39,12 @@ class FileService
      * @var class
      */
     public $image_sizes = [
-        'thumbnail' => '150|150',
+        'thumbnail' => '150|auto',
         'small' => '300|auto',
         'medium' => '600|auto',
         'large' => '1200|auto',
         'xtra_large' => '2400|auto',
+        'square_thumbnail' => '150|150',
         'square' => '600|600',
         'square_large' => '1200|1200',
         'original' => 'size not altered'
@@ -267,6 +269,91 @@ class FileService
         $dir = app_path() . '/EasyAdmin';
         if (!file_exists($dir)) {
             mkdir($dir);
+        }
+    }
+
+    /**
+     * Store an uploaded file and save the filename in DB
+     *
+     * @param Request $request
+     * @param Model $record
+     * @param string $field_name
+     * @param string $model
+     * @return void
+     */
+    public function storeUploadedFile($request, $record, $field_name, $model) {
+        $file = $request->file($field_name);
+        $filename = sha1(time()) . '.' . $file->extension();
+
+        // set file name in DB
+        $record->$field_name = $filename;
+
+        // check if file is not an image
+        $image_info = @getimagesize($file);
+        if($image_info == false) {
+            $original_path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model . '-' .  $field_name;
+            $file->move($original_path, $filename);
+            return;
+        }
+
+
+        // save original image
+        $original_path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model . '-' .  $field_name . '/original';
+        $file->move($original_path, $filename);
+
+        foreach($this->image_sizes as $name => $size) {
+            if ($name == 'original') continue;
+
+            $width = explode("|", $size)[0];
+            $height = explode("|", $size)[1];
+
+            $image_resize = Image::make($original_path . '/' . $filename);
+
+            if ($height != 'auto') {
+                $image_resize->fit($width, $height);
+            }
+            else {
+                // resize the image to a width of 300 and constrain aspect ratio (auto height)
+                $image_resize->resize($width, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+
+            $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model . '-' .  $field_name . '/' . $name;
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $image_resize->save($path . '/' . $filename);
+        }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param model $model
+     * @return void
+     */
+    public function unlinkFiles($model, $model_name, $file_fields) {
+        $attributes = $model->attributesToArray();
+
+        foreach($attributes as $field_name => $value) {
+            if (in_array($field_name, $file_fields)) {
+
+                // unlink all file paths
+                $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name;
+                if (file_exists($path . '/' . $value)) {
+                    unlink($path . '/' . $value);
+                }
+
+
+                // unlink all image paths
+                foreach($this->image_sizes as $name => $size) {
+                    $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $name;
+                    if (file_exists($path . '/' . $value)) {
+                        unlink($path . '/' . $value);
+                    }
+                }
+            }
         }
     }
 }

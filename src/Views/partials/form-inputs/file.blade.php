@@ -2,7 +2,7 @@
 @if((!in_array('update', $allowed) and Request::is('easy-admin/*/*/edit')) or (!in_array('create', $allowed) and !Request::is('easy-admin/*/*/edit')))
     disabled
 @endif
-@if(in_array($field, $required_fields))
+@if(in_array($field, $required_fields) && !isset($data->$field))
     required
 @endif
 class="form-control-file bg-white border rounded" type="file" name="{{ $field }}" value="{{ old($field) ?? $data->$field ?? '' }}">

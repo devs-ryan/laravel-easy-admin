@@ -80,6 +80,7 @@ class {{model_name}}
     public static function files()
     {
         return [
+            /* Note: List field names below (leave this comment) */
             // 'field_name'
         ];
     }
@@ -93,6 +94,7 @@ class {{model_name}}
     public static function wysiwyg_editors()
     {
         return [
+            /* Note: List field names below (leave this comment) */
             // 'field_name'
         ];
     }

@@ -2,23 +2,53 @@
 namespace Raysirsharp\LaravelEasyAdmin\Services;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+
+use Raysirsharp\LaravelEasyAdmin\Services\FileService;
 use Exception;
 
 
 class ValidationService
 {
+
+    /**
+     * Helper Service.
+     *
+     * @var class
+     */
+    protected $fileService;
+
+    /**
+     * Create a new service instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->file_service = new FileService;
+    }
+
     /**
      * Create a new record, after validation
      *
-     * @return string (success/failure message)
+     * @param array $input
+     * @param string $model
+     * @param array $file_fields
+     * @return void
      */
-    public function createModel($input, $model) 
+    public function createModel($request, $model_path, $model, $file_fields = [])
     {
         try {
-            $record = new $model;
+            $record = new $model_path;
+            $input = $request->except(['_token']);
+
             foreach($input as $key => $attribute) {
                 if ($key == 'password') {
                     $record->$key = Hash::make($attribute);
+                }
+                else if (in_array($key, $file_fields)) {
+                    if ($request->hasFile($key)) {
+                        $this->file_service->storeUploadedFile($request, $record, $key, $model);
+                    }
                 }
                 else {
                     $record->$key = $attribute;
@@ -31,19 +61,27 @@ class ValidationService
         }
         return 'Success: A new record was created!';
     }
-    
+
     /**
      * Update a record, after validation
      *
      * @return string (success/failure message)
      */
-    public function updateModel($input, $record) 
+    public function updateModel($request, $record, $model, $file_fields = [])
     {
         try {
+            $input = $request->except(['_token', '_method']);
+
             foreach($input as $key => $attribute) {
                 if ($key == 'password') {
                     if ($attribute != '**********')
                         $record->$key = Hash::make($attribute);
+                }
+                else if (in_array($key, $file_fields)) {
+                    if ($request->hasFile($key)) {
+                        $this->file_service->unlinkFiles($record, $model, $file_fields);
+                        $this->file_service->storeUploadedFile($request, $record, $key, $model);
+                    }
                 }
                 else {
                     $record->$key = $attribute;
@@ -56,15 +94,19 @@ class ValidationService
         }
         return 'Success: The record was updated!';
     }
-    
+
     /**
      * Delete a record, after validation
      *
      * @return string (success/failure message)
      */
-    public function deleteModel($record)
+    public function deleteModel($record, $model, $file_fields)
     {
         try {
+            // delete any assosiated files
+            $this->file_service->unlinkFiles($record, $model, $file_fields);
+
+            // delete record
             $record->delete();
         }
         catch(Exception $e) {
@@ -72,7 +114,7 @@ class ValidationService
         }
         return 'Success: The record was removed!';
     }
-    
+
     /**
      * Get the list of required fields
      *
@@ -83,7 +125,7 @@ class ValidationService
         $record = new $model;
         $table = $record->getTable();
         $required = [];
-    
+
         $columns = DB::select('SHOW COLUMNS FROM ' . $table);
 
         foreach($columns as $column_data) {
