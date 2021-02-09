@@ -1,7 +1,10 @@
 <?php
 
+/**
+ * Helper function to get image file paths
+ */
 if (! function_exists('easyImg')) {
-    function easyImg($model_name, $field_name, $size = 'original') {
+    function easyImg($model_name, $field_name, $file_name, $size = 'original') {
 
         $image_sizes = [
             'thumbnail',
@@ -17,6 +20,15 @@ if (! function_exists('easyImg')) {
 
         if (!in_array($size, $image_sizes)) $size = 'original';
 
-        return '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $size;
+        return '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $size . '/' . $file_name;
+    }
+}
+
+/**
+ * Helper function to get non-image file paths
+ */
+if (! function_exists('easyFile')) {
+    function easyFile($model_name, $field_name, $file_name) {
+        return '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $file_name;
     }
 }
