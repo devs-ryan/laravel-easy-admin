@@ -12,7 +12,10 @@
     "autoload": {
         "psr-4": {
             "Raysirsharp\\LaravelEasyAdmin\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {
