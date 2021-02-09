@@ -28,7 +28,7 @@
                                         {{ $column }} <br>
                                         <a target="_blank" href="{{ Raysirsharp\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) }}">
                                             <i class="fas fa-eye"></i>
-                                            Show Existing File
+                                            View Existing File
                                         </a>
                                     @else
                                         {{ $column }}

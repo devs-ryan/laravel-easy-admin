@@ -9,6 +9,6 @@ class="form-control-file bg-white border rounded" type="file" name="{{ $field }}
 @if (isset($data->$field))
     <a target="_blank" href="{{ Raysirsharp\LaravelEasyAdmin\Services\FileService::getFileLink($model, $field, $data->$field) }}">
         <i class="fas fa-eye"></i>
-        Show Existing File
+        View Existing File
     </a>
 @endif
