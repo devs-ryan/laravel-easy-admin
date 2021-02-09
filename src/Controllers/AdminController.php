@@ -92,6 +92,9 @@ class AdminController extends Controller
             $data = $model_path::orderByDesc('create_at');
         else $data = $model_path::query();
 
+        // files
+        $file_fields = $appModel::files();
+
         //apply filters
         foreach($request->all() as $filter => $value) {
             if ($value === null) continue;
@@ -125,7 +128,8 @@ class AdminController extends Controller
             ->with('title', 'Index')
             ->with('index_columns', $index_columns)
             ->with('allowed', $allowed)
-            ->with('url_model', $url_model);
+            ->with('url_model', $url_model)
+            ->with('file_fields', $file_fields);
     }
 
     /**

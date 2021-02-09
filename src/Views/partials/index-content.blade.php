@@ -24,6 +24,12 @@
                                         (Raysirsharp\LaravelEasyAdmin\Services\HelperService::inputType($key, $model_path) === 'boolean')
                                     )
                                         {{ ($column == true) ? 'true' : 'false' }}
+                                    @elseif(in_array($key, $file_fields))
+                                        {{ $column }} <br>
+                                        <a target="_blank" href="{{ Raysirsharp\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) }}">
+                                            <i class="fas fa-eye"></i>
+                                            Show Existing File
+                                        </a>
                                     @else
                                         {{ $column }}
                                     @endif
@@ -50,7 +56,7 @@
                         </th>
                     </tr>
                 @endforeach
-                
+
                 @if($data->count() == 0)
                     @include('easy-admin::partials.no-results')
                 @endif

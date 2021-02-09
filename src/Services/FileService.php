@@ -328,9 +328,11 @@ class FileService
     }
 
     /**
-     * Undocumented function
+     * Unlink files from field
      *
      * @param model $model
+     * @param string $model_name
+     * @param array $file_fields
      * @return void
      */
     public function unlinkFiles($model, $model_name, $file_fields) {
@@ -355,6 +357,30 @@ class FileService
                 }
             }
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string $model_name
+     * @param string $field_name
+     * @param string $value
+     * @return void
+     */
+    public static function getFileLink($model_name, $field_name, $value) {
+
+        // check if is file
+        $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name;
+        if (file_exists($path . '/' . $value)) {
+            return '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $value;
+        }
+
+        // check
+         // unlink all image paths
+         $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original';
+         if (file_exists($path . '/' . $value)) {
+             return '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original/' . $value;
+         }
     }
 }
 
