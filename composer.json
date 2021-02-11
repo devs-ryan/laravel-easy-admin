@@ -1,17 +1,17 @@
 {
-    "name": "raysirsharp/laravel-easy-admin",
+    "name": "devs_ryan/laravel-easy-admin",
     "description": "A simple admin panel for Laravel projects.",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Ryan Claxton",
-            "email": "raysirsharp@gmail.com"
+            "email": "rclaxton.dev@gmail.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Raysirsharp\\LaravelEasyAdmin\\": "src/"
+            "DevsRyan\\LaravelEasyAdmin\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -20,7 +20,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Raysirsharp\\LaravelEasyAdmin\\LaravelEasyAdminServiceProvider"
+                "DevsRyan\\LaravelEasyAdmin\\LaravelEasyAdminServiceProvider"
             ]
         }
     },
