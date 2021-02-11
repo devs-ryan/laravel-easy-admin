@@ -1,11 +1,11 @@
 <?php
-namespace Raysirsharp\LaravelEasyAdmin\Controllers;
+namespace DevsRyan\LaravelEasyAdmin\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use Raysirsharp\LaravelEasyAdmin\Services\HelperService;
-use Raysirsharp\LaravelEasyAdmin\Services\ValidationService;
+use DevsRyan\LaravelEasyAdmin\Services\HelperService;
+use DevsRyan\LaravelEasyAdmin\Services\ValidationService;
 use Auth;
 
 class AdminController extends Controller

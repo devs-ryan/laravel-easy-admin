@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/easy-admin">
-        <img src="{{ asset('raysirsharp/LaravelEasyAdmin/img/easy-admin.png') }}" alt="Laravel Easy Admin">
+        <img src="{{ asset('devsryan/LaravelEasyAdmin/img/easy-admin.png') }}" alt="Laravel Easy Admin">
         {{ env('EASY_ADMIN_APP_NAME', 'Laravel Easy Admin') }}
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">

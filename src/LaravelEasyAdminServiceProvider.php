@@ -1,5 +1,5 @@
 <?php
-namespace Raysirsharp\LaravelEasyAdmin;
+namespace DevsRyan\LaravelEasyAdmin;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -17,7 +17,7 @@ class LaravelEasyAdminServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/Migrations');
 
         $this->publishes([
-            __DIR__.'/Assets' => public_path('raysirsharp/LaravelEasyAdmin'),
+            __DIR__.'/Assets' => public_path('devsryan/LaravelEasyAdmin'),
             __DIR__.'/FileTemplates/AppModelList.template' => app_path('EasyAdmin/AppModelList.php'),
         ], 'public');
 
@@ -43,8 +43,8 @@ class LaravelEasyAdminServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->make('Raysirsharp\LaravelEasyAdmin\Controllers\AdminController');
-        $this->app->make('Raysirsharp\LaravelEasyAdmin\Controllers\AuthController');
+        $this->app->make('DevsRyan\LaravelEasyAdmin\Controllers\AdminController');
+        $this->app->make('DevsRyan\LaravelEasyAdmin\Controllers\AuthController');
 
         $this->loadViewsFrom(__DIR__.'/Views', 'easy-admin');
     }

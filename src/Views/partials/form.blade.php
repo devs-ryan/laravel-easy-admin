@@ -7,7 +7,7 @@
             {{ ucwords(str_replace('_', ' ', $field)) }}:
         </label>
         <div class="col-sm-12">
-            @switch(Raysirsharp\LaravelEasyAdmin\Services\HelperService::inputType($field, $model_path))
+            @switch(DevsRyan\LaravelEasyAdmin\Services\HelperService::inputType($field, $model_path))
                 @case('password')
                     @include('easy-admin::partials.form-inputs.password')
                     @break

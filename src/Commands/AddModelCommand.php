@@ -1,10 +1,10 @@
 <?php
 
-namespace Raysirsharp\LaravelEasyAdmin\Commands;
+namespace DevsRyan\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
-use Raysirsharp\LaravelEasyAdmin\Services\FileService;
-use Raysirsharp\LaravelEasyAdmin\Services\HelperService;
+use DevsRyan\LaravelEasyAdmin\Services\FileService;
+use DevsRyan\LaravelEasyAdmin\Services\HelperService;
 use Exception;
 
 class AddModelCommand extends Command

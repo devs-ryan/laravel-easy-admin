@@ -20,7 +20,7 @@ if (! function_exists('easyImg')) {
 
         if (!in_array($size, $image_sizes)) $size = 'original';
 
-        return '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $size . '/' . $file_name;
+        return '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $size . '/' . $file_name;
     }
 }
 
@@ -29,6 +29,6 @@ if (! function_exists('easyImg')) {
  */
 if (! function_exists('easyFile')) {
     function easyFile($model_name, $field_name, $file_name) {
-        return '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $file_name;
+        return '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $file_name;
     }
 }

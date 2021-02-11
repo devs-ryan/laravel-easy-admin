@@ -1,5 +1,5 @@
 <?php
-namespace Raysirsharp\LaravelEasyAdmin\Controllers;
+namespace DevsRyan\LaravelEasyAdmin\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

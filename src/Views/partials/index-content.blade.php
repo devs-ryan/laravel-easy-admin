@@ -21,12 +21,12 @@
                                         EMPTY
                                     @elseif(
                                         ($column == true || $column == false) &&
-                                        (Raysirsharp\LaravelEasyAdmin\Services\HelperService::inputType($key, $model_path) === 'boolean')
+                                        (DevsRyan\LaravelEasyAdmin\Services\HelperService::inputType($key, $model_path) === 'boolean')
                                     )
                                         {{ ($column == true) ? 'true' : 'false' }}
                                     @elseif(in_array($key, $file_fields))
                                         {{ $column }} <br>
-                                        <a target="_blank" href="{{ Raysirsharp\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) }}">
+                                        <a target="_blank" href="{{ DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) }}">
                                             <i class="fas fa-eye"></i>
                                             View Existing File
                                         </a>

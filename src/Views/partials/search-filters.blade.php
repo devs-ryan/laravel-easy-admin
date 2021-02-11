@@ -14,7 +14,7 @@
     <div class="card-body collapse-filter">
         <form method="get" action="">
             @foreach($index_columns as $index_column)
-                @switch(Raysirsharp\LaravelEasyAdmin\Services\HelperService::inputType($index_column, $model_path))
+                @switch(DevsRyan\LaravelEasyAdmin\Services\HelperService::inputType($index_column, $model_path))
                     @case('password')
                         {{-- Do not include search for password --}}
                         @break

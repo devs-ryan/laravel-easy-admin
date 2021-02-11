@@ -1,5 +1,5 @@
 <?php
-namespace Raysirsharp\LaravelEasyAdmin\Services;
+namespace DevsRyan\LaravelEasyAdmin\Services;
 
 use App\EasyAdmin\AppModelList;
 use Illuminate\Support\Facades\DB;

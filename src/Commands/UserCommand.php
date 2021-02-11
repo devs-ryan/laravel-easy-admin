@@ -1,6 +1,6 @@
 <?php
 
-namespace Raysirsharp\LaravelEasyAdmin\Commands;
+namespace DevsRyan\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;

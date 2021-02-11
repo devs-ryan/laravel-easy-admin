@@ -6,7 +6,7 @@ namespace App\EasyAdmin;
  * EasyAdmin - {{model_name}}
  *
  * Comment of uncomment attributes for this model to alter the EasyAdmin GUI
- * Support this package: https://github.com/raysirsharp/laravel-easy-admin
+ * Support this package: https://github.com/devsryan/laravel-easy-admin
  */
 class {{model_name}}
 {
@@ -72,8 +72,8 @@ class {{model_name}}
     /**
      * Fields expected to bet treated as images.
      * Fields to be type 'string' to store path data
-     * Images will be stored in 'public/raysirsharp/LaravelEasyAdmin/storage/img'
-     * Filess will be stored in 'public/raysirsharp/LaravelEasyAdmin/storage/files'
+     * Images will be stored in 'public/devsryan/LaravelEasyAdmin/storage/img'
+     * Filess will be stored in 'public/devsryan/LaravelEasyAdmin/storage/files'
      *
      * @return Array
      */

@@ -2,11 +2,11 @@
 <h3 align="center">~ A simple admin panel for Laravel projects.</h3>
 <br><br>
 <p align="center">Demo: http://easy-admin-demo.fullstack-ds.com (credentials: test@test.com | secret)</p>
-<p align="center"><img src="https://raw.githubusercontent.com/raysirsharp/img-storage/master/easy-admin-header.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/devsryan/img-storage/master/easy-admin-header.png"></p>
 <p align="center">
 <a target="_blank" href="https://laravel.com/"><img src="https://img.shields.io/badge/Built%20For-Laravel-orange" alt="Built For Laravel"></a>
-<a target="_blank" href="https://packagist.org/packages/raysirsharp/laravel-easy-admin"><img src="https://img.shields.io/badge/Current%20Version-0.1.1-blue" alt="Version"></a>
-<a target="_blank" href="https://packagist.org/packages/raysirsharp/laravel-easy-admin"><img src="https://img.shields.io/badge/License-MIT-green" alt="License"></a>
+<a target="_blank" href="https://packagist.org/packages/devsryan/laravel-easy-admin"><img src="https://img.shields.io/badge/Current%20Version-0.1.1-blue" alt="Version"></a>
+<a target="_blank" href="https://packagist.org/packages/devsryan/laravel-easy-admin"><img src="https://img.shields.io/badge/License-MIT-green" alt="License"></a>
 <a target="_blank" href="https://laravel.com/"><img src="https://img.shields.io/badge/Requires-Laravel%20%5E7.0-red" alt="Requires"></a>
 </p>
 
@@ -18,10 +18,10 @@ Laravel Easy Admin leverages a powerful set of artisan commands to add/remove re
 
 
 ## Installation
-- `composer require raysirsharp/laravel-easy-admin`
+- `composer require devsryan/laravel-easy-admin`
 - `php artisan vendor:publish --tag=public --force`
 - `php artisan migrate` (Your app is assumed to have a users table at this point)
-- Access from <a href="https://github.com/raysirsharp/laravel-easy-admin">http(s)://your-project-url.com/easy-admin</a>
+- Access from <a href="https://github.com/devsryan/laravel-easy-admin">http(s)://your-project-url.com/easy-admin</a>
 
 ## Usage
 

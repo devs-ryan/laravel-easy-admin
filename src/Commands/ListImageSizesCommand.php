@@ -1,9 +1,9 @@
 <?php
 
-namespace Raysirsharp\LaravelEasyAdmin\Commands;
+namespace DevsRyan\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
-use Raysirsharp\LaravelEasyAdmin\Services\FileService;
+use DevsRyan\LaravelEasyAdmin\Services\FileService;
 
 class ListImageSizesCommand extends Command
 {

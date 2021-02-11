@@ -1,8 +1,8 @@
 <?php
 
-namespace Raysirsharp\LaravelEasyAdmin\Commands;
-use Raysirsharp\LaravelEasyAdmin\Services\FileService;
-use Raysirsharp\LaravelEasyAdmin\Services\HelperService;
+namespace DevsRyan\LaravelEasyAdmin\Commands;
+use DevsRyan\LaravelEasyAdmin\Services\FileService;
+use DevsRyan\LaravelEasyAdmin\Services\HelperService;
 
 use Illuminate\Console\Command;
 

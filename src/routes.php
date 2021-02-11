@@ -1,5 +1,5 @@
 <?php
-Route::group(['middleware' => ['web'], 'prefix' => 'easy-admin', 'namespace' => 'Raysirsharp\LaravelEasyAdmin\Controllers'], function() {
+Route::group(['middleware' => ['web'], 'prefix' => 'easy-admin', 'namespace' => 'DevsRyan\LaravelEasyAdmin\Controllers'], function() {
     
     //Auth Routes
     Route::get('/login', 'AuthController@show')->name('easy-admin-login');

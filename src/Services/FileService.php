@@ -1,8 +1,8 @@
 <?php
-namespace Raysirsharp\LaravelEasyAdmin\Services;
+namespace DevsRyan\LaravelEasyAdmin\Services;
 
 use Illuminate\Support\Facades\DB;
-use Raysirsharp\LaravelEasyAdmin\Services\HelperService;
+use DevsRyan\LaravelEasyAdmin\Services\HelperService;
 use Intervention\Image\Facades\Image;
 use Exception;
 use Throwable;
@@ -291,14 +291,14 @@ class FileService
         // check if file is not an image
         $image_info = @getimagesize($file);
         if($image_info == false) {
-            $original_path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model . '-' .  $field_name;
+            $original_path = public_path() . '/devsryan/LaravelEasyAdmin/storage/files/' . $model . '-' .  $field_name;
             $file->move($original_path, $filename);
             return;
         }
 
 
         // save original image
-        $original_path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model . '-' .  $field_name . '/original';
+        $original_path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model . '-' .  $field_name . '/original';
         $file->move($original_path, $filename);
 
         foreach($this->image_sizes as $name => $size) {
@@ -319,7 +319,7 @@ class FileService
                 });
             }
 
-            $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model . '-' .  $field_name . '/' . $name;
+            $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model . '-' .  $field_name . '/' . $name;
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
@@ -342,7 +342,7 @@ class FileService
             if (in_array($field_name, $file_fields)) {
 
                 // unlink all file paths
-                $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name;
+                $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name;
                 if (file_exists($path . '/' . $value)) {
                     unlink($path . '/' . $value);
                 }
@@ -350,7 +350,7 @@ class FileService
 
                 // unlink all image paths
                 foreach($this->image_sizes as $name => $size) {
-                    $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $name;
+                    $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $name;
                     if (file_exists($path . '/' . $value)) {
                         unlink($path . '/' . $value);
                     }
@@ -370,16 +370,16 @@ class FileService
     public static function getFileLink($model_name, $field_name, $value) {
 
         // check if is file
-        $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name;
+        $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name;
         if (file_exists($path . '/' . $value)) {
-            return '/raysirsharp/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $value;
+            return '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $value;
         }
 
         // check
          // unlink all image paths
-         $path = public_path() . '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original';
+         $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original';
          if (file_exists($path . '/' . $value)) {
-             return '/raysirsharp/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original/' . $value;
+             return '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original/' . $value;
          }
     }
 }
