@@ -2,7 +2,7 @@
 <h3 align="center">~ A simple admin panel for Laravel projects.</h3>
 <br><br>
 <p align="center">Demo: http://easy-admin-demo.fullstack-ds.com (credentials: test@test.com | secret)</p>
-<p align="center"><img src="https://raw.githubusercontent.com/devsryan/img-storage/master/easy-admin-header.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/devs-ryan/img-storage/master/easy-admin-header.png"></p>
 <p align="center">
 <a target="_blank" href="https://laravel.com/"><img src="https://img.shields.io/badge/Built%20For-Laravel-orange" alt="Built For Laravel"></a>
 <a target="_blank" href="https://packagist.org/packages/devsryan/laravel-easy-admin"><img src="https://img.shields.io/badge/Current%20Version-0.1.1-blue" alt="Version"></a>
@@ -70,10 +70,17 @@ This is not currently working, but on my TODO list.
 In case you would like to return Easy Admin to the original state, use the command below.
 - `php artisan easy-admin:reset`
 
-
 #### List Image Sizes
 Lists the supported image sizes that are generated when uploading an image file.
 - `php artisan easy-admin:image-sizes`
+
+#### Get Image Helper
+Used to retrieve an image that was created using Easy Admin (see size options using command above)
+- `easyImg($model_name, $field_name, $file_name, $size = 'original')`
+
+#### Get File Helper
+Used to retrieve a file that was created using Easy Admin
+- `easyFile($model_name, $field_name, $file_name)`
 
 ## Limitations
 This admin panel assumes that you follow the standard Laravel naming conventions for models and database tables. If you create migrations/models using `php artisan make:model {ModelName} -m` it should work, otherwise it may not. 
