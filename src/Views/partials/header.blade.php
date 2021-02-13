@@ -26,6 +26,11 @@
                 </div>
             </li>
             <li class="nav-item">
+                <div class="nav-link">
+                    <a target="_blank" class="text-decoration-none text-success" href="{{ env('APP_URL') }}"><i class="fas fa-home"></i> App Home</a>
+                </div>
+            </li>
+            <li class="nav-item">
                 <form action="/easy-admin/logout" method="post">
                     @csrf
                     <button type="submit" class="btn btn-link px-0 text-decoration-none text-warning">
