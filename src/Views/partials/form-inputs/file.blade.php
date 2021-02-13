@@ -6,9 +6,14 @@
     required
 @endif
 class="form-control-file bg-white border rounded" type="file" name="{{ $field }}" value="{{ old($field) ?? $data->$field ?? '' }}">
-@if (isset($data->$field))
+@if (isset($data->$field) && DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $field, $data->$field))
     <a target="_blank" href="{{ DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $field, $data->$field) }}">
         <i class="fas fa-eye"></i>
-        View Existing File
+        VIEW EXISTING FILE
     </a>
+@else
+    <span>
+        <i class="fas fa-eye-slash"></i>
+        FILE NOT FOUND
+    </span>
 @endif

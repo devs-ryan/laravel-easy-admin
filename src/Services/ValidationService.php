@@ -79,7 +79,7 @@ class ValidationService
                 }
                 else if (in_array($key, $file_fields)) {
                     if ($request->hasFile($key)) {
-                        $this->file_service->unlinkFiles($record, $model, $file_fields);
+                        $this->file_service->unlinkFiles($record, $model, $file_fields, $key);
                         $this->file_service->storeUploadedFile($request, $record, $key, $model);
                     }
                 }

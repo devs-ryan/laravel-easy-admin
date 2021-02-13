@@ -335,10 +335,13 @@ class FileService
      * @param array $file_fields
      * @return void
      */
-    public function unlinkFiles($model, $model_name, $file_fields) {
+    public function unlinkFiles($model, $model_name, $file_fields, $target = null) {
         $attributes = $model->attributesToArray();
 
         foreach($attributes as $field_name => $value) {
+
+            if ($target !== null && $field_name != $target) continue; // Do not erase file when targetting a specific file that needs erased
+
             if (in_array($field_name, $file_fields)) {
 
                 // unlink all file paths
@@ -381,6 +384,8 @@ class FileService
          if (file_exists($path . '/' . $value)) {
              return '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original/' . $value;
          }
+
+         return null;
     }
 }
 

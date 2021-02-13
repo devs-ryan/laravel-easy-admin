@@ -25,11 +25,17 @@
                                     )
                                         {{ ($column == true) ? 'true' : 'false' }}
                                     @elseif(in_array($key, $file_fields))
-                                        {{ $column }} <br>
-                                        <a target="_blank" href="{{ DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) }}">
-                                            <i class="fas fa-eye"></i>
-                                            View Existing File
-                                        </a>
+                                        {{ $column }}
+                                        @if (DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) !== null)
+                                            <br>
+                                            <a target="_blank" href="{{ DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) }}">
+                                                <i class="fas fa-eye"></i>
+                                                VIEW EXISTING FILE
+                                            </a>
+                                        @else
+                                            <br>
+                                            <span class="alert-info">FILE NOT FOUND</span>
+                                        @endif
                                     @else
                                         {{ $column }}
                                     @endif
