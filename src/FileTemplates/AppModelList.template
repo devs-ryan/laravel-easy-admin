@@ -15,6 +15,42 @@ class AppModelList
             //Models Here - Format: Namespace.Model
         ];
     }
+
+    /**
+     * Return array of Page type models
+     *
+     * @return Array
+     */
+    public static function pageModels()
+    {
+        return [
+            //Models Here - Format: Model
+        ];
+    }
+
+    /**
+     * Return array of Section type models
+     *
+     * @return Array
+     */
+    public static function sectionModels()
+    {
+        return [
+            //Models Here - Format: Model.PageModel || Model.Global
+        ];
+    }
+
+    /**
+     * Return array of Repeater type models
+     *
+     * @return Array
+     */
+    public static function repeaterModels()
+    {
+        return [
+            //Models Here - Format: Model.PageModel || Model.SectionModel
+        ];
+    }
 }
 
 

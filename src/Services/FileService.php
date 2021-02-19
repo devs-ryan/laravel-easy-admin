@@ -51,6 +51,17 @@ class FileService
     ];
 
     /**
+     * Image resize
+     *
+     * @var class
+     */
+    public $model_types = [
+        'page',
+        'section',
+        'repeater'
+    ];
+
+    /**
      * Create a new service instance.
      *
      * @return void
@@ -126,10 +137,10 @@ class FileService
     /**
      * Add Model into EasyAdmin models list
      *
-     * @param string $namespace, $model
+     * @param string $namespace, $model, $type, $type_target
      * @return void
      */
-    public function addModelToList($namespace, $model)
+    public function addModelToList($namespace, $model, $type = 'None', $type_target = null)
     {
         //add model to AppModelList file
         $path = app_path('EasyAdmin/AppModelList.php');
@@ -142,6 +153,46 @@ class FileService
                 $insert = "            '" . rtrim($namespace, '\\') . '.' . $model . "',\n";
                 $new_text = substr_replace($package_file, $insert, $i - 8, 0);
                 file_put_contents($path, $new_text) or die("Unable to write to file!");
+                break;
+            }
+        }
+
+        // if special type, add to
+        if (in_array($type, $this->model_types)) {
+
+            $package_file = file_get_contents($path) or die("Unable to open file!");
+            $target = $type . 'Models()';
+
+            $stack = '';
+            $target_found = false;
+            for($i = 0; $i < strlen($package_file); $i++) {
+
+                if (!$target_found) {
+                    if (strlen($stack) + 1 > strlen($target)) $stack = ltrim($stack, $stack[0]) . $package_file[$i];
+                    else $stack .= $package_file[$i];
+                    if ($stack == $target) $target_found = true;
+                }
+                else {
+                    //find end of array
+                    if ($package_file[$i] == ']' && $package_file[$i+1] == ';') {
+                        switch($type) {
+                            case 'page':
+                                $insert = "            '" . $model . "',\n";
+                                break;
+                            case 'section':
+                            case 'repeater':
+                                if ($type_target === null)
+                                    throw new Exception('Invaled type target for model type: ' . $type);
+                                    $insert = "            '" . $model . '.' . $type_target . "',\n";
+                                break;
+                        }
+
+                        $new_text = substr_replace($package_file, $insert, $i - 8, 0);
+                        file_put_contents($path, $new_text) or die("Unable to write to file!");
+                        break;
+                    }
+                }
+
             }
         }
     }
@@ -155,18 +206,8 @@ class FileService
     public function removeModelFromList($namespace, $model)
     {
         $path = app_path('EasyAdmin/AppModelList.php');
-        $handle = fopen($path, "r") or  die("Unable to open file!");
-        $remove = rtrim($namespace, '\\') . '.' . $model . "',\n";
-        $overwrite_string = "";
-
-        if ($handle) {
-            while (($line = fgets($handle)) !== false) {
-                if (strpos($line, $remove) === false) {
-                    $overwrite_string .= $line;
-                }
-            }
-            fclose($handle);
-        }
+        $input_lines = file_get_contents($path) or die("Unable to open file!");
+        $overwrite_string = preg_replace('/^.*(\.)?User\',\n/m', '', $input_lines);
         file_put_contents($path, $overwrite_string) or die("Unable to write to file!");
     }
 

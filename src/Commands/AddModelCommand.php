@@ -14,7 +14,7 @@ class AddModelCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'easy-admin:add-model';
+    protected $signature = 'easy-admin:add-model {--page}';
 
     /**
      * The console command description.
@@ -108,7 +108,7 @@ class AddModelCommand extends Command
             $this->info('Model already added to EasyAdmin, checking for \App\EasyAdmin file..');
         }
         else {
-            $this->FileService->addModelToList($namespace, $model);
+            $this->FileService->addModelToList($namespace, $model, $type = 'page');
             $this->info('Model added to EasyAdmin models list file..');
         }
         //check if App file exists already (create otherwise)
