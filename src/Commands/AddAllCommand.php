@@ -109,6 +109,8 @@ class AddAllCommand extends Command
                 $this->info("\nModel `" . $model . "` added successfully!\n");
             }
         }
+
+        $this->info("=====\nNOTE:\n=====\nYou must setup your pages and sections manually\ninside `EasyAdmin/AppModelList.php` file using the add-all command.");
     }
 
     /**

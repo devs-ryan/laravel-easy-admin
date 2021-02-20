@@ -57,8 +57,7 @@ class FileService
      */
     public $model_types = [
         'page',
-        'section',
-        'repeater'
+        'section'
     ];
 
     /**
@@ -180,7 +179,6 @@ class FileService
                                 $insert = "            '" . $model . "',\n";
                                 break;
                             case 'section':
-                            case 'repeater':
                                 if ($type_target === null)
                                     throw new Exception('Invaled type target for model type: ' . $type);
                                     $insert = "            '" . $model . '.' . $type_target . "',\n";
@@ -207,7 +205,7 @@ class FileService
     {
         $path = app_path('EasyAdmin/AppModelList.php');
         $input_lines = file_get_contents($path) or die("Unable to open file!");
-        $overwrite_string = preg_replace('/^.*(\.)?User\',\n/m', '', $input_lines);
+        $overwrite_string = preg_replace('/^.*(\.)?'.$model.'\',\n/m', '', $input_lines);
         file_put_contents($path, $overwrite_string) or die("Unable to write to file!");
     }
 

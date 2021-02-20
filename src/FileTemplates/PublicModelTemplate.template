@@ -98,6 +98,19 @@ class {{model_name}}
             // 'field_name'
         ];
     }
+
+    /**
+     * Related models expected to bet treated as repeated elements.
+     * Note: Models used must contain a `this_model_table_id` field
+     *
+     * @return Array
+     */
+    public static function repeater_models()
+    {
+        return [
+            //Models Here - Format: /App/Model/PostImages
+        ];
+    }
 }
 
 

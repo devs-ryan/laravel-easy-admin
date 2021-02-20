@@ -22,7 +22,7 @@ class CreateUserCommand extends Command
      * @var string
      */
     protected $description = 'Create and add a user to Easy Admin';
-    
+
     /**
      * Exit Commands.
      *
@@ -46,12 +46,12 @@ class CreateUserCommand extends Command
      * @return mixed
      */
     public function handle()
-    {   
+    {
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
-        
+
         //get required input
         $required_inputs = $this->getRequired();
-        
+
         //get input
         $answers = [];
         $this->info("Fill in the users required fields..");
@@ -67,16 +67,18 @@ class CreateUserCommand extends Command
             else if ($input != 'is_easy_admin') {
                 $answers[$input] = $answer;
             }
+            else {
+                $answers['is_easy_admin'] = in_array($answer, ['yes', 'true', 'y', '']) ? true : false;
+            }
         }
-        $answers['is_easy_admin'] = true;
-        
+
         //set time stamps
         $date_time = new \DateTime();
         if ($this->hasColumn('created_at'))
             $answers['created_at'] = $date_time->format('Y-m-d H:i:s');
         if ($this->hasColumn('updated_at'))
             $answers['updated_at'] = $date_time->format('Y-m-d H:i:s');
-        
+
         //create new user
         try {
             DB::table('users')->insert($answers);
@@ -86,7 +88,7 @@ class CreateUserCommand extends Command
             $this->info('Error inserting new record: ' . $e->getMessage());
         }
     }
-    
+
     /**
      * Get required columns from user table.
      *
@@ -95,7 +97,7 @@ class CreateUserCommand extends Command
     private function getRequired()
     {
         $required = [];
-    
+
         $columns = DB::select('SHOW COLUMNS FROM users');
 
         foreach($columns as $column_data) {
@@ -106,7 +108,7 @@ class CreateUserCommand extends Command
         }
         return $required;
     }
-    
+
     /**
      * Check if created_at exists.
      *

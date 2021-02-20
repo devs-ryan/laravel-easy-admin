@@ -146,9 +146,24 @@ class HelperService
      */
     public function getAllModels()
     {
-        return AppModelList::models();
         try {
             return AppModelList::models();
+        }
+        catch (Throwable $t) {
+            throw new Exception('Parse Error: AppModelList.php has been corrupted.');
+        }
+    }
+
+    /**
+     * Return all page models added to admin area
+     * Format Model
+     *
+     * @return Array
+     */
+    public function getAllPageModels()
+    {
+        try {
+            return AppModelList::pageModels();
         }
         catch (Throwable $t) {
             throw new Exception('Parse Error: AppModelList.php has been corrupted.');

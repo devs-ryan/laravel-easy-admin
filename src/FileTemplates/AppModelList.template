@@ -39,18 +39,6 @@ class AppModelList
             //Models Here - Format: Model.PageModel || Model.Global
         ];
     }
-
-    /**
-     * Return array of Repeater type models
-     *
-     * @return Array
-     */
-    public static function repeaterModels()
-    {
-        return [
-            //Models Here - Format: Model.PageModel || Model.SectionModel
-        ];
-    }
 }
 
 

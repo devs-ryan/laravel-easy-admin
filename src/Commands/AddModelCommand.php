@@ -14,7 +14,7 @@ class AddModelCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'easy-admin:add-model {--page}';
+    protected $signature = 'easy-admin:add-model {--page} {--section} {--repeater}';
 
     /**
      * The console command description.
@@ -29,6 +29,13 @@ class AddModelCommand extends Command
      * @var array
      */
     protected $exit_commands = ['q', 'quit', 'exit'];
+
+    /**
+     * Confirm Commands.
+     *
+     * @var array
+     */
+    protected $confirm_commands = ['y', 'yes'];
 
     /**
      * File Service.
@@ -102,15 +109,37 @@ class AddModelCommand extends Command
             return;
         }
 
-
-        //check if package file has already (create otherwise)
+        //check if package file has already (remove if it has)
         if ($this->FileService->checkModelExists($model_path)) {
-            $this->info('Model already added to EasyAdmin, checking for \App\EasyAdmin file..');
+            $this->FileService->removeModelFromList($namespace, $model);
+        }
+
+        // add and pass different model types
+        if ($this->option('page')) {
+            $this->FileService->addModelToList($namespace, $model, 'page');
+            $this->info('Model added to EasyAdmin models list file, and marked as a page..');
+        }
+        else if ($this->option('section')) {
+            $belongs_to_page = $this->ask("Does this section belong to a page? [y]es or [n]o");
+
+            if (in_array($belongs_to_page, $this->confirm_commands)) {
+                $belongs_to_page = $this->ask("Page model name this section blongs to? (without path: eg. `HomePage`)");
+
+                if (!in_array($belongs_to_page, $this->helperService->getAllPageModels())) {
+                    $this->info('Must add the page model before adding sections to it.. terminating.');
+                    return;
+                }
+                $this->FileService->addModelToList($namespace, $model, 'section', $belongs_to_page);
+            }
+            else {
+                $this->FileService->addModelToList($namespace, $model, 'section', 'Global');
+            }
         }
         else {
-            $this->FileService->addModelToList($namespace, $model, $type = 'page');
+            $this->FileService->addModelToList($namespace, $model);
             $this->info('Model added to EasyAdmin models list file..');
         }
+
         //check if App file exists already (create otherwise)
         if ($this->FileService->checkPublicModelExists($model_path)) {
             $this->info('\App\EasyAdmin public file already exists..');
