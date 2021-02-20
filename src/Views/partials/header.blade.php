@@ -20,17 +20,17 @@
                     </div>
                 </li>
             @endif
-            <li class="nav-item">
+            <li class="nav-item pr-3">
                 <div class="nav-link">
-                    <span class="text-info pr-3"><i class="fas fa-user"></i> {{ Auth::user()->email ?? Auth::user()->name ?? '' }}</span>
+                    <span class="text-info"><i class="fas fa-user"></i> {{ Auth::user()->email ?? Auth::user()->name ?? '' }}</span>
                 </div>
             </li>
-            <li class="nav-item">
+            <li class="nav-item border-left border-right px-3">
                 <div class="nav-link">
                     <a target="_blank" class="text-decoration-none text-success" href="{{ env('APP_URL') }}"><i class="fas fa-home"></i> App Home</a>
                 </div>
             </li>
-            <li class="nav-item">
+            <li class="nav-item pl-3">
                 <form action="/easy-admin/logout" method="post">
                     @csrf
                     <button type="submit" class="btn btn-link px-0 text-decoration-none text-warning">

@@ -181,7 +181,7 @@ class FileService
                             case 'section':
                                 if ($type_target === null)
                                     throw new Exception('Invaled type target for model type: ' . $type);
-                                    $insert = "            '" . $model . '.' . $type_target . "',\n";
+                                    $insert = "            '" . $type_target . '.' . $model . "',\n";
                                 break;
                         }
 

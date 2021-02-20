@@ -61,9 +61,13 @@ class AdminController extends Controller
     public function home()
     {
         $nav_items = $this->helperService->getModelsForNav();
+        $pages = $this->helperService->getAllPageModels();
+        $sections = $this->helperService->getAllSectionModels();
 
         return view('easy-admin::home')
             ->with('nav_items', $nav_items)
+            ->with('pages', $pages)
+            ->with('sections', $sections)
             ->with('title', 'Home');
     }
 

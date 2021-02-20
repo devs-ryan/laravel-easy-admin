@@ -36,7 +36,7 @@ class AppModelList
     public static function sectionModels()
     {
         return [
-            //Models Here - Format: Model.PageModel || Model.Global
+            //Models Here - Format: PageModel.Model || Global.Model
         ];
     }
 }
