@@ -73,7 +73,7 @@ class RemoveModelCommand extends Command
 
         //get model
         $model = $this->ask("Enter the model name");
-        if (in_array($namespace, $this->exit_commands)) {
+        if (in_array($model, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }

@@ -89,7 +89,7 @@ class AddModelCommand extends Command
 
         //get model
         $model = $this->ask("Enter the model name");
-        if (in_array($namespace, $this->exit_commands)) {
+        if (in_array($model, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }
@@ -120,10 +120,10 @@ class AddModelCommand extends Command
             $this->info('Model added to EasyAdmin models list file, and marked as a ' . $this->option('page') ? 'page' : 'post' . 'page..');
         }
         else if ($this->option('section')) {
-            $belongs_to_page = $this->ask("Does this section belong to a page? [y]es or [n]o");
+            $belongs_to_page = $this->ask("Does this section belong to a page, post, or section? [y]es or [n]o");
 
             if (in_array($belongs_to_page, $this->confirm_commands)) {
-                $belongs_to_page = $this->ask("Page model name this section blongs to? (without path: eg. `HomePage`)");
+                $belongs_to_page = $this->ask("Page, post, or section model name this section blongs to? (without path: eg. `HomePage`)");
 
                 if (!in_array($belongs_to_page, $this->helperService->getAllPageModels())) {
                     $this->info('Must add the page model before adding sections to it.. terminating.');
