@@ -116,8 +116,8 @@ class AddModelCommand extends Command
 
         // add and pass different model types
         if ($this->option('page') || $this->option('post')) {
-            $this->FileService->addModelToList($namespace, $model, $this->option('page') ? 'page' : 'post');
-            $this->info('Model added to EasyAdmin models list file, and marked as a ' . $this->option('page') ? 'page' : 'post' . 'page..');
+            $this->FileService->addModelToList($namespace, $model, ($this->option('page') ? 'page' : 'post'));
+            $this->info('Model added to EasyAdmin models list file, and marked as a ' . ($this->option('page') ? 'page' : 'post') . '..');
         }
         else if ($this->option('section')) {
             $belongs_to_page = $this->ask("Does this section belong to a page, post, or section? [y]es or [n]o");

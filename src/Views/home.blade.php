@@ -68,13 +68,13 @@
             @endif
 
             {{-- General Models  --}}
-            @if(count($nav_items) - $count > 1 )
+            @if(count($nav_items) - $count > 0 )
                 <h5 class="pt-4">
-                    {{ count($sections) + count($pages) > 1 ? 'Global:' : 'Models:' }}
+                    {{ count($sections) + count($pages) > 0 ? 'Global:' : 'Models:' }}
                 </h5>
                 <ul class="list-group">
                     @foreach($nav_items as $link => $nav_title)
-                        @if (!in_array($nav_title, $pages) && !in_array("Global.$nav_title", $sections))
+                        @if (!in_array($nav_title, $pages) && !in_array($nav_title, $posts) && !in_array("Global.$nav_title", $sections))
                             <a href="/easy-admin/{{ $link }}/index">
                                 <li class="list-group-item">{{ $nav_title }}</li>
                             </a>
