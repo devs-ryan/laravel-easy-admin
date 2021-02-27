@@ -29,6 +29,22 @@
                 </ul>
             @endif
 
+            {{-- Post Type Models  --}}
+            @if(count($posts) > 0 )
+                <h5 class="pt-4">Posts:</h5>
+                <ul class="list-group">
+                    @foreach($nav_items as $link => $nav_title)
+                        @if (in_array($nav_title, $posts))
+
+                            @php $count++; @endphp
+                            <a href="/easy-admin/{{ $link }}/index">
+                                <li class="list-group-item">{{ $nav_title }}</li>
+                            </a>
+                        @endif
+                    @endforeach
+                </ul>
+            @endif
+
             {{-- Section Models  --}}
             @if(count($sections) > 0 )
                 @foreach ($sections as $section)
@@ -54,7 +70,7 @@
             {{-- General Models  --}}
             @if(count($nav_items) - $count > 1 )
                 <h5 class="pt-4">
-                    {{ count($sections) + count($pages) > 1 ? 'Post Types / Global Settings:' : 'Models:' }}
+                    {{ count($sections) + count($pages) > 1 ? 'Global:' : 'Models:' }}
                 </h5>
                 <ul class="list-group">
                     @foreach($nav_items as $link => $nav_title)

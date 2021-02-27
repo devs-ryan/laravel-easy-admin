@@ -29,6 +29,18 @@ class AppModelList
     }
 
     /**
+     * Return array of Post type models
+     *
+     * @return Array
+     */
+    public static function postModels()
+    {
+        return [
+            //Models Here - Format: Model
+        ];
+    }
+
+    /**
      * Return array of Section type models
      *
      * @return Array

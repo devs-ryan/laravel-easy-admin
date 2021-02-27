@@ -57,6 +57,7 @@ class FileService
      */
     public $model_types = [
         'page',
+        'post',
         'section'
     ];
 
@@ -176,6 +177,7 @@ class FileService
                     if ($package_file[$i] == ']' && $package_file[$i+1] == ';') {
                         switch($type) {
                             case 'page':
+                            case 'post':
                                 $insert = "            '" . $model . "',\n";
                                 break;
                             case 'section':
