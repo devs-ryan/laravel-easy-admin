@@ -30,6 +30,7 @@ The following optional URL variables can be set in the Laravel .env file:
 - `APP_URL` (provides a link back to your app on the login page nav bar)
 - `EASY_ADMIN_APP_NAME` (Change the name shown in the top left of the Easy Admin nav bar)
 - `EASY_ADMIN_SUPPORT_EMAIL` (Provide a help email address to your Easy Admin users)
+- `EASY_ADMIN_DEFAULT_NAMESPACE` (set true to user namespace App\Models)
 
 #### Creating an Easy Admin user
 - `php artisan easy-admin:create-user`

@@ -63,12 +63,17 @@ class RemoveModelCommand extends Command
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
 
         //get namespace
-        $namespace = $this->ask("Enter the model namespace(Default: App\Models\)");
-        if (in_array($namespace, $this->exit_commands)) {
-            $this->info("Command exit code entered.. terminating.");
-            return;
+        if (env('EASY_ADMIN_DEFAULT_NAMESPACE', false)) {
+            $namespace = 'App\Models';
         }
-        if ($namespace == '') $namespace = 'App\Models';
+        else {
+            $namespace = $this->ask("Enter the model namespace(Default: App\Models\)");
+            if (in_array($namespace, $this->exit_commands)) {
+                $this->info("Command exit code entered.. terminating.");
+                return;
+            }
+            if ($namespace == '') $namespace = 'App\Models';
+        }
         $namespace = $this->filterInput($namespace, true);
 
         //get model
