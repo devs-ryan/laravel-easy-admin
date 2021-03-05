@@ -187,15 +187,15 @@ class HelperService
     }
 
     /**
-     * Return all section models added to admin area
+     * Return all partial models added to admin area
      * Format Model
      *
      * @return Array
      */
-    public function getAllSectionModels()
+    public function getAllPartialModels()
     {
         try {
-            return AppModelList::sectionModels();
+            return AppModelList::partialModels();
         }
         catch (Throwable $t) {
             throw new Exception('Parse Error: AppModelList.php has been corrupted.');

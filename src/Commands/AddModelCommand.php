@@ -14,7 +14,7 @@ class AddModelCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'easy-admin:add-model {--page} {--post} {--section}';
+    protected $signature = 'easy-admin:add-model {--page} {--post} {--partial}';
 
     /**
      * The console command description.
@@ -124,20 +124,20 @@ class AddModelCommand extends Command
             $this->FileService->addModelToList($namespace, $model, ($this->option('page') ? 'page' : 'post'));
             $this->info('Model added to EasyAdmin models list file, and marked as a ' . ($this->option('page') ? 'page' : 'post') . '..');
         }
-        else if ($this->option('section')) {
-            $belongs_to_page = $this->ask("Does this section belong to a page, post, or section? [y]es or [n]o");
+        else if ($this->option('partial')) {
+            $belongs_to_page = $this->ask("Does this partial belong to a page, post, or other partial? [y]es or [n]o");
 
             if (in_array($belongs_to_page, $this->confirm_commands)) {
-                $belongs_to_page = $this->ask("Page, post, or section model name this section blongs to? (without path: eg. `HomePage`)");
+                $belongs_to_page = $this->ask("Page, post, or partial model name this partial blongs to? (without path: eg. `HomePage`)");
 
                 if (!in_array($belongs_to_page, $this->helperService->getAllPageModels())) {
-                    $this->info('Must add the page model before adding sections to it.. terminating.');
+                    $this->info('Must add the page model before adding partials to it.. terminating.');
                     return;
                 }
-                $this->FileService->addModelToList($namespace, $model, 'section', $belongs_to_page);
+                $this->FileService->addModelToList($namespace, $model, 'partial', $belongs_to_page);
             }
             else {
-                $this->FileService->addModelToList($namespace, $model, 'section', 'Global');
+                $this->FileService->addModelToList($namespace, $model, 'partial', 'Global');
             }
         }
         else {

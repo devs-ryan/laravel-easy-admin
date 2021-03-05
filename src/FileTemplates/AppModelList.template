@@ -41,11 +41,11 @@ class AppModelList
     }
 
     /**
-     * Return array of Section type models
+     * Return array of Partial type models
      *
      * @return Array
      */
-    public static function sectionModels()
+    public static function partialModels()
     {
         return [
             //Models Here - Format: PageModel.Model || Global.Model

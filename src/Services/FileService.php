@@ -58,7 +58,7 @@ class FileService
     public $model_types = [
         'page',
         'post',
-        'section'
+        'partial'
     ];
 
     /**
@@ -70,7 +70,7 @@ class FileService
     {
         $this->helperService = new HelperService;
 
-        $path = str_replace('/Services', '', __DIR__).'/FileTemplates/PublicModelTemplate.template';
+        $path = str_replace('/Services', '', __DIR__).'/FileTemplates/PublicModel.template';
         $this->public_model_template = file_get_contents($path) or die("Unable to open file!");
 
         $path = str_replace('/Services', '', __DIR__).'/FileTemplates/AppModelList.template';
@@ -180,7 +180,7 @@ class FileService
                             case 'post':
                                 $insert = "            '" . $model . "',\n";
                                 break;
-                            case 'section':
+                            case 'partial':
                                 if ($type_target === null)
                                     throw new Exception('Invaled type target for model type: ' . $type);
                                     $insert = "            '" . $type_target . '.' . $model . "',\n";
