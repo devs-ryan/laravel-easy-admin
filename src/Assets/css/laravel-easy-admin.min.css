@@ -2,6 +2,13 @@
  * Custom CSS
  */
 .clear-button:hover{cursor:pointer;}
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 992px) {
+    .border-nav{
+        border-left: lightgray 1px solid;
+        border-right: lightgray 1px solid;
+    }
+}
 /*!
  * Sweet Alert
  * License - Code: MIT License

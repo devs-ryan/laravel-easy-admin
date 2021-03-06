@@ -25,7 +25,7 @@
                     <span class="text-info"><i class="fas fa-user"></i> {{ Auth::user()->email ?? Auth::user()->name ?? '' }}</span>
                 </div>
             </li>
-            <li class="nav-item border-left border-right px-3">
+            <li class="nav-item border-nav px-3">
                 <div class="nav-link">
                     <a target="_blank" class="text-decoration-none text-success" href="{{ env('APP_URL') }}"><i class="fas fa-home"></i> App Home</a>
                 </div>

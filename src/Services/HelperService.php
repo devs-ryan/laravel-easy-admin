@@ -139,6 +139,23 @@ class HelperService
     }
 
     /**
+     * Strip the Global/Parent away from partials
+     *
+     * @return Array
+     */
+    public function stripParentFromPartials($partials)
+    {
+        $output = [];
+
+        foreach($partials as $partial) {
+            $pieces = explode('.', $partial);
+            $output[] = $pieces[1];
+        }
+
+        return $output;
+    }
+
+    /**
      * Return all models added to admin area
      * Format Namespace.Model
      *

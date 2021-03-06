@@ -64,12 +64,14 @@ class AdminController extends Controller
         $pages = $this->helperService->getAllPageModels();
         $posts = $this->helperService->getAllPostModels();
         $partials = $this->helperService->getAllPartialModels();
+        $partial_models = $this->helperService->stripParentFromPartials($partials);
 
         return view('easy-admin::home')
             ->with('nav_items', $nav_items)
             ->with('pages', $pages)
             ->with('posts', $posts)
             ->with('partials', $partials)
+            ->with('partial_models', $partial_models)
             ->with('title', 'Home');
     }
 

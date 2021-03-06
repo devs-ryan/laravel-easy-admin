@@ -46,35 +46,35 @@
             @endif
 
             {{-- Section Models  --}}
-            @if(count($sections) > 0 )
-                @foreach ($sections as $section)
-                    @if(strpos($section, "Global.") === 0)
-                        <h5 class="pt-4">Sections:</h5>
+            @if(count($partials) > 0 )
+                @foreach($partials as $partial)
+                    @if(strpos($partial, "Global.") === 0)
+                        <h5 class="pt-4">Partials:</h5>
                         @break
                     @endif
                 @endforeach
 
                 <ul class="list-group">
                     @foreach($nav_items as $link => $nav_title)
-                        @if (in_array("Global.$nav_title", $sections))
-
-                            @php $count++; @endphp
+                        @if (in_array("Global.$nav_title", $partials))
                             <a href="/easy-admin/{{ $link }}/index">
                                 <li class="list-group-item">{{ $nav_title }}</li>
                             </a>
                         @endif
                     @endforeach
                 </ul>
+
+                @php $count += count($partials); @endphp
             @endif
 
             {{-- General Models  --}}
             @if(count($nav_items) - $count > 0 )
                 <h5 class="pt-4">
-                    {{ count($sections) + count($pages) > 0 ? 'Global:' : 'Models:' }}
+                    {{ $count > 0 ? 'Global:' : 'Models:' }}
                 </h5>
                 <ul class="list-group">
                     @foreach($nav_items as $link => $nav_title)
-                        @if (!in_array($nav_title, $pages) && !in_array($nav_title, $posts) && !in_array("Global.$nav_title", $sections))
+                        @if (!in_array($nav_title, $pages) && !in_array($nav_title, $posts) && !in_array($nav_title, $partial_models))
                             <a href="/easy-admin/{{ $link }}/index">
                                 <li class="list-group-item">{{ $nav_title }}</li>
                             </a>

@@ -20,7 +20,7 @@ class RefreshModelCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Remove a model from the Easy Admin UI';
+    protected $description = 'Reset/Reload all fields for a model to the Easy Admin UI';
 
     /**
      * Exit Commands.
