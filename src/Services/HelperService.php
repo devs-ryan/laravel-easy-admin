@@ -156,6 +156,27 @@ class HelperService
     }
 
     /**
+     * Get Partials that belong to a specific Model
+     *
+     * @return Array
+     */
+    public function getPartials($model)
+    {
+        $output = [];
+
+        $partials = $this->getAllPartialModels();
+
+        foreach($partials as $partial) {
+            $pieces = explode('.', $partial);
+
+            if ($pieces[0] == $model)
+                $output[] = $pieces[1];
+        }
+
+        return $output;
+    }
+
+    /**
      * Return all models added to admin area
      * Format Namespace.Model
      *

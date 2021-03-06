@@ -12,7 +12,7 @@
                 * = Required Field
             </small>
             <hr class="my-4">
-            <form action="/easy-admin/{{ $url_model }}" method="post" enctype="multipart/form-data">
+            <form action="/easy-admin/{{ $url_model }}" method="post" enctype="multipart/form-data" id="create-form">
                 @csrf
                 @include('easy-admin::partials.form')
             </form>

@@ -88,6 +88,8 @@ class AdminController extends Controller
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
         $nav_items = $this->helperService->getModelsForNav();
+        $partials = $this->helperService->getAllPartialModels();
+        $partial_models = $this->helperService->stripParentFromPartials($partials);
         $appModel = "App\\EasyAdmin\\" . $model;
         $index_columns = $appModel::index();
         $allowed = $appModel::allowed();
@@ -133,6 +135,8 @@ class AdminController extends Controller
             ->with('model', $model)
             ->with('model_path', $model_path)
             ->with('nav_items', $nav_items)
+            ->with('partials', $partials)
+            ->with('partial_models', $partial_models)
             ->with('title', 'Index')
             ->with('index_columns', $index_columns)
             ->with('allowed', $allowed)
@@ -152,7 +156,10 @@ class AdminController extends Controller
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
         $nav_items = $this->helperService->getModelsForNav();
+        $partials = $this->helperService->getAllPartialModels();
+        $partial_models = $this->helperService->stripParentFromPartials($partials);
         $appModel = "App\\EasyAdmin\\" . $model;
+        $model_partials = $this->helperService->getPartials($model);
 
         //check allowed
         $allowed = $appModel::allowed();
@@ -175,10 +182,13 @@ class AdminController extends Controller
             ->with('allowed', $allowed)
             ->with('url_model', $url_model)
             ->with('nav_items', $nav_items)
+            ->with('partials', $partials)
+            ->with('partial_models', $partial_models)
             ->with('fields', $fields)
             ->with('required_fields', $required_fields)
             ->with('wysiwyg_fields', $wysiwyg_editors)
-            ->with('file_fields', $file_fields);
+            ->with('file_fields', $file_fields)
+            ->with('model_partials', $model_partials);
     }
 
     /**
@@ -201,11 +211,17 @@ class AdminController extends Controller
         if (!in_array('create', $allowed)) abort(403, 'Unauthorized action.');
 
         //create
-        $message = $this->validationService->createModel($request, $model_path, $model, $file_fields);
+        $response = $this->validationService->createModel($request, $model_path, $model, $file_fields);
 
-        //return redirect
+        //return redirect to edit when submit + add partials clicked
+        if ($request->has('partial_redirect_easy_admin') && $response['record'] !== null) {
+            return redirect('/easy-admin/'. $url_model . '/' . $response['record']->id .'/edit')
+                ->with('message', $response['message']);
+        }
+
+        // create + redirect back to create form
         return redirect('/easy-admin/'. $url_model .'/create')
-            ->with('message', $message);
+            ->with('message', $response['message']);
     }
 
     /**
@@ -221,7 +237,10 @@ class AdminController extends Controller
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
         $nav_items = $this->helperService->getModelsForNav();
+        $partials = $this->helperService->getAllPartialModels();
+        $partial_models = $this->helperService->stripParentFromPartials($partials);
         $appModel = "App\\EasyAdmin\\" . $model;
+        $model_partials = $this->helperService->getPartials($model);
         $allowed = $appModel::allowed();
 
         //update fields
@@ -245,11 +264,14 @@ class AdminController extends Controller
             ->with('allowed', $allowed)
             ->with('url_model', $url_model)
             ->with('nav_items', $nav_items)
+            ->with('partials', $partials)
+            ->with('partial_models', $partial_models)
             ->with('fields', $fields)
             ->with('required_fields', $required_fields)
             ->with('data', $data)
             ->with('wysiwyg_fields', $wysiwyg_editors)
-            ->with('file_fields', $file_fields);
+            ->with('file_fields', $file_fields)
+            ->with('model_partials', $model_partials);
     }
 
     /**

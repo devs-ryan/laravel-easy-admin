@@ -15,7 +15,11 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         @foreach($nav_items as $link => $nav_title)
-                            <a class="dropdown-item" href="/easy-admin/{{ $link }}/index"><i class="fas fa-external-link-alt"></i> {{ $nav_title }}</a>
+                            @if(!in_array($nav_title, $partial_models) || in_array("Global.$nav_title", $partials))
+                                <a class="dropdown-item" href="/easy-admin/{{ $link }}/index">
+                                    <i class="fas fa-external-link-alt"></i> {{ $nav_title }}
+                                </a>
+                            @endif
                         @endforeach
                     </div>
                 </li>

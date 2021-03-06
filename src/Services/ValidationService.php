@@ -39,7 +39,7 @@ class ValidationService
     {
         try {
             $record = new $model_path;
-            $input = $request->except(['_token']);
+            $input = $request->except(['_token', 'partial_redirect_easy_admin']);
 
             foreach($input as $key => $attribute) {
                 if ($key == 'password') {
@@ -57,9 +57,15 @@ class ValidationService
             $record->save();
         }
         catch(Exception $e) {
-            return 'Error:' . $e->getMessage();
+            return [
+                'message' => 'Error:' . $e->getMessage(),
+                'record' => null
+            ];
         }
-        return 'Success: A new record was created!';
+        return [
+            'message' => 'Success: A new record was created!',
+            'record' => $record
+        ];
     }
 
     /**

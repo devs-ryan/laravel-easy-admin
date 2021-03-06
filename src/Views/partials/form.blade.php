@@ -37,8 +37,32 @@
 @endforeach
 @if((in_array('update', $allowed) and Request::is('easy-admin/*/*/edit')) or (in_array('create', $allowed) and !Request::is('easy-admin/*/*/edit')))
     <div class="text-right">
-        <button class="btn btn-primary">
+        <button id="submit-button" type="submit" class="btn btn-primary">
             <i class="far fa-check-circle"></i> Submit
         </button>
+        @if(count($model_partials) > 0 && Request::is('easy-admin/*/create'))
+            <button type="button" class="btn btn-success" onclick="addPartialBoolToForm()">
+                <i class="far fa-arrow-alt-circle-right"></i> Submit + Add Partials
+            </button>
+        @endif
     </div>
+@endif
+
+@if(count($model_partials) > 0 && Request::is('easy-admin/*/create'))
+    @push('scripts')
+        <script>
+            function addPartialBoolToForm() {
+                if ($('#partial_redirect_easy_admin').length < 1) {
+                    $('<input>').attr({
+                        type: 'hidden',
+                        id: 'partial_redirect_easy_admin',
+                        name: 'partial_redirect_easy_admin',
+                        value: 'true'
+                    }).appendTo('form');
+                }
+
+                $('#submit-button').click();
+            }
+        </script>
+    @endpush
 @endif
