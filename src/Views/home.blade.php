@@ -48,7 +48,7 @@
             {{-- Section Models  --}}
             @if(count($partials) > 0 )
                 @foreach($partials as $partial)
-                    @if(strpos($partial, "Global.") === 0)
+                    @if(strpos($partial, "Global.") !== false)
                         <h5 class="pt-4">Partials:</h5>
                         @break
                     @endif

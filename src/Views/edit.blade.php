@@ -16,6 +16,9 @@
                 @csrf
                 @method('PUT')
                 @include('easy-admin::partials.form')
+                @if(count($model_partials) > 0)
+                    @include('easy-admin::partials.partial-index')
+                @endif
             </form>
         </div>
     </div>

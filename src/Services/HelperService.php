@@ -66,6 +66,122 @@ class HelperService
     }
 
     /**
+     * Find the form input type
+     *
+     * @param integer $parent_id
+     * @param string $model
+     * @return HTML
+     */
+    public static function makePartialBreadcrums($parent_id, $model, $nav_items)
+    {
+        $html = '<a href="/easy-admin">HOME</a>';
+        $helper = new HelperService;
+        $full_path_models = $helper->getAllConvertedModels();
+        $partial_models = $helper->getAllPartialModels();
+        $partial_models_stripped = $helper->stripParentFromPartials($partial_models);
+        $initial_loop = true;
+
+        while(in_array($model, $partial_models_stripped)) {
+
+            // find partial and parent
+            foreach ($partial_models as $partial_model) {
+                $pieces = explode('.', $partial_model);
+                $parent = $pieces[0];
+                $partial = $pieces[1];
+
+                // partial and parent found
+                if ($model === $partial) {
+                    // find parent_id if not set from initial loop
+                    if (!$initial_loop) {
+                        $column_name = $helper->findParentIdColumnName($parent, $nav_items);
+
+                        foreach($full_path_models as $full_path_model) {
+                            if (strpos($full_path_model, $model) !== false) {
+                                $find_parent_for = $full_path_model::findOrFail($parent_id);
+                                $parent_id = $find_parent_for->$column_name;
+
+                                if ($parent_id === null) throw new Exception("`$column_name` expected in $model database table");
+                                break;
+                            }
+                        }
+                    }
+
+                    // find parent nav string
+                    $found = false;
+                    foreach($nav_items as $url_string => $model_name) {
+                        if ($model_name === $parent) {
+                            $url_model = $url_string;
+                            $found = true;
+                            break;
+                        }
+                    }
+
+                    if (!$found) throw New Exception('Failed to find partials parent details');
+
+                    // add edit page
+                    $add_to_html = ' / ';
+                    $add_to_html .= '<a href="/easy-admin/' . $url_model . '/' . $parent_id . '/edit">'
+                        . strtoupper($parent) . ' #' . $parent_id
+                        . '</a>';
+                    $html = str_replace('<a href="/easy-admin">HOME</a>', '<a href="/easy-admin">HOME</a>' . $add_to_html, $html);
+
+                    // add index page
+                    $add_to_html = ' / ';
+                    $add_to_html .= '<a href="/easy-admin/' . $url_model . '/index?parent_id=' . $parent_id . '">'
+                        . strtoupper($parent) . ' - INDEX'
+                        . '</a>';
+                    $html = str_replace('<a href="/easy-admin">HOME</a>', '<a href="/easy-admin">HOME</a>' . $add_to_html, $html);
+
+                    $model = $parent;
+                    $initial_loop = false;
+                    break;
+                }
+            }
+        }
+
+        return $html;
+    }
+
+    /**
+     * Find relationship column name for a parent model
+     *
+     * @param string $parent
+     * @param Array $nav_items
+     * @return mixed
+     */
+    public function findParentIdColumnName($parent, $nav_items) {
+        // find field to get parent ID
+        foreach($nav_items as $url_string => $model_name) {
+            if ($model_name === $parent) {
+                return str_replace('-', '_', $url_string) . '_id';
+            }
+        }
+        throw new Exception('Missing parent model in nav items');
+    }
+
+    /**
+     * Finds a models parent model
+     *
+     * @param string $child_model
+     * @return mixed
+     */
+    public function findParent($child_model) {
+        $partial_models = $this->getAllPartialModels();
+
+        foreach ($partial_models as $partial_model) {
+            $pieces = explode('.', $partial_model);
+            $parent = $pieces[0];
+            $partial = $pieces[1];
+
+            if ($partial === $child_model) {
+                return $parent;
+            }
+
+        }
+        throw new Exception('Unable to find parent model');
+    }
+
+    /**
      * Convert the URL model to the app model
      *
      * @return Array

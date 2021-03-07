@@ -129,11 +129,6 @@ class AddModelCommand extends Command
 
             if (in_array($belongs_to_page, $this->confirm_commands)) {
                 $belongs_to_page = $this->ask("Page, post, or partial model name this partial blongs to? (without path: eg. `HomePage`)");
-
-                if (!in_array($belongs_to_page, $this->helperService->getAllPageModels())) {
-                    $this->info('Must add the page model before adding partials to it.. terminating.');
-                    return;
-                }
                 $this->FileService->addModelToList($namespace, $model, 'partial', $belongs_to_page);
             }
             else {

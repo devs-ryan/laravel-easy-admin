@@ -93,6 +93,8 @@ class AdminController extends Controller
         $appModel = "App\\EasyAdmin\\" . $model;
         $index_columns = $appModel::index();
         $allowed = $appModel::allowed();
+        $parent_id = ($request->parent_id && ctype_digit($request->parent_id) && intval($request->parent_id) > 0)
+            ? $request->parent_id : null;
 
         //get data
         $check_model = $model_path::first();
@@ -106,7 +108,7 @@ class AdminController extends Controller
         $file_fields = $appModel::files();
 
         //apply filters
-        foreach($request->all() as $filter => $value) {
+        foreach($request->except(['parent_id']) as $filter => $value) {
             if ($value === null) continue;
 
             if (strpos($filter, '__from') !== false) { //from comparison
@@ -123,8 +125,16 @@ class AdminController extends Controller
             }
 
             // regular comparison
+            if (!$check_model) continue;
             if (!$check_model->$filter) continue;
             $data = $data->where($filter, 'LIKE', "%$value%");
+        }
+
+        //apply parent id filter
+        if ($request->has('parent_id')) {
+            $parent = $this->helperService->findParent($model);
+            $relationship_column_name = $this->helperService->findParentIdColumnName($parent, $nav_items);
+            $data = $data->where($relationship_column_name, $request->parent_id);
         }
 
         //paginate
@@ -141,7 +151,8 @@ class AdminController extends Controller
             ->with('index_columns', $index_columns)
             ->with('allowed', $allowed)
             ->with('url_model', $url_model)
-            ->with('file_fields', $file_fields);
+            ->with('file_fields', $file_fields)
+            ->with('parent_id', $parent_id);
     }
 
     /**

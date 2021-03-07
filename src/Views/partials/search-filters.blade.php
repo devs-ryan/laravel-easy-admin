@@ -12,7 +12,12 @@
         </div>
     </div>
     <div class="card-body collapse-filter">
-        <form method="get" action="">
+        <form method="get" action="?">
+
+            @if(isset($parent_id) && $parent_id !== null)
+                <input type="hidden" name="parent_id" value="{{ $parent_id }}">
+            @endif
+
             @foreach($index_columns as $index_column)
                 @switch(DevsRyan\LaravelEasyAdmin\Services\HelperService::inputType($index_column, $model_path))
                     @case('password')
@@ -35,10 +40,7 @@
                         @include('easy-admin::partials.search-form-inputs.text')
                         @break
                 @endswitch
-               
-                
             @endforeach
-            
 
             <button class="btn btn-primary" type="submit" aria-pressed="true">
                 <i class="fas fa-search"></i> Search

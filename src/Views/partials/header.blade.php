@@ -51,7 +51,11 @@
             <span class="text-secondary">
                 ADMIN /
                 @if(Request::is('easy-admin/*/index*'))
-                    <a href="/easy-admin">HOME</a>
+                    @if(isset($parent_id) && $parent_id !== null)
+                        {!! \DevsRyan\LaravelEasyAdmin\Services\HelperService::makePartialBreadcrums($parent_id, $model, $nav_items) !!}
+                    @else
+                        <a href="/easy-admin">HOME</a>
+                    @endif
                 @elseif(Request::is('easy-admin/*/create*'))
                     <a href="/easy-admin">HOME</a> / <a href="/easy-admin/{{ $url_model }}/index">{{ strtoupper($model) }} - INDEX</a>
                 @elseif(Request::is('easy-admin/*/*/edit'))
@@ -68,7 +72,10 @@
         </div>
         @if(Request::is('easy-admin/*/index*') and in_array('create', $allowed))
             <div class="col-md-6 text-right mt-auto">
-                <a href="/easy-admin/{{$url_model}}/create" class="btn btn-primary" role="button" aria-pressed="true">
+                @php
+                    $parent_id_for_create = isset($parent_id) && $parent_id !== null ? "?parent_id=$parent_id" : '';
+                @endphp
+                <a href="/easy-admin/{{$url_model}}/create{{$parent_id_for_create}}" class="btn btn-primary" role="button" aria-pressed="true">
                     <i class="fas fa-folder-plus"></i> Create {{ $model }}
                 </a>
             </div>
