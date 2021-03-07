@@ -6,7 +6,7 @@
                     @foreach($index_columns as $index_column)
                         <th scope="col">{{ ucfirst($index_column) }}</th>
                     @endforeach
-                    <th scope="col" style="width: 114px !important;">Actions</th>
+                    <th class="action-header" scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
