@@ -78,6 +78,7 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  string  $model
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -158,9 +159,11 @@ class AdminController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  string  $model
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create($model)
+    public function create($model, Request $request)
     {
         //gather info for action
         $url_model = $model;
@@ -171,6 +174,8 @@ class AdminController extends Controller
         $partial_models = $this->helperService->stripParentFromPartials($partials);
         $appModel = "App\\EasyAdmin\\" . $model;
         $model_partials = $this->helperService->getPartials($model);
+        $parent_id = ($request->parent_id && ctype_digit($request->parent_id) && intval($request->parent_id) > 0)
+            ? $request->parent_id : null;
 
         //check allowed
         $allowed = $appModel::allowed();
@@ -186,6 +191,13 @@ class AdminController extends Controller
         // files
         $file_fields = $appModel::files();
 
+        //apply parent id filter
+        $relationship_column_name = null;
+        if ($request->has('parent_id')) {
+            $parent = $this->helperService->findParent($model);
+            $relationship_column_name = $this->helperService->findParentIdColumnName($parent, $nav_items);
+        }
+
         //return view
         return view('easy-admin::create')
             ->with('model', $model)
@@ -199,12 +211,15 @@ class AdminController extends Controller
             ->with('required_fields', $required_fields)
             ->with('wysiwyg_fields', $wysiwyg_editors)
             ->with('file_fields', $file_fields)
-            ->with('model_partials', $model_partials);
+            ->with('model_partials', $model_partials)
+            ->with('parent_id', $parent_id)
+            ->with('relationship_column_name', $relationship_column_name);
     }
 
     /**
      * Store a newly created resource in storage.
      *
+     * @param  string  $model
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -224,24 +239,36 @@ class AdminController extends Controller
         //create
         $response = $this->validationService->createModel($request, $model_path, $model, $file_fields);
 
+        // check / set parent_id
+        $redirect_parent_id = '';
+        if ($request->has('easy_admin_submit_with_parent_id')) {
+            $redirect_parent_id = '?parent_id=' . $request->easy_admin_submit_with_parent_id;
+        }
+
         //return redirect to edit when submit + add partials clicked
         if ($request->has('partial_redirect_easy_admin') && $response['record'] !== null) {
-            return redirect('/easy-admin/'. $url_model . '/' . $response['record']->id .'/edit')
+            return redirect('/easy-admin/'. $url_model . '/' . $response['record']->id .'/edit' . $redirect_parent_id)
                 ->with('message', $response['message']);
         }
 
         // create + redirect back to create form
-        return redirect('/easy-admin/'. $url_model .'/create')
-            ->with('message', $response['message']);
+        if ($response['record'] === null)
+            return redirect('/easy-admin/'. $url_model .'/create' . $redirect_parent_id)
+                ->withInput()->with('message', $response['message']);
+        else
+            return redirect('/easy-admin/'. $url_model .'/create' . $redirect_parent_id)
+                ->with('message', $response['message']);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  string  $model
      * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit($model, $id)
+    public function edit($model, $id, Request $request)
     {
         //gather info for view
         $url_model = $model;
@@ -252,6 +279,10 @@ class AdminController extends Controller
         $partial_models = $this->helperService->stripParentFromPartials($partials);
         $appModel = "App\\EasyAdmin\\" . $model;
         $model_partials = $this->helperService->getPartials($model);
+        $parent_id = ($request->parent_id && ctype_digit($request->parent_id) && intval($request->parent_id) > 0)
+            ? $request->parent_id : null;
+
+        // check allowed to edit or view only mode
         $allowed = $appModel::allowed();
 
         //update fields
@@ -266,6 +297,13 @@ class AdminController extends Controller
 
         //find model
         $data = $model_path::findOrFail($id);
+
+        //apply parent id filter
+        $relationship_column_name = null;
+        if ($request->has('parent_id')) {
+            $parent = $this->helperService->findParent($model);
+            $relationship_column_name = $this->helperService->findParentIdColumnName($parent, $nav_items);
+        }
 
         //return view
         return view('easy-admin::edit')
@@ -282,17 +320,20 @@ class AdminController extends Controller
             ->with('data', $data)
             ->with('wysiwyg_fields', $wysiwyg_editors)
             ->with('file_fields', $file_fields)
-            ->with('model_partials', $model_partials);
+            ->with('model_partials', $model_partials)
+            ->with('parent_id', $parent_id)
+            ->with('relationship_column_name', $relationship_column_name);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $model
      * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update($model, Request $request, $id)
+    public function update($model, $id, Request $request)
     {
         //gather info for action
         $url_model = $model;
@@ -312,18 +353,26 @@ class AdminController extends Controller
         //update
         $message = $this->validationService->updateModel($request, $data, $model, $file_fields);
 
+        // check / set parent_id
+        $redirect_parent_id = '';
+        if ($request->has('easy_admin_submit_with_parent_id')) {
+            $redirect_parent_id = '?parent_id=' . $request->easy_admin_submit_with_parent_id;
+        }
+
         //return redirect
-        return redirect('/easy-admin/'. $url_model .'/'. $id .'/edit')
+        return redirect('/easy-admin/'. $url_model .'/'. $id .'/edit' . $redirect_parent_id)
             ->with('message', $message);
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param  string  $model
      * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($model, $id)
+    public function destroy($model, $id, Request $request)
     {
         //gather info for action
         $url_model = $model;
@@ -347,8 +396,14 @@ class AdminController extends Controller
         //delete model
         $message = $this->validationService->deleteModel($data, $model, $file_fields);
 
+        // check / set parent_id
+        $redirect_parent_id = '';
+        if ($request->has('easy_admin_delete_with_parent_id')) {
+            $redirect_parent_id = '?parent_id=' . $request->easy_admin_delete_with_parent_id;
+        }
+
         //return redirect
-        return redirect('/easy-admin/'. $url_model .'/index')
+        return redirect('/easy-admin/'. $url_model . '/index' . $redirect_parent_id)
             ->with('message', $message);
     }
 

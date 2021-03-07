@@ -1,3 +1,23 @@
+
+@if($relationship_column_name !== null)
+    <input type="hidden" name="easy_admin_submit_with_parent_id" value="{{ $data->$relationship_column_name ?? Request('parent_id') }}">
+    <div class="form-group row">
+        <label class="col-sm-12 col-form-label">
+            *
+            {{ ucwords(str_replace('_', ' ', $relationship_column_name)) }}:
+        </label>
+        <div class="col-sm-12">
+            <input
+                type="text" readonly required
+                name="{{ $relationship_column_name }}"
+                class="form-control"
+                value="{{ $data->$relationship_column_name ?? Request('parent_id') }}"
+            >
+            <small>Note: This is the database ID of the parent that this partial belongs to.</small>
+        </div>
+    </div>
+@endif
+
 @foreach($fields as $field)
     <div class="form-group row">
         <label class="col-sm-12 col-form-label">

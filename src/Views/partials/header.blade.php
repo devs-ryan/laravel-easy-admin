@@ -14,6 +14,7 @@
                         <i class="fas fa-compass"></i> Navigation
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        {{ var_dump($nav_items) }}
                         @foreach($nav_items as $link => $nav_title)
                             @if(!in_array($nav_title, $partial_models) || in_array("Global.$nav_title", $partials))
                                 <a class="dropdown-item" href="/easy-admin/{{ $link }}/index">
@@ -56,10 +57,13 @@
                     @else
                         <a href="/easy-admin">HOME</a>
                     @endif
-                @elseif(Request::is('easy-admin/*/create*'))
-                    <a href="/easy-admin">HOME</a> / <a href="/easy-admin/{{ $url_model }}/index">{{ strtoupper($model) }} - INDEX</a>
-                @elseif(Request::is('easy-admin/*/*/edit'))
-                    <a href="/easy-admin">HOME</a> / <a href="/easy-admin/{{ $url_model }}/index">{{ strtoupper($model) }} - INDEX</a>
+                @elseif(Request::is('easy-admin/*/create*') || Request::is('easy-admin/*/*/edit'))
+                    @if(isset($parent_id) && $parent_id !== null)
+                        {!! \DevsRyan\LaravelEasyAdmin\Services\HelperService::makePartialBreadcrums($parent_id, $model, $nav_items) !!} /
+                        <a href="/easy-admin/{{ $url_model }}/index?parent_id={{ $parent_id }}">{{ strtoupper($model) }} - INDEX</a>
+                    @else
+                        <a href="/easy-admin">HOME</a> / <a href="/easy-admin/{{ $url_model }}/index">{{ strtoupper($model) }} - INDEX</a>
+                    @endif
                 @endif
             </span>
             <h1 class="text-dark">

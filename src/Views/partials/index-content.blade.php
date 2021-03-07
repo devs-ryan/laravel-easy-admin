@@ -43,7 +43,10 @@
                             @endif
                         @endforeach
                         <th>
-                            <a href="/easy-admin/{{$url_model}}/{{ $row->id }}/edit" class="btn btn-info" role="button">
+                            @php
+                                $parent_id_for_edit = isset($parent_id) && $parent_id !== null ? "?parent_id=$parent_id" : '';
+                            @endphp
+                            <a href="/easy-admin/{{$url_model}}/{{ $row->id }}/edit{{ $parent_id_for_edit }}" class="btn btn-info" role="button">
                                 @if(in_array('update', $allowed))
                                    <i class="fas fa-edit"></i>
                                 @else
@@ -54,6 +57,9 @@
                                 <form class="float-right" action="/easy-admin/{{$url_model}}/{{ $row->id }}" method="post">
                                     @csrf
                                     @method('DELETE')
+                                    @if (isset($parent_id) && $parent_id !== null)
+                                        <input type="hidden" name="easy_admin_delete_with_parent_id" value="{{ $parent_id }}">
+                                    @endif
                                     <button type="submit" class="btn btn-danger">
                                         <i class="fas fa-trash"></i>
                                     </button>

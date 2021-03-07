@@ -80,6 +80,8 @@ class HelperService
         $partial_models = $helper->getAllPartialModels();
         $partial_models_stripped = $helper->stripParentFromPartials($partial_models);
         $initial_loop = true;
+        $prev_parent_id = $parent_id;
+        $prev_url_model = '';
 
         while(in_array($model, $partial_models_stripped)) {
 
@@ -91,6 +93,8 @@ class HelperService
 
                 // partial and parent found
                 if ($model === $partial) {
+                    if ($parent === 'Global') return $html; // no need to do anything more for global partials}
+
                     // find parent_id if not set from initial loop
                     if (!$initial_loop) {
                         $column_name = $helper->findParentIdColumnName($parent, $nav_items);
@@ -118,26 +122,49 @@ class HelperService
 
                     if (!$found) throw New Exception('Failed to find partials parent details');
 
-                    // add edit page
-                    $add_to_html = ' / ';
-                    $add_to_html .= '<a href="/easy-admin/' . $url_model . '/' . $parent_id . '/edit">'
-                        . strtoupper($parent) . ' #' . $parent_id
-                        . '</a>';
-                    $html = str_replace('<a href="/easy-admin">HOME</a>', '<a href="/easy-admin">HOME</a>' . $add_to_html, $html);
+                    //check for last iteration
+                    $parent_append = '?parent_id=' . $parent_id;
 
-                    // add index page
-                    $add_to_html = ' / ';
-                    $add_to_html .= '<a href="/easy-admin/' . $url_model . '/index?parent_id=' . $parent_id . '">'
-                        . strtoupper($parent) . ' - INDEX'
-                        . '</a>';
-                    $html = str_replace('<a href="/easy-admin">HOME</a>', '<a href="/easy-admin">HOME</a>' . $add_to_html, $html);
+                    if (!$initial_loop) {
+
+                        // add edit page
+                        $add_to_html = ' / ';
+                        $add_to_html .= '<a href="/easy-admin/' . $prev_url_model . '/' . $prev_parent_id . '/edit' . $parent_append . '">'
+                            . strtoupper($partial) . ' #' . $prev_parent_id
+                            . '</a>';
+                        $html = str_replace('<a href="/easy-admin">HOME</a>', '<a href="/easy-admin">HOME</a>' . $add_to_html, $html);
+
+                        // add index page
+                        $add_to_html = ' / ';
+                        $add_to_html .= '<a href="/easy-admin/' . $prev_url_model . '/index' . $parent_append . '">'
+                            . strtoupper($partial) . ' - INDEX'
+                            . '</a>';
+                        $html = str_replace('<a href="/easy-admin">HOME</a>', '<a href="/easy-admin">HOME</a>' . $add_to_html, $html);
+                    }
 
                     $model = $parent;
                     $initial_loop = false;
+                    $prev_parent_id = $parent_id;
+                    $prev_url_model = $url_model;
                     break;
                 }
             }
         }
+
+        // final iteration
+        // add edit page
+        $add_to_html = ' / ';
+        $add_to_html .= '<a href="/easy-admin/' . $url_model . '/' . $parent_id . '/edit">'
+            . strtoupper($parent) . ' #' . $parent_id
+            . '</a>';
+        $html = str_replace('<a href="/easy-admin">HOME</a>', '<a href="/easy-admin">HOME</a>' . $add_to_html, $html);
+
+        // add index page
+        $add_to_html = ' / ';
+        $add_to_html .= '<a href="/easy-admin/' . $url_model . '/index">'
+            . strtoupper($parent) . ' - INDEX'
+            . '</a>';
+        $html = str_replace('<a href="/easy-admin">HOME</a>', '<a href="/easy-admin">HOME</a>' . $add_to_html, $html);
 
         return $html;
     }
@@ -402,9 +429,9 @@ class HelperService
     {
         $link = $model;
 
-        for ($i = 1; $i < strlen($model); $i++) {
-            if (ctype_upper($model[$i])) {
-                $link = substr_replace($model, '-' . strtolower($model[$i]), $i, 1);
+        for ($i = 1; $i < strlen($link); $i++) {
+            if (ctype_upper($link[$i])) {
+                $link = substr_replace($link, '-' . strtolower($link[$i]), $i, 1);
             }
         }
         return strtolower($link);

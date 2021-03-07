@@ -39,7 +39,7 @@ class ValidationService
     {
         try {
             $record = new $model_path;
-            $input = $request->except(['_token', 'partial_redirect_easy_admin']);
+            $input = $request->except(['_token', 'partial_redirect_easy_admin', 'easy_admin_submit_with_parent_id']);
 
             foreach($input as $key => $attribute) {
                 if ($key == 'password') {
@@ -76,7 +76,7 @@ class ValidationService
     public function updateModel($request, $record, $model, $file_fields = [])
     {
         try {
-            $input = $request->except(['_token', '_method']);
+            $input = $request->except(['_token', '_method', 'easy_admin_submit_with_parent_id']);
 
             foreach($input as $key => $attribute) {
                 if ($key == 'password') {
