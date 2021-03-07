@@ -73,7 +73,7 @@ class {{model_name}}
      * Fields expected to bet treated as images.
      * Fields to be type 'string' to store path data
      * Images will be stored in 'public/devsryan/LaravelEasyAdmin/storage/img'
-     * Filess will be stored in 'public/devsryan/LaravelEasyAdmin/storage/files'
+     * Files will be stored in 'public/devsryan/LaravelEasyAdmin/storage/files'
      *
      * @return Array
      */
