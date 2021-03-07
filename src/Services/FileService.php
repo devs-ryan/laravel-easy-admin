@@ -404,7 +404,7 @@ class FileService
     }
 
     /**
-     * Undocumented function
+     * Retrieve a preview link for a model/field name/filename
      *
      * @param string $model_name
      * @param string $field_name
