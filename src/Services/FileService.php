@@ -419,8 +419,7 @@ class FileService
             return '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $value;
         }
 
-        // check
-         // unlink all image paths
+        // check if is an image
          $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original';
          if (file_exists($path . '/' . $value)) {
              return '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original/' . $value;
