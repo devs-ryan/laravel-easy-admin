@@ -1,6 +1,7 @@
 {
     "name": "devs_ryan/laravel-easy-admin",
     "description": "A simple admin panel for Laravel projects.",
+    "keywords": ["framework", "laravel", "easy", "admin", "laravel easy admin", "easy admin", "easy api", "api", "laravel easy api"],
     "type": "library",
     "license": "MIT",
     "authors": [
