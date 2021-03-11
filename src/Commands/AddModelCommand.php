@@ -59,7 +59,7 @@ class AddModelCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->FileService = new FileService;
+        $this->fileService = new FileService;
         $this->helperService = new HelperService;
     }
 
@@ -71,7 +71,7 @@ class AddModelCommand extends Command
     public function handle()
     {
         //check AppModelList corrupted
-        if ($this->FileService->checkIsModelListCorrupted()) {
+        if ($this->fileService->checkIsModelListCorrupted()) {
             $this->info("App\EasyAdmin\AppModelList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
             return;
         }
@@ -115,13 +115,13 @@ class AddModelCommand extends Command
         }
 
         //check if package file has already (remove if it has)
-        if ($this->FileService->checkModelExists($model_path)) {
-            $this->FileService->removeModelFromList($namespace, $model);
+        if ($this->fileService->checkModelExists($model_path)) {
+            $this->fileService->removeModelFromList($namespace, $model);
         }
 
         // add and pass different model types
         if ($this->option('page') || $this->option('post')) {
-            $this->FileService->addModelToList($namespace, $model, ($this->option('page') ? 'page' : 'post'));
+            $this->fileService->addModelToList($namespace, $model, ($this->option('page') ? 'page' : 'post'));
             $this->info('Model added to EasyAdmin models list file, and marked as a ' . ($this->option('page') ? 'page' : 'post') . '..');
         }
         else if ($this->option('partial')) {
@@ -129,23 +129,23 @@ class AddModelCommand extends Command
 
             if (in_array($belongs_to_page, $this->confirm_commands)) {
                 $belongs_to_page = $this->ask("Page, post, or partial model name this partial blongs to? (without path: eg. `HomePage`)");
-                $this->FileService->addModelToList($namespace, $model, 'partial', $belongs_to_page);
+                $this->fileService->addModelToList($namespace, $model, 'partial', $belongs_to_page);
             }
             else {
-                $this->FileService->addModelToList($namespace, $model, 'partial', 'Global');
+                $this->fileService->addModelToList($namespace, $model, 'partial', 'Global');
             }
         }
         else {
-            $this->FileService->addModelToList($namespace, $model);
+            $this->fileService->addModelToList($namespace, $model);
             $this->info('Model added to EasyAdmin models list file..');
         }
 
         //check if App file exists already (create otherwise)
-        if ($this->FileService->checkPublicModelExists($model_path)) {
+        if ($this->fileService->checkPublicModelExists($model_path)) {
             $this->info('\App\EasyAdmin public file already exists..');
         }
         else {
-            $this->FileService->addPublicModel($model_path);
+            $this->fileService->addPublicModel($model_path);
             $this->info('\App\EasyAdmin public file created..');
         }
 

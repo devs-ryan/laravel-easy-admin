@@ -31,7 +31,8 @@ class LaravelEasyAdminServiceProvider extends ServiceProvider
                 Commands\UserCommand::class,
                 Commands\CreateUserCommand::class,
                 Commands\RemoveUserCommand::class,
-                Commands\ListImageSizesCommand::class
+                Commands\ListImageSizesCommand::class,
+                Commands\MakeSeedCommand::class
             ]);
         }
     }

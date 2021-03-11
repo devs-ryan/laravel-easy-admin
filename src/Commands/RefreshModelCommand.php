@@ -44,7 +44,7 @@ class RefreshModelCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->FileService = new FileService;
+        $this->fileService = new FileService;
     }
 
     /**
@@ -55,7 +55,7 @@ class RefreshModelCommand extends Command
     public function handle()
     {
         //check AppModelList corrupted
-        if ($this->FileService->checkIsModelListCorrupted()) {
+        if ($this->fileService->checkIsModelListCorrupted()) {
             $this->info("App\EasyAdmin\AppModelList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
             return;
         }
@@ -93,8 +93,8 @@ class RefreshModelCommand extends Command
         }
 
         //check if App file exists already (create otherwise)
-        if ($this->FileService->checkPublicModelExists($model_path)) {
-            $this->FileService->removePublicModel($model_path);
+        if ($this->fileService->checkPublicModelExists($model_path)) {
+            $this->fileService->removePublicModel($model_path);
             $this->info('\App\EasyAdmin public file removed..');
         }
         else {
@@ -102,7 +102,7 @@ class RefreshModelCommand extends Command
         }
 
         //create new App file
-        $this->FileService->addPublicModel($model_path);
+        $this->fileService->addPublicModel($model_path);
         $this->info('\App\EasyAdmin public file created..');
 
         $this->info('Model refreshed successfully!');

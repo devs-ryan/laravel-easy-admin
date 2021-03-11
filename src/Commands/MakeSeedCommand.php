@@ -1,34 +1,26 @@
 <?php
 
 namespace DevsRyan\LaravelEasyAdmin\Commands;
+use DevsRyan\LaravelEasyAdmin\Services\FileService;
+use DevsRyan\LaravelEasyAdmin\Services\HelperService;
 
 use Illuminate\Console\Command;
-use DevsRyan\LaravelEasyAdmin\Services\FileService;
-use Exception;
 
-
-class ResetModelsCommand extends Command
+class MakeSeedCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'easy-admin:reset';
+    protected $signature = 'easy-admin:make-seed';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Reset the Easy Admin models file';
-
-    /**
-     * Helper Service.
-     *
-     * @var class
-     */
-    protected $fileService;
+    protected $description = 'Generate a seed file for all EasyAdmin models added';
 
     /**
      * Continue Commands.
@@ -36,6 +28,20 @@ class ResetModelsCommand extends Command
      * @var array
      */
     protected $continue_commands = ['y', 'yes'];
+
+    /**
+     * File Service.
+     *
+     * @var class
+     */
+    protected $fileService;
+
+    /**
+     * Helper Service.
+     *
+     * @var class
+     */
+    protected $helperService;
 
     /**
      * Create a new command instance.
@@ -46,6 +52,7 @@ class ResetModelsCommand extends Command
     {
         parent::__construct();
         $this->fileService = new FileService;
+        $this->helperService = new HelperService;
     }
 
     /**
@@ -55,6 +62,12 @@ class ResetModelsCommand extends Command
      */
     public function handle()
     {
+        //check AppModelList corrupted
+        if ($this->fileService->checkIsModelListCorrupted()) {
+            $this->info("App\EasyAdmin\AppModelList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
+            return;
+        }
+
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
         $continue = $this->ask("This will reset EasyAdmin completely, continue? [y]es or [n]o");
 
@@ -64,17 +77,10 @@ class ResetModelsCommand extends Command
             return;
         }
 
-        $this->fileService->removeAppDirectory();
-        $this->fileService->createAppDirectory();
-        $this->fileService->resetAppModelList();
-        $this->info('EasyAdmin models reset successfully.');
+        //generate seeds
+
     }
 }
-
-
-
-
-
 
 
 

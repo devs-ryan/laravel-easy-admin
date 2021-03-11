@@ -20,14 +20,14 @@ class RemoveUserCommand extends Command
      * @var string
      */
     protected $description = 'Remove a user from the database';
-    
+
     /**
      * Continue Commands.
      *
      * @var array
      */
     protected $continue_commands = ['y', 'yes'];
-    
+
     /**
      * Exit Commands.
      *
@@ -53,38 +53,37 @@ class RemoveUserCommand extends Command
     public function handle()
     {
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
-        
+
         //get user input
         $user_input = $this->ask("Enter a user email or id to be removed from the database");
         if (in_array($user_input, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }
-        
+
         //find user
         $user = DB::table('users')->where('email', $user_input)->first();
         if (!$user) {
             $user = DB::table('users')->where('id', $user_input)->first();
         }
-        
+
         //check user found
         if (!$user) {
             $this->info("User not found with the credentials provided.. terminating.");
             return;
         }
-        
+
         $continue = $this->ask("You are about to permanently remove a user from the database, continue? [y]es or [n]o");
-        
+
         //continue check
         if (!in_array(strtolower($continue), $this->continue_commands)) {
              $this->info("Command exit code entered.. terminating.");
+             return;
         }
-        else {
-            //delete user
-            DB::table('users')->where('id', $user->id)->delete();
-            $this->info("User was removed successfully!");
-        }
-        
+
+        //delete user
+        DB::table('users')->where('id', $user->id)->delete();
+        $this->info("User was removed successfully!");
     }
 }
 

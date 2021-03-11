@@ -44,7 +44,7 @@ class RemoveModelCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->FileService = new FileService;
+        $this->fileService = new FileService;
     }
 
     /**
@@ -55,7 +55,7 @@ class RemoveModelCommand extends Command
     public function handle()
     {
         //check AppModelList corrupted
-        if ($this->FileService->checkIsModelListCorrupted()) {
+        if ($this->fileService->checkIsModelListCorrupted()) {
             $this->info("App\EasyAdmin\AppModelList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
             return;
         }
@@ -93,16 +93,16 @@ class RemoveModelCommand extends Command
         }
 
         //check if package file has already (create otherwise)
-        if ($this->FileService->checkModelExists($model_path)) {
-            $this->FileService->removeModelFromList($namespace, $model);
+        if ($this->fileService->checkModelExists($model_path)) {
+            $this->fileService->removeModelFromList($namespace, $model);
             $this->info('Removed EasyAdmin models list file..');
         }
         else {
             $this->info('Model not found in EasyAdmin models list, checking for \App\EasyAdmin file..');
         }
         //check if App file exists
-        if ($this->FileService->checkPublicModelExists($model_path)) {
-            $this->FileService->removePublicModel($model_path);
+        if ($this->fileService->checkPublicModelExists($model_path)) {
+            $this->fileService->removePublicModel($model_path);
             $this->info('\App\EasyAdmin public file removed..');
         }
         else {
