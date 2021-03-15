@@ -78,7 +78,8 @@ class MakeSeedCommand extends Command
         }
 
         //generate seeds
-
+        $this->fileService->generateModelSeeds();
+        $this->info("Successfully generated seeder files");
     }
 }
 

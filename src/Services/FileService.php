@@ -21,17 +21,23 @@ class FileService
     /**
      * Template for public model classes
      *
-     * @var class
+     * @var string
      */
     protected $public_model_template;
 
     /**
      * Template for app models list
      *
-     * @var class
+     * @var string
      */
     protected $app_model_list_template;
 
+    /**
+     * Template for seeders
+     *
+     * @var string
+     */
+    protected $seeder_template;
 
     /**
      * Image resize
@@ -71,10 +77,13 @@ class FileService
         $this->helperService = new HelperService;
 
         $path = str_replace('/Services', '', __DIR__).'/FileTemplates/PublicModel.template';
-        $this->public_model_template = file_get_contents($path) or die("Unable to open file!");
+        $this->public_model_template = file_get_contents($path) or die("Unable to open PublicModel.template file");
 
         $path = str_replace('/Services', '', __DIR__).'/FileTemplates/AppModelList.template';
-        $this->app_model_list_template = file_get_contents($path) or die("Unable to open file!");
+        $this->app_model_list_template = file_get_contents($path) or die("Unable to open AppModelList.template file");
+
+        $path = str_replace('/Services', '', __DIR__).'/FileTemplates/Seeder.template';
+        $this->seeder_template = file_get_contents($path) or die("Unable to open Seeder.template file");
     }
 
     /**
@@ -400,6 +409,60 @@ class FileService
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Place Seeder files in
+     *
+     * @return void
+     */
+    public function generateModelSeeds() {
+
+        $models = $this->helperService->getAllConvertedModels();
+        foreach($models as $model) {
+            $model_name = $this->helperService->stripPathFromModel($model);;
+            $str = "";
+            $end = "        ]);\n";
+            $results = $model::all();
+
+            foreach($results as $result) {
+                if ($str != "") $str = "    \\$model::create([\n";
+                else $str = "\\$model::create([\n";
+
+                foreach($result->getAttributes() as $key => $value) {
+                    if (is_numeric($value)) $str .= "            '$key' => $value,\n";
+                    else $str .= "            '$key' => '$value',\n";
+                }
+                $str .= $end;
+            }
+
+            $file_contents = $this->seeder_template;
+            $file_contents = str_replace('{{seed_model_name}}', $model_name . "Seeder", $file_contents);
+            $file_contents = str_replace('{{create_fields}}', rtrim($str), $file_contents);
+
+            $write_path = database_path('seeders/' . $model_name . 'Seeder.php');
+            file_put_contents($write_path, $file_contents) or die("Unable to write to file!");
+
+            // write to seeder file
+            $call_seeder = '$this->call(' . $model_name . 'Seeder::class);';
+            $seeder_path = database_path('seeders/DatabaseSeeder.php');
+            $seeder_file_contents = file_get_contents($seeder_path) or die("Unable to open seeders/DatabaseSeeder.php file");
+
+            // skip if already included
+            if (strpos($seeder_file_contents, $call_seeder) !== false) {
+                continue;
+            }
+
+            // add to run function
+            $i = strpos($seeder_file_contents, 'run');
+            while ($i < strlen($seeder_file_contents) && $seeder_file_contents[$i] !== '{') {
+                $i++;
+            }
+
+            $insert = "\n        " . $call_seeder . "\n";
+            $seeder_file_contents = substr_replace($seeder_file_contents, $insert, $i + 1, 0);
+            file_put_contents($seeder_path, $seeder_file_contents) or die("Unable to write to file!");
         }
     }
 
