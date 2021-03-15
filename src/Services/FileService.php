@@ -460,6 +460,8 @@ class FileService
                 $i++;
             }
 
+            if ($i == strlen($seeder_file_contents)) throw new Exception('Main seeder file has been corrupted');
+
             $insert = "\n        " . $call_seeder . "\n";
             $seeder_file_contents = substr_replace($seeder_file_contents, $insert, $i + 1, 0);
             file_put_contents($seeder_path, $seeder_file_contents) or die("Unable to write to file!");
