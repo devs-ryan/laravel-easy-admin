@@ -421,7 +421,9 @@ class FileService
 
         $models = $this->helperService->getAllConvertedModels();
         foreach($models as $model) {
-            $model_name = $this->helperService->stripPathFromModel($model);;
+            $model_name = $this->helperService->stripPathFromModel($model);
+            $required_fields = $this->helperService->getRequiredFields($model);
+
             $str = "";
             $end = "        ]);\n";
             $results = $model::all();
@@ -432,6 +434,7 @@ class FileService
 
                 foreach($result->getAttributes() as $key => $value) {
                     if (is_numeric($value)) $str .= "            '$key' => $value,\n";
+                    elseif (!in_array($key, $required_fields) && (!$value || $value === '')) $str .= "            '$key' => null,\n";
                     else $str .= "            '$key' => '$value',\n";
                 }
                 $str .= $end;

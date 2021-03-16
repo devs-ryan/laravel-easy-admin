@@ -1,6 +1,5 @@
 <?php
 namespace DevsRyan\LaravelEasyAdmin\Services;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 use DevsRyan\LaravelEasyAdmin\Services\FileService;
@@ -20,7 +19,7 @@ class ValidationService
     /**
      * Create a new service instance.
      *
-     * @return void
+     * @param boolean $load_file_service
      */
     public function __construct()
     {
@@ -119,27 +118,6 @@ class ValidationService
             return 'Error:' . $e->getMessage();
         }
         return 'Success: The record was removed!';
-    }
-
-    /**
-     * Get the list of required fields
-     *
-     * @return array
-     */
-    public function getRequiredFields($model)
-    {
-        $record = new $model;
-        $table = $record->getTable();
-        $required = [];
-
-        $columns = DB::select('SHOW COLUMNS FROM ' . $table);
-
-        foreach($columns as $column_data) {
-            if ($column_data->Null == 'NO') {
-                array_push($required, $column_data->Field);
-            }
-        }
-        return $required;
     }
 }
 

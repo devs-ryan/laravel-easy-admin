@@ -69,7 +69,7 @@ class MakeSeedCommand extends Command
         }
 
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
-        $continue = $this->ask("This will reset EasyAdmin completely, continue? [y]es or [n]o");
+        $continue = $this->ask("This will overwrite any existing EasyAdmin seed files, continue? [y]es or [n]o");
 
         //continue check
         if (!in_array(strtolower($continue), $this->continue_commands)) {

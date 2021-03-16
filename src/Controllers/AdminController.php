@@ -183,7 +183,7 @@ class AdminController extends Controller
 
         //create fields
         $fields = $appModel::create();
-        $required_fields = $this->validationService->getRequiredFields($model_path);
+        $required_fields = $this->helperService->getRequiredFields($model_path);
 
         // wysiwyg_editors
         $wysiwyg_editors = $appModel::wysiwyg_editors();
@@ -287,7 +287,7 @@ class AdminController extends Controller
 
         //update fields
         $fields = $appModel::update();
-        $required_fields = $this->validationService->getRequiredFields($model_path);
+        $required_fields = $this->helperService->getRequiredFields($model_path);
 
         // wysiwyg_editors
         $wysiwyg_editors = $appModel::wysiwyg_editors();

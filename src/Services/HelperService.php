@@ -456,6 +456,27 @@ class HelperService
         }
         return false;
     }
+
+    /**
+     * Get the list of required fields
+     *
+     * @return array
+     */
+    public function getRequiredFields($model)
+    {
+        $record = new $model;
+        $table = $record->getTable();
+        $required = [];
+
+        $columns = DB::select('SHOW COLUMNS FROM ' . $table);
+
+        foreach($columns as $column_data) {
+            if ($column_data->Null == 'NO') {
+                array_push($required, $column_data->Field);
+            }
+        }
+        return $required;
+    }
 }
 
 
