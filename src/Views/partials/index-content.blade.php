@@ -25,12 +25,16 @@
                                     )
                                         {{ ($column == true) ? 'true' : 'false' }}
                                     @elseif(in_array($key, $file_fields))
-                                        {{ $column }}
                                         @if (DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) !== null)
-                                            <br>
+                                            @if(DevsRyan\LaravelEasyAdmin\Services\FileService::checkIsImage($model, $key, $column))
+                                                <img class="img-preview" width="80" height="80" src="{{ asset(DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column, true)) }}" alt="thumbnail">
+                                                <br>
+                                            @endif
                                             <a target="_blank" href="{{ DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) }}">
-                                                <i class="fas fa-eye"></i>
-                                                VIEW EXISTING FILE
+                                                <small>
+                                                    <i class="fas fa-eye"></i>
+                                                    VIEW FILE
+                                                </small>
                                             </a>
                                         @else
                                             <br>

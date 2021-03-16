@@ -3,6 +3,7 @@
  */
 .clear-button:hover{cursor:pointer;}
 .action-header{width: 114px !important; min-width: 114px !important; max-width: 114px !important;}
+.img-preview {background-color: #d6ffe1;}
 /* Large Devices, Wide Screens */
 @media only screen and (min-width : 992px) {
     .border-nav{

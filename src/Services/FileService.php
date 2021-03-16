@@ -472,14 +472,33 @@ class FileService
     }
 
     /**
-     * Retrieve a preview link for a model/field name/filename
+     * Check if a file is an image or file
      *
      * @param string $model_name
      * @param string $field_name
      * @param string $value
      * @return void
      */
-    public static function getFileLink($model_name, $field_name, $value) {
+    public static function checkIsImage($model_name, $field_name, $value) {
+
+        // check if is file
+        $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name;
+        if (file_exists($path . '/' . $value)) {
+            return false;
+        }
+         return true;
+    }
+
+    /**
+     * Retrieve a preview link for a model/field name/filename
+     *
+     * @param string $model_name
+     * @param string $field_name
+     * @param string $value
+     * @param boolean $thumbnail
+     * @return void
+     */
+    public static function getFileLink($model_name, $field_name, $value, $thumbnail = false) {
 
         // check if is file
         $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name;
@@ -490,7 +509,11 @@ class FileService
         // check if is an image
          $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original';
          if (file_exists($path . '/' . $value)) {
-             return '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/original/' . $value;
+            return '/devsryan/LaravelEasyAdmin/storage/img/'
+                . $model_name
+                . '-'
+                . $field_name
+                . ($thumbnail ? '/thumbnail/' : '/original/') . $value;
          }
 
          return null;
