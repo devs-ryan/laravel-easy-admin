@@ -6,11 +6,11 @@
 @section('content')
     <div class="container-fluid m-0 p-3" style="width: 100% !important;">
         <div class="row">
-            <div class="col-md-3" id="search-filter-sidebar">
+            <div class="col-md-1" id="search-filter-sidebar">
                 @include('easy-admin::partials.search-filters')
                 @include('easy-admin::partials.need-help-card')
             </div>
-            <div class="col-md-9" id="index-content">
+            <div class="col-md-11" id="index-content">
                 @include('easy-admin::partials.index-content')
             </div>
         </div>
