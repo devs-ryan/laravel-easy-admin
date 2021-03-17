@@ -98,6 +98,21 @@ class {{model_name}}
             // 'field_name'
         ];
     }
+
+    /**
+     * Limit for minimum and maximum models of this type.
+     * Set to `null` for no limit,
+     * otherwise a positive integer is expected
+     *
+     * @return Array
+     */
+    public static function limits()
+    {
+        return [
+            'min' => null,
+            'max' => null
+        ];
+    }
 }
 
 
