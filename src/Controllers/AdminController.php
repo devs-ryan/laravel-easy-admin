@@ -60,6 +60,7 @@ class AdminController extends Controller
      */
     public function home()
     {
+        //gather info for view
         $nav_items = $this->helperService->getModelsForNav();
         $pages = $this->helperService->getAllPageModels();
         $posts = $this->helperService->getAllPostModels();
@@ -84,7 +85,7 @@ class AdminController extends Controller
      */
     public function index($model, Request $request)
     {
-        //gather info for action
+        //gather info for view
         $url_model = $model;
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
@@ -107,6 +108,12 @@ class AdminController extends Controller
 
         // files
         $file_fields = $appModel::files();
+
+        //check limits
+        $limits = $appModel::limits();
+
+        //get total results
+        $count = $model_path::count();
 
         //apply filters
         foreach($request->except(['parent_id']) as $filter => $value) {
@@ -153,7 +160,9 @@ class AdminController extends Controller
             ->with('allowed', $allowed)
             ->with('url_model', $url_model)
             ->with('file_fields', $file_fields)
-            ->with('parent_id', $parent_id);
+            ->with('parent_id', $parent_id)
+            ->with('limits', $limits)
+            ->with('model_count', $count);
     }
 
     /**
@@ -180,6 +189,10 @@ class AdminController extends Controller
         //check allowed
         $allowed = $appModel::allowed();
         if (!in_array('create', $allowed)) abort(403, 'Unauthorized action.');
+
+        //check limits
+        $max = $appModel::limits()['max'];
+        if ($max && $model_path::count() >= $max) abort(403, 'Unauthorized action.');
 
         //create fields
         $fields = $appModel::create();
@@ -225,16 +238,20 @@ class AdminController extends Controller
      */
     public function store($model, Request $request)
     {
-        //gather info for view
+        //gather info for action
         $url_model = $model;
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
         $appModel = "App\\EasyAdmin\\" . $model;
+        $file_fields = $appModel::files();
 
         //check allowed
         $allowed = $appModel::allowed();
-        $file_fields = $appModel::files();
         if (!in_array('create', $allowed)) abort(403, 'Unauthorized action.');
+
+        //check limits
+        $max = $appModel::limits()['max'];
+        if ($max && $model_path::count() >= $max) abort(403, 'Unauthorized action.');
 
         //create
         $response = $this->validationService->createModel($request, $model_path, $model, $file_fields);
@@ -340,11 +357,10 @@ class AdminController extends Controller
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
         $appModel = "App\\EasyAdmin\\" . $model;
-        $allowed = $appModel::allowed();
+        $file_fields = $appModel::files();
 
         //check allowed
         $allowed = $appModel::allowed();
-        $file_fields = $appModel::files();
         if (!in_array('update', $allowed)) abort(403, 'Unauthorized action.');
 
         //find model
@@ -379,12 +395,15 @@ class AdminController extends Controller
         $model_path = $this->helperService->convertUrlModel($url_model);
         $model = $this->helperService->stripPathFromModel($model_path);
         $appModel = "App\\EasyAdmin\\" . $model;
-        $allowed = $appModel::allowed();
+        $file_fields = $appModel::files();
 
         //check allowed
         $allowed = $appModel::allowed();
-        $file_fields = $appModel::files();
         if (!in_array('delete', $allowed)) abort(403, 'Unauthorized action.');
+
+        //check limits
+        $min = $appModel::limits()['min'];
+        if ($min && $model_path::count() <= $min) abort(403, 'Unauthorized action.');
 
         //find model
         $data = $model_path::findOrFail($id);

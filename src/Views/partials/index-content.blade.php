@@ -57,7 +57,7 @@
                                     <i class="fas fa-eye"></i>
                                 @endif
                             </a>
-                            @if(in_array('delete', $allowed))
+                            @if(in_array('delete', $allowed) && (!$limits['min'] || $model_count > $limits['min']))
                                 <form class="float-right" action="/easy-admin/{{$url_model}}/{{ $row->id }}" method="post">
                                     @csrf
                                     @method('DELETE')

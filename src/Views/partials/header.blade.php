@@ -14,7 +14,6 @@
                         <i class="fas fa-compass"></i> Navigation
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        {{ var_dump($nav_items) }}
                         @foreach($nav_items as $link => $nav_title)
                             @if(!in_array($nav_title, $partial_models) || in_array("Global.$nav_title", $partials))
                                 <a class="dropdown-item" href="/easy-admin/{{ $link }}/index">
@@ -46,10 +45,10 @@
         </ul>
     </div>
 </nav>
-<div class="w-100 text-white p-3" style="background-color: rgb(230,231,231)!important;">
+<div class="w-100 p-3" style="background-color: rgb(230,231,231)!important;">
     <div class="row">
         <div class="col-md-6">
-            <span class="text-secondary">
+            <div class="text-secondary">
                 ADMIN /
                 @if(Request::is('easy-admin/*/index*'))
                     @if(isset($parent_id) && $parent_id !== null)
@@ -65,7 +64,7 @@
                         <a href="/easy-admin">HOME</a> / <a href="/easy-admin/{{ $url_model }}/index">{{ strtoupper($model) }} - INDEX</a>
                     @endif
                 @endif
-            </span>
+            </div>
             <h1 class="text-dark">
                 @if(isset($model))
                     {{ $model }}
@@ -73,17 +72,37 @@
                     {{ $title }}
                 @endif
             </h1>
+            <h6 class="mb-0">
+                @if(Request::is('easy-admin/*/index*'))
+                    <strong>Results:</strong> {{ $model_count }} -
+                    <strong>Showing:</strong> {{ $data->count() }} <br>
+                    @if(isset($model) && ($limits['min'] || $limits['max']))
+                        <strong>Min:</strong> {{ $limits['min'] ? $limits['min'] : 'None' }}
+                        |
+                        <strong>Max:</strong> {{ $limits['max'] ? $limits['max'] : 'None' }}
+                    @endif
+                @endif
+            </h6>
         </div>
-        @if(Request::is('easy-admin/*/index*') and in_array('create', $allowed))
-            <div class="col-md-6 text-right mt-auto">
+
+        <div class="col-md-6 text-right mt-auto">
+            @if(Request::is('easy-admin/*/index*') and in_array('create', $allowed) && (!$limits['max'] || $model_count < $limits['max']))
                 @php
                     $parent_id_for_create = isset($parent_id) && $parent_id !== null ? "?parent_id=$parent_id" : '';
                 @endphp
                 <a href="/easy-admin/{{$url_model}}/create{{$parent_id_for_create}}" class="btn btn-primary" role="button" aria-pressed="true">
                     <i class="fas fa-folder-plus"></i> Create {{ $model }}
                 </a>
-            </div>
-        @endif
+            @endif
+            @if(Request::is('easy-admin/*/index*'))
+                @if($limits['max'] && $model_count >= $limits['max'])
+                    <div class="text-info">* <i>The max # of records has been reached.</i></div>
+                @endif
+                @if($limits['min'] && $model_count <= $limits['min'])
+                    <div class="text-info">* <i>The min # of records has been reached.</i></div>
+                @endif
+            @endif
+        </div>
     </div>
 </div>
 @include('easy-admin::partials.messages')
