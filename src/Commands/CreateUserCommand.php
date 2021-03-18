@@ -4,7 +4,6 @@ namespace DevsRyan\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use DevsRyan\LaravelEasyAdmin\Services\ValidationService;
 use Hash, Exception;
 
 class CreateUserCommand extends Command

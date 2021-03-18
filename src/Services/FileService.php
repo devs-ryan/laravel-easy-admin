@@ -4,7 +4,7 @@ namespace DevsRyan\LaravelEasyAdmin\Services;
 use Illuminate\Support\Facades\DB;
 use DevsRyan\LaravelEasyAdmin\Services\HelperService;
 use Intervention\Image\Facades\Image;
-use Exception;
+use Hash, Exception;
 use Throwable;
 
 
@@ -433,7 +433,8 @@ class FileService
                 else $str = "\\$model::create([\n";
 
                 foreach($result->getAttributes() as $key => $value) {
-                    if (is_numeric($value)) $str .= "            '$key' => $value,\n";
+                    if ($key === 'password') Hash::make(env('EASY_ADMIN_DEFAULT_PASSWORD', 'secret'));
+                    elseif (is_numeric($value)) $str .= "            '$key' => $value,\n";
                     elseif (!in_array($key, $required_fields) && (!$value || $value === '')) $str .= "            '$key' => null,\n";
                     else $str .= "            '$key' => '$value',\n";
                 }

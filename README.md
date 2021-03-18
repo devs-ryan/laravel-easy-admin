@@ -12,9 +12,7 @@
 
 ## What is Laravel Easy Admin
 
-Laravel Easy Admin is a back end UI designed for developers, root users with decent database knowledge or basic projects. It is not meant to serve as a complete Admin panel with full capabilities (see <a href="https://nova.laravel.com/">Lavavel Nova</a> if this is what you are looking for). On the contrary it is mean to act as a basic admin panel, with limited customizability, that can get up and running within minutes.
-
-Laravel Easy Admin leverages a powerful set of artisan commands to add/remove resources. This is combined with public files where functionality can be removed or added via commenting/uncommenting code which allows Easy Admin to give basic ability for customization. If you need a quick and dirty admin panel for your project, this package is for you! :)
+- To Be Determined.
 
 
 ## Installation
@@ -30,7 +28,8 @@ The following optional URL variables can be set in the Laravel .env file:
 - `APP_URL` (provides a link back to your app on the login page nav bar)
 - `EASY_ADMIN_APP_NAME` (Change the name shown in the top left of the Easy Admin nav bar)
 - `EASY_ADMIN_SUPPORT_EMAIL` (Provide a help email address to your Easy Admin users)
-- `EASY_ADMIN_DEFAULT_NAMESPACE` (set true to user namespace App\Models)
+- `EASY_ADMIN_DEFAULT_NAMESPACE` (Set true to user namespace App\Models)
+- `EASY_ADMIN_DEFAULT_PASSWORD` (This password will be set for any fields matching `password` during seed generation. Default is `secret`)
 
 #### Creating an Easy Admin user
 - `php artisan easy-admin:create-user`
