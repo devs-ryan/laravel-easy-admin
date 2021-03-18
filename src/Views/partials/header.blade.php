@@ -86,7 +86,7 @@
         </div>
 
         <div class="col-md-6 text-right mt-auto">
-            @if(Request::is('easy-admin/*/index*') and in_array('create', $allowed) && (!$limits['max'] || $model_count < $limits['max']))
+            @if(Request::is('easy-admin/*/index*') && in_array('create', $allowed) && (!$limits['max'] || $model_count < $limits['max']))
                 @php
                     $parent_id_for_create = isset($parent_id) && $parent_id !== null ? "?parent_id=$parent_id" : '';
                 @endphp

@@ -95,25 +95,19 @@ class AdminController extends Controller
         $appModel = "App\\EasyAdmin\\" . $model;
         $index_columns = $appModel::index();
         $allowed = $appModel::allowed();
+        $file_fields = $appModel::files();
+        $limits = $appModel::limits();
+        $model_count = $model_path::count();
         $parent_id = ($request->parent_id && ctype_digit($request->parent_id) && intval($request->parent_id) > 0)
             ? $request->parent_id : null;
 
-        //get data
+        //get results data
         $check_model = $model_path::first();
         if ($check_model && $check_model->id)
             $data = $model_path::orderByDesc('id');
         else if ($check_model && $check_model->create_at)
             $data = $model_path::orderByDesc('create_at');
         else $data = $model_path::query();
-
-        // files
-        $file_fields = $appModel::files();
-
-        //check limits
-        $limits = $appModel::limits();
-
-        //get total results
-        $count = $model_path::count();
 
         //apply filters
         foreach($request->except(['parent_id']) as $filter => $value) {
@@ -162,7 +156,7 @@ class AdminController extends Controller
             ->with('file_fields', $file_fields)
             ->with('parent_id', $parent_id)
             ->with('limits', $limits)
-            ->with('model_count', $count);
+            ->with('model_count', $model_count);
     }
 
     /**
@@ -296,6 +290,8 @@ class AdminController extends Controller
         $partial_models = $this->helperService->stripParentFromPartials($partials);
         $appModel = "App\\EasyAdmin\\" . $model;
         $model_partials = $this->helperService->getPartials($model);
+        $limits = $appModel::limits();
+        $model_count = $model_path::count();
         $parent_id = ($request->parent_id && ctype_digit($request->parent_id) && intval($request->parent_id) > 0)
             ? $request->parent_id : null;
 
@@ -339,7 +335,9 @@ class AdminController extends Controller
             ->with('file_fields', $file_fields)
             ->with('model_partials', $model_partials)
             ->with('parent_id', $parent_id)
-            ->with('relationship_column_name', $relationship_column_name);
+            ->with('relationship_column_name', $relationship_column_name)
+            ->with('limits', $limits)
+            ->with('model_count', $model_count);
     }
 
     /**
