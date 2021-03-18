@@ -1,7 +1,6 @@
 <h2 align="center">Laravel Easy Admin</h2>
 <h3 align="center">~ A simple admin panel for Laravel projects.</h3>
 <br><br>
-<p align="center">Demo: http://easy-admin-demo.fullstack-ds.com (credentials: test@test.com | secret)</p>
 <p align="center"><img src="https://raw.githubusercontent.com/devs-ryan/img-storage/master/easy-admin-header.png"></p>
 <p align="center">
 <a target="_blank" href="https://laravel.com/"><img src="https://img.shields.io/badge/Built%20For-Laravel-orange" alt="Built For Laravel"></a>
