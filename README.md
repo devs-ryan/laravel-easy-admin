@@ -30,6 +30,7 @@ The following optional URL variables can be set in the Laravel .env file:
 - `EASY_ADMIN_SUPPORT_EMAIL` (Provide a help email address to your Easy Admin users)
 - `EASY_ADMIN_DEFAULT_NAMESPACE` (Set true to user namespace App\Models)
 - `EASY_ADMIN_DEFAULT_PASSWORD` (This password will be set for any fields matching `password` during seed generation. Default is `secret`)
+- `EASY_ADMIN_BASE_URL` (Change the base URL for your admin area. Default is `easy-admin)
 
 #### Creating an Easy Admin user
 - `php artisan easy-admin:create-user`

@@ -1,11 +1,11 @@
 <?php
-Route::group(['middleware' => ['web'], 'prefix' => 'easy-admin', 'namespace' => 'DevsRyan\LaravelEasyAdmin\Controllers'], function() {
-    
+Route::group(['middleware' => ['web'], 'prefix' => env('EASY_ADMIN_BASE_URL', 'easy-admin'), 'namespace' => 'DevsRyan\LaravelEasyAdmin\Controllers'], function() {
+
     //Auth Routes
     Route::get('/login', 'AuthController@show')->name('easy-admin-login');
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout')->name('easy-admin-logout');
-    
+
     //EasyAdmin Routes
     Route::get('/', 'AdminController@home');
     Route::get('{model}/index', 'AdminController@index');
