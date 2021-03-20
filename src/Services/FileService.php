@@ -429,7 +429,7 @@ class FileService
             $results = $model::all();
 
             foreach($results as $result) {
-                if ($str != "") $str = "    \\$model::create([\n";
+                if ($str != "") $str .= "        \\$model::create([\n";
                 else $str = "\\$model::create([\n";
 
                 foreach($result->getAttributes() as $key => $value) {
