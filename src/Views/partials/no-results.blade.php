@@ -5,7 +5,10 @@
             <p class="lead">
                 Sorry there are no results found.
                 @if(in_array('create', $allowed))
-                    You can create one: <a href="/easy-admin/{{$url_model}}/create"> Click Here</a>
+                    @php
+                        $parent_id_for_create = isset($parent_id) && $parent_id !== null ? "?parent_id=$parent_id" : '';
+                    @endphp
+                    You can create one: <a href="/easy-admin/{{$url_model}}/create{{$parent_id_for_create}}"> Click Here</a>
                 @endif
             </p>
         </div>

@@ -93,7 +93,11 @@ class HelperService
 
                 // partial and parent found
                 if ($model === $partial) {
-                    if ($parent === 'Global') return $html; // no need to do anything more for global partials}
+                    if ($parent === 'Global') {
+                        $parent = $model;
+                        $model = 'EXIT_LOOP_EASY_ADMIN_CODE';
+                        break; // no need to do anything more for global partials
+                    }
 
                     // find parent_id if not set from initial loop
                     if (!$initial_loop) {
