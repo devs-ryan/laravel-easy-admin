@@ -31,7 +31,7 @@
             </li>
             <li class="nav-item border-nav px-3">
                 <div class="nav-link">
-                    <a target="_blank" class="text-decoration-none text-success" href="{{ env('APP_URL') }}"><i class="fas fa-home"></i> App Home</a>
+                    <a target="_blank" class="text-decoration-none text-success" href="{{ env('APP_URL', '/') }}"><i class="fas fa-home"></i> App Home</a>
                 </div>
             </li>
             <li class="nav-item pl-3">

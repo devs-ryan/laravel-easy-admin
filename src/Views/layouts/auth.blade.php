@@ -31,7 +31,7 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <div class="nav-link">
-                                <a class="text-decoration-none text-warning" href="{{ env('APP_URL') }}"><i class="fas fa-home"></i> App Home</a>
+                                <a class="text-decoration-none text-warning" href="{{ env('APP_URL', '/') }}"><i class="fas fa-home"></i> App Home</a>
                             </div>
                         </li>
                     </ul>
