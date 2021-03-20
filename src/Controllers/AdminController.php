@@ -262,13 +262,19 @@ class AdminController extends Controller
                 ->with('message', $response['message']);
         }
 
-        // create + redirect back to create form
-        if ($response['record'] === null)
+        // error submission
+        if ($response['record'] === null) {
             return redirect('/easy-admin/'. $url_model .'/create' . $redirect_parent_id)
                 ->withInput()->with('message', $response['message']);
-        else
-            return redirect('/easy-admin/'. $url_model .'/create' . $redirect_parent_id)
-                ->with('message', $response['message']);
+        }
+
+        // create + redirect back to index form when max is met or create form
+        if ($model_path::count() >= $max) $redirect = '/index';
+        else $redirect = '/create';
+
+        // create + redirect back to create form
+        return redirect('/easy-admin/'. $url_model . $redirect . $redirect_parent_id)
+            ->with('message', $response['message']);
     }
 
     /**
