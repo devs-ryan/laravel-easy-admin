@@ -19,6 +19,10 @@
 @endif
 
 @foreach($fields as $field)
+
+    {{-- Skip relationship field that is loaded above --}}
+    @php if ($relationship_column_name === $field) continue; @endphp
+
     <div class="form-group row">
         <label class="col-sm-12 col-form-label">
             @if(in_array($field, $required_fields))

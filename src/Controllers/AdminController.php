@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use DevsRyan\LaravelEasyAdmin\Services\HelperService;
 use DevsRyan\LaravelEasyAdmin\Services\ValidationService;
 use Auth;
+use Exception;
 
 class AdminController extends Controller
 {
@@ -137,6 +138,7 @@ class AdminController extends Controller
             $parent = $this->helperService->findParent($model);
             $relationship_column_name = $this->helperService->findParentIdColumnName($parent, $nav_items);
             $data = $data->where($relationship_column_name, $request->parent_id);
+            $model_count = $model_path::where($relationship_column_name, $request->parent_id)->count();
         }
 
         //paginate
@@ -155,6 +157,7 @@ class AdminController extends Controller
             ->with('url_model', $url_model)
             ->with('file_fields', $file_fields)
             ->with('parent_id', $parent_id)
+            ->with('relationship_column_name', $relationship_column_name ?? null)
             ->with('limits', $limits)
             ->with('model_count', $model_count);
     }
@@ -184,10 +187,6 @@ class AdminController extends Controller
         $allowed = $appModel::allowed();
         if (!in_array('create', $allowed)) abort(403, 'Unauthorized action.');
 
-        //check limits
-        $max = $appModel::limits()['max'];
-        if ($max && $model_path::count() >= $max) abort(403, 'Unauthorized action.');
-
         //create fields
         $fields = $appModel::create();
         $required_fields = $this->helperService->getRequiredFields($model_path);
@@ -203,7 +202,15 @@ class AdminController extends Controller
         if ($request->has('parent_id')) {
             $parent = $this->helperService->findParent($model);
             $relationship_column_name = $this->helperService->findParentIdColumnName($parent, $nav_items);
+            $model_count = $model_path::where($relationship_column_name, $request->parent_id)->count();
         }
+        else {
+            $model_count = $model_path::count();
+        }
+
+        //check limits
+        $max = $appModel::limits()['max'];
+        if ($max && $model_count >= $max) abort(403, 'Unauthorized action.');
 
         //return view
         return view('easy-admin::create')
@@ -244,8 +251,17 @@ class AdminController extends Controller
         if (!in_array('create', $allowed)) abort(403, 'Unauthorized action.');
 
         //check limits
+        if ($request->has('easy_admin_submit_with_parent_id')) {
+            $nav_items = $this->helperService->getModelsForNav();
+            $parent = $this->helperService->findParent($model);
+            $relationship_column_name = $this->helperService->findParentIdColumnName($parent, $nav_items);
+            $model_count = $model_path::where($relationship_column_name, $request->easy_admin_submit_with_parent_id)->count();
+        }
+        else {
+            $model_count = $model_path::count();
+        }
         $max = $appModel::limits()['max'];
-        if ($max && $model_path::count() >= $max) abort(403, 'Unauthorized action.');
+        if ($max && $model_count >= $max) abort(403, 'Unauthorized action.' . $model_count);
 
         //create
         $response = $this->validationService->createModel($request, $model_path, $model, $file_fields);
@@ -269,7 +285,7 @@ class AdminController extends Controller
         }
 
         // create + redirect back to index form when max is met or create form
-        if ($model_path::count() >= $max) $redirect = '/index';
+        if (($model_count + 1) >= $max) $redirect = '/index';
         else $redirect = '/create';
 
         // create + redirect back to create form
@@ -406,8 +422,17 @@ class AdminController extends Controller
         if (!in_array('delete', $allowed)) abort(403, 'Unauthorized action.');
 
         //check limits
+        if ($request->has('easy_admin_delete_with_parent_id')) {
+            $nav_items = $this->helperService->getModelsForNav();
+            $parent = $this->helperService->findParent($model);
+            $relationship_column_name = $this->helperService->findParentIdColumnName($parent, $nav_items);
+            $model_count = $model_path::where($relationship_column_name, $request->easy_admin_delete_with_parent_id)->count();
+        }
+        else {
+            $model_count = $model_path::count();
+        }
         $min = $appModel::limits()['min'];
-        if ($min && $model_path::count() <= $min) abort(403, 'Unauthorized action.');
+        if ($min && $model_count <= $min) abort(403, 'Unauthorized action.');
 
         //find model
         $data = $model_path::findOrFail($id);
