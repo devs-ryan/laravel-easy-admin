@@ -41,7 +41,7 @@
                                             <span class="alert-info">FILE NOT FOUND</span>
                                         @endif
                                     @else
-                                        {{ $column }}
+                                        {{ strlen($column) > 53 ? substr($column, 0, 50) . '...' : $column }}
                                     @endif
                                 </td>
                             @endif
