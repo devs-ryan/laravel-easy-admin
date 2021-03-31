@@ -285,7 +285,7 @@ class AdminController extends Controller
         }
 
         // create + redirect back to index form when max is met or create form
-        if (($model_count + 1) >= $max) $redirect = '/index';
+        if ($max && ($model_count + 1) >= $max) $redirect = '/index';
         else $redirect = '/create';
 
         // create + redirect back to create form
