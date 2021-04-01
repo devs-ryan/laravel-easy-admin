@@ -436,7 +436,7 @@ class FileService
                     if ($key === 'password') Hash::make(env('EASY_ADMIN_DEFAULT_PASSWORD', 'secret'));
                     elseif (is_numeric($value)) $str .= "            '$key' => $value,\n";
                     elseif (!in_array($key, $required_fields) && (!$value || $value === '')) $str .= "            '$key' => null,\n";
-                    else $str .= "            '$key' => '$value',\n";
+                    else $str .= "            '$key' => '" . str_replace("'", "\'", $value) . "',\n";
                 }
                 $str .= $end;
             }
