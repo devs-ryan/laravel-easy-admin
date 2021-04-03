@@ -51,6 +51,18 @@ class AppModelList
             //Models Here - Format: PageModel.Model || Global.Model
         ];
     }
+
+    /**
+     * Return array of Custom Links
+     *
+     * @return Array
+     */
+    public static function customLinks()
+    {
+        return [
+            //Links Here - Format: Title.URL
+        ];
+    }
 }
 
 

@@ -395,18 +395,14 @@ class FileService
             if (in_array($field_name, $file_fields)) {
 
                 // unlink all file paths
-                $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name;
-                if (file_exists($path . '/' . $value)) {
-                    unlink($path . '/' . $value);
-                }
+                $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $value;
+                if (file_exists($path)) unlink($path);
 
 
                 // unlink all image paths
                 foreach($this->image_sizes as $name => $size) {
-                    $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $name;
-                    if (file_exists($path . '/' . $value)) {
-                        unlink($path . '/' . $value);
-                    }
+                    $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $name . '/' . $value;
+                    if (file_exists($path)) unlink($path);
                 }
             }
         }
