@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="p-md-5">
-        <div class="jumbotron">
+        <div class="jumbotron col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
             <h3>App Index</h3>
             <p class="lead">Select an asset from the list below:</p>
             <hr class="my-4">
