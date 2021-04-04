@@ -24,6 +24,7 @@ class {{model_name}}
             'create',
             'update',
             'delete',
+            'seed'
         ];
     }
 

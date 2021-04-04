@@ -409,7 +409,7 @@ class FileService
     }
 
     /**
-     * Place Seeder files in
+     * Generate seeders
      *
      * @return void
      */
@@ -419,6 +419,11 @@ class FileService
         foreach($models as $model) {
             $model_name = $this->helperService->stripPathFromModel($model);
             $required_fields = $this->helperService->getRequiredFields($model);
+            $appModel = "App\\EasyAdmin\\" . $model_name;
+            $allowed = $appModel::allowed();
+
+            // skip when seed is commented out in allowed array
+            if (!in_array('seed', $allowed)) continue;
 
             $str = "";
             $end = "        ]);\n";
