@@ -83,6 +83,20 @@
                 </ul>
             @endif
 
+            {{-- Custom Links --}}
+            @if (count($custom_links) > 0)
+                <h5 class="pt-4">
+                    Links:
+                </h5>
+                <ul class="list-group">
+                    @foreach($custom_links as $title => $link)
+                        <a href="{{ $link }}">
+                            <li class="list-group-item">{{ $title }}</li>
+                        </a>
+                    @endforeach
+                </ul>
+            @endif
+
             {{-- No Results --}}
             @if(count($nav_items) == 0)
                 <ul class="list-group">

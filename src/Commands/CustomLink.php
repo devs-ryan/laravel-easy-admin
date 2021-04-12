@@ -3,6 +3,7 @@
 namespace DevsRyan\LaravelEasyAdmin\Commands;
 
 use Illuminate\Console\Command;
+use DevsRyan\LaravelEasyAdmin\Services\FileService;
 
 class CustomLink extends Command
 {
@@ -28,6 +29,13 @@ class CustomLink extends Command
     protected $exit_commands = ['q', 'quit', 'exit'];
 
     /**
+     * File Service.
+     *
+     * @var class
+     */
+    protected $fileService;
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -35,6 +43,7 @@ class CustomLink extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->fileService = new FileService;
     }
 
     /**
@@ -44,6 +53,13 @@ class CustomLink extends Command
      */
     public function handle()
     {
+
+        //check AppModelList corrupted
+        if ($this->fileService->checkIsModelListCorrupted()) {
+            $this->info("App\EasyAdmin\AppModelList.php is corrupt.\nRun php artisan easy-admin:reset or correct manually to continue.");
+            return;
+        }
+
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
 
         $remove_option = $this->option('remove');
@@ -51,15 +67,16 @@ class CustomLink extends Command
 
 
         if ($remove_option) {
-            //check if already exists
-
-            $url = $this->ask("Enter the custom link url or path");
-
+            $this->fileService->removeCustomLink($title);
+            $action = 'removed';
         }
         else {
-            // remove from custom links
+            $url = $this->ask("Enter the custom link url or path");
+            $created = $this->fileService->addOrUpdateCustomLink($title, $url);
+            $action = $created ? 'created' : 'updated';
         }
 
+        $this->info("Custom link " . $action . " successfully.");
 
     }
 }

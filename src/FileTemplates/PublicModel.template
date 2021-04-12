@@ -71,6 +71,19 @@ class {{model_name}}
     }
 
     /**
+     * Fields expected to bet treated as select inputs.
+     *
+     * @return Array
+     */
+    public static function selectInputs()
+    {
+        return [
+            /* Note: List field names/options below (leave this comment) */
+            // 'field_name' => 'csv list of options'
+        ];
+    }
+
+    /**
      * Fields expected to bet treated as images.
      * Fields to be type 'string' to store path data
      * Images will be stored in 'public/devsryan/LaravelEasyAdmin/storage/img'

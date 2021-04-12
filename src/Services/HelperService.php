@@ -388,6 +388,22 @@ class HelperService
     }
 
     /**
+     * Return all partial models added to admin area
+     * Format Model
+     *
+     * @return Array
+     */
+    public function getAllCustomLinks()
+    {
+        try {
+            return AppModelList::customLinks();
+        }
+        catch (Throwable $t) {
+            throw new Exception('Parse Error: AppModelList.php has been corrupted.');
+        }
+    }
+
+    /**
      * Get public model file
      *
      * @return Array

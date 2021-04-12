@@ -67,6 +67,7 @@ class AdminController extends Controller
         $posts = $this->helperService->getAllPostModels();
         $partials = $this->helperService->getAllPartialModels();
         $partial_models = $this->helperService->stripParentFromPartials($partials);
+        $custom_links = $this->helperService->getAllCustomLinks();
 
         return view('easy-admin::home')
             ->with('nav_items', $nav_items)
@@ -74,6 +75,7 @@ class AdminController extends Controller
             ->with('posts', $posts)
             ->with('partials', $partials)
             ->with('partial_models', $partial_models)
+            ->with('custom_links', $custom_links)
             ->with('title', 'Home');
     }
 

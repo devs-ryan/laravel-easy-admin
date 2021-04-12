@@ -461,15 +461,84 @@ class FileService
 
             // add to run function
             $i = strpos($seeder_file_contents, 'run');
-            while ($i < strlen($seeder_file_contents) && $seeder_file_contents[$i] !== '{') {
-                $i++;
-            }
+            while ($i < strlen($seeder_file_contents) && $seeder_file_contents[$i] !== '{') $i++;
 
             if ($i == strlen($seeder_file_contents)) throw new Exception('Main seeder file has been corrupted');
 
             $insert = "\n        " . $call_seeder . "\n";
             $seeder_file_contents = substr_replace($seeder_file_contents, $insert, $i + 1, 0);
             file_put_contents($seeder_path, $seeder_file_contents) or die("Unable to write to file!");
+        }
+    }
+
+    /**
+     * Add or update a custom link in the app Models
+     *
+     * @param string $title
+     * @param string $url
+     * @return boolean true if created/false if updated
+     */
+    public function addOrUpdateCustomLink($title, $url) {
+        $target = 'customLinks()';
+
+        //add model to AppModelList file
+        $path = app_path('EasyAdmin/AppModelList.php');
+        $models_file_contents = file_get_contents($path) or die("Unable to open file!");
+        $i = strpos($models_file_contents, $target);
+
+        if (array_key_exists($title, $this->helperService->getAllCustomLinks())) {
+            while(!(substr($models_file_contents, $i, strlen($title)) === $title)) $i++;
+
+            $quote_count = 0;
+            $replace_indexes = [];
+            while($quote_count < 3) {
+                if ($models_file_contents[$i] === "'") {
+                    $quote_count++;
+                    if ($quote_count > 1) {
+                        $replace_indexes[] = $i;
+                    }
+                }
+                $i++;
+            }
+            $prev_len = $replace_indexes[1] - $replace_indexes[0];
+            $new_text = substr_replace($models_file_contents, $url, $replace_indexes[0] + 1, $prev_len - 1);
+            file_put_contents($path, $new_text) or die("Unable to write to file!");
+            return false;
+        }
+        else {
+            while(!($models_file_contents[$i] == ']' && $models_file_contents[$i+1] == ';')) $i++;
+            $insert = "            '$title' => '$url',\n";
+            $new_text = substr_replace($models_file_contents, $insert, $i - 8, 0);
+            file_put_contents($path, $new_text) or die("Unable to write to file!");
+            return true;
+        }
+
+    }
+
+    /**
+     * Remove a custom link
+     *
+     * @param string $title
+     * @return void
+     */
+    public function removeCustomLink($title) {
+        $target = 'customLinks()';
+
+        if (array_key_exists($title, $this->helperService->getAllCustomLinks())) {
+            //add model to AppModelList file
+            $path = app_path('EasyAdmin/AppModelList.php');
+            $models_file_contents = file_get_contents($path) or die("Unable to open file!");
+
+            // find section to remove
+            $i = strpos($models_file_contents, $target);
+            while(!(substr($models_file_contents, $i, strlen($title)) === $title)) $i++;
+            $start = $i - 13; $end = $i + strlen($title);
+            while($models_file_contents[$end] != "\n") $end++;
+
+            //write new text
+            $len = $end - $start + 1;
+            $new_text = substr_replace($models_file_contents, '', $start, $len);
+            file_put_contents($path, $new_text) or die("Unable to write to file!");
         }
     }
 
