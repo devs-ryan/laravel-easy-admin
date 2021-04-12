@@ -199,6 +199,9 @@ class AdminController extends Controller
         // files
         $file_fields = $appModel::files();
 
+        // select fields
+        $select_fields = $appModel::selectInputs();
+
         //apply parent id filter
         $relationship_column_name = null;
         if ($request->has('parent_id')) {
@@ -225,6 +228,7 @@ class AdminController extends Controller
             ->with('partial_models', $partial_models)
             ->with('fields', $fields)
             ->with('required_fields', $required_fields)
+            ->with('select_fields', $select_fields)
             ->with('wysiwyg_fields', $wysiwyg_editors)
             ->with('file_fields', $file_fields)
             ->with('model_partials', $model_partials)
@@ -332,6 +336,9 @@ class AdminController extends Controller
         // files
         $file_fields = $appModel::files();
 
+        // select fields
+        $select_fields = $appModel::selectInputs();
+
         //find model
         $data = $model_path::findOrFail($id);
 
@@ -355,6 +362,7 @@ class AdminController extends Controller
             ->with('fields', $fields)
             ->with('required_fields', $required_fields)
             ->with('data', $data)
+            ->with('select_fields', $select_fields)
             ->with('wysiwyg_fields', $wysiwyg_editors)
             ->with('file_fields', $file_fields)
             ->with('model_partials', $model_partials)

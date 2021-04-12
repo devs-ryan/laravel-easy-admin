@@ -16,8 +16,12 @@ class HelperService
      * @param string $model
      * @return string
      */
-    public static function inputType($field, $model)
+    public static function inputType($field, $model, $select_fields = null, $file_fields = null)
     {
+        // special types
+        if ($file_fields && in_array($field, $file_fields)) return 'file';
+        if ($select_fields && array_key_exists($field, $select_fields)) return 'select';
+
         $record = new $model;
         $table = $record->getTable();
         $column_type = '';

@@ -31,7 +31,7 @@
             {{ ucwords(str_replace('_', ' ', $field)) }}:
         </label>
         <div class="col-sm-12">
-            @switch(DevsRyan\LaravelEasyAdmin\Services\HelperService::inputType($field, $model_path))
+            @switch(DevsRyan\LaravelEasyAdmin\Services\HelperService::inputType($field, $model_path, $select_fields, $file_fields))
                 @case('password')
                     @include('easy-admin::partials.form-inputs.password')
                     @break
@@ -48,12 +48,14 @@
                 @case('timestamp')
                     @include('easy-admin::partials.form-inputs.timestamp')
                     @break
+                @case('file')
+                    @include('easy-admin::partials.form-inputs.file')
+                    @break
+                @case('select')
+                    @include('easy-admin::partials.form-inputs.select')
+                    @break
                 @default
-                    @if (in_array($field, $file_fields))
-                        @include('easy-admin::partials.form-inputs.file')
-                    @else
-                        @include('easy-admin::partials.form-inputs.text')
-                    @endif
+                    @include('easy-admin::partials.form-inputs.text')
                     @break
             @endswitch
         </div>
