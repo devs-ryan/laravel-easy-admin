@@ -64,7 +64,7 @@ After running this command a CRUD resource will be added to the Easy Admin UI fo
 - This will reload the public file in the app/EasyAdmin directory to the default and load/remove any fields that have changed in the model
 
 #### Add all model resources to Easy Admin
-This is not currently working, but on my TODO list.
+Add all models within a given namespace to Easy Admin
 
 #### Reset Easy Admin
 In case you would like to return Easy Admin to the original state, use the command below.
@@ -81,6 +81,10 @@ Used to retrieve an image that was created using Easy Admin (see size options us
 #### Get File Helper
 Used to retrieve a file that was created using Easy Admin
 - `easyFile($model_name, $field_name, $file_name)`
+
+#### Safe Text Helper
+Used to strip any HTML away from text for wysiwyg fields
+- `easySafeText($blog_post->content)`
 
 ## Limitations
 This admin panel assumes that you follow the standard Laravel naming conventions for models and database tables. If you create migrations/models using `php artisan make:model {ModelName} -m` it should work, otherwise it may not. 

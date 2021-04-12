@@ -32,3 +32,13 @@ if (! function_exists('easyFile')) {
         return '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $file_name;
     }
 }
+
+/**
+ * Helper function to strip any HTML away from text for wysiwyg fields
+ */
+if (! function_exists('easySafeText')) {
+    function easySafeText($html) {
+        $html = preg_replace("/<[^>]+>/i", "", $html);
+        return $html;
+    }
+}
