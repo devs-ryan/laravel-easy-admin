@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
 	<meta charset="utf-8">
@@ -24,14 +24,23 @@
                 {{ env('EASY_ADMIN_APP_NAME', 'Laravel Easy Admin') }}
             </a>
             @if(env('APP_URL'))
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <button
+                    class="navbar-toggler"
+                    type="button" data-toggle="collapse"
+                    data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <div class="nav-link">
-                                <a class="text-decoration-none text-warning" href="{{ env('APP_URL', '/') }}"><i class="fas fa-home"></i> App Home</a>
+                                <a class="text-decoration-none text-warning" href="{{ env('APP_URL', '/') }}">
+                                    <i class="fas fa-home"></i> App Home
+                                </a>
                             </div>
                         </li>
                     </ul>

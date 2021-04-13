@@ -18,9 +18,9 @@
 
 <body>
 	<header>
-	    @include('easy-admin::partials.header')
+	    @include('easy-admin::partials.custom-header')
 	</header>
-	<main>
+	<main class="p-5">
 	    @yield('content')
 	</main>
 	<footer>
