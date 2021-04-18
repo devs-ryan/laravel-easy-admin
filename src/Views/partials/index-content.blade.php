@@ -3,15 +3,42 @@
         <table class="table mb-0 table-hover sortable">
             <thead class="thead-light">
                 <tr>
+                    <th class="action-header" scope="col">Actions</th>
                     @foreach($index_columns as $index_column)
                         <th scope="col">{{ ucfirst($index_column) }}</th>
                     @endforeach
-                    <th class="action-header" scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($data as $row)
                     <tr>
+                        {{-- actions --}}
+                        <th>
+                            @php
+                                $parent_id_for_edit = isset($parent_id) && $parent_id !== null ? "?parent_id=$parent_id" : '';
+                            @endphp
+                            <a href="/easy-admin/{{$url_model}}/{{ $row->id }}/edit{{ $parent_id_for_edit }}" class="btn btn-info" role="button">
+                                @if(in_array('update', $allowed))
+                                   <i class="fas fa-edit"></i>
+                                @else
+                                    <i class="fas fa-eye"></i>
+                                @endif
+                            </a>
+                            @if(in_array('delete', $allowed) && (!$limits['min'] || $model_count > $limits['min']))
+                                <form class="float-right" action="/easy-admin/{{$url_model}}/{{ $row->id }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    @if (isset($parent_id) && $parent_id !== null)
+                                        <input type="hidden" name="easy_admin_delete_with_parent_id" value="{{ $parent_id }}">
+                                    @endif
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
+                        </th>
+
+                        {{-- fields --}}
                         @foreach($row->makeVisible($index_columns)->toArray() as $key => $column)
                             @if(in_array($key, $index_columns))
                                 <td>
@@ -46,30 +73,6 @@
                                 </td>
                             @endif
                         @endforeach
-                        <th>
-                            @php
-                                $parent_id_for_edit = isset($parent_id) && $parent_id !== null ? "?parent_id=$parent_id" : '';
-                            @endphp
-                            <a href="/easy-admin/{{$url_model}}/{{ $row->id }}/edit{{ $parent_id_for_edit }}" class="btn btn-info" role="button">
-                                @if(in_array('update', $allowed))
-                                   <i class="fas fa-edit"></i>
-                                @else
-                                    <i class="fas fa-eye"></i>
-                                @endif
-                            </a>
-                            @if(in_array('delete', $allowed) && (!$limits['min'] || $model_count > $limits['min']))
-                                <form class="float-right" action="/easy-admin/{{$url_model}}/{{ $row->id }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    @if (isset($parent_id) && $parent_id !== null)
-                                        <input type="hidden" name="easy_admin_delete_with_parent_id" value="{{ $parent_id }}">
-                                    @endif
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            @endif
-                        </th>
                     </tr>
                 @endforeach
 
