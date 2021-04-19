@@ -1,4 +1,5 @@
 
+{{-- Add and lock in relationship field for partials --}}
 @if($relationship_column_name !== null)
     <input type="hidden" name="easy_admin_submit_with_parent_id" value="{{ $data->$relationship_column_name ?? Request('parent_id') }}">
     <div class="form-group row">
@@ -61,6 +62,8 @@
         </div>
     </div>
 @endforeach
+
+{{-- Submit button --}}
 @if((in_array('update', $allowed) and Request::is('easy-admin/*/*/edit')) or (in_array('create', $allowed) and !Request::is('easy-admin/*/*/edit')))
     <div class="text-right">
         <button id="submit-button" type="submit" class="btn btn-primary">
@@ -74,6 +77,7 @@
     </div>
 @endif
 
+{{-- Add partial redirect flag to form to check for min/max --}}
 @if(count($model_partials) > 0 && Request::is('easy-admin/*/create'))
     @push('scripts')
         <script>
@@ -88,6 +92,40 @@
                 }
 
                 $('#submit-button').click();
+            }
+        </script>
+    @endpush
+@endif
+
+@if (count($wysiwyg_fields) > 0)
+
+    @include('easy-admin::partials.upload-handler-modal')
+
+    @push('scripts')
+        <script>
+            const appendHtml = `
+                <hr>
+                <div class="d-flex flex-row-reverse">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#uploadHandlerModal"
+                        onclick="dismissModal();"
+                    >
+                        Select/Upload Image
+                    </button>
+                </div>
+            `;
+
+            $(document).ready(function() {
+                const uploadTarget = $('.form-group.note-form-group.note-group-select-from-files');
+                uploadTarget.find("input").remove();
+                uploadTarget.append(appendHtml);
+            });
+
+            function dismissModal() {
+                $('.note-modal .modal-header button').click();
             }
         </script>
     @endpush

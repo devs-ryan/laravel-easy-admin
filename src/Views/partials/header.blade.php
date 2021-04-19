@@ -45,7 +45,7 @@
         </ul>
     </div>
 </nav>
-<div class="w-100 p-3" style="background-color: rgb(230,231,231)!important;">
+<div class="w-100 p-3 bg-grey">
     <div class="row">
         <div class="col-md-6">
             <div class="text-secondary">

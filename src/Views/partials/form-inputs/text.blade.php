@@ -16,7 +16,6 @@ name="{{ $field }}" rows="1" class="form-control">{{ old($field) ?? $data->$fiel
             $('#summernote-{{$field}}').summernote({
                 height: 180
             });
-            $('.form-group.note-form-group.note-group-select-from-files').remove();
         </script>
     @endpush
 @endif
