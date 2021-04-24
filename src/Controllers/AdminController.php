@@ -65,8 +65,9 @@ class AdminController extends Controller
         $nav_items = $this->helperService->getModelsForNav();
         $pages = $this->helperService->getAllPageModels();
         $posts = $this->helperService->getAllPostModels();
-        $partials = $this->helperService->getAllPartialModels();
-        $partial_models = $this->helperService->stripParentFromPartials($partials);
+        $partials = $this->helperService->getGlobalPartialModels();
+        $partials_all = $this->helperService->getAllPartialModels();
+        $partial_models = $this->helperService->stripParentFromPartials($partials_all);
         $custom_links = $this->helperService->getAllCustomLinks();
 
         return view('easy-admin::home')

@@ -15,86 +15,161 @@
 
             {{-- Page Models  --}}
             @if(count($pages) > 0 )
-                <h5 class="pt-4">Pages:</h5>
-                <ul class="list-group">
-                    @foreach($nav_items as $link => $nav_title)
-                        @if (in_array($nav_title, $pages))
+                <div id="accordion">
+                    <button
+                        class="btn btn-primary btn-block collapsed text-left rounded-0 border border-secondary"
+                        data-toggle="collapse"
+                        data-target="#collapsePage"
+                        aria-expanded="false"
+                        aria-controls="collapsePage"
+                    >
+                        Pages
+                    </button>
+                    <ul
+                        class="list-group collapse pl-4"
+                        id="collapsePage"
+                        data-parent="#accordion"
+                    >
+                        @foreach($nav_items as $link => $nav_title)
+                            @if (in_array($nav_title, $pages))
 
-                            @php $count++; @endphp
-                            <a href="/easy-admin/{{ $link }}/index">
-                                <li class="list-group-item">{{ $nav_title }}</li>
-                            </a>
-                        @endif
-                    @endforeach
-                </ul>
+                                @php $count++; @endphp
+                                <a href="/easy-admin/{{ $link }}/index">
+                                    <li class="list-group-item rounded-0">
+                                        <i class="fas fa-angle-right"></i>
+                                        {{ $nav_title }}
+                                    </li>
+                                </a>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
             {{-- Post Type Models  --}}
             @if(count($posts) > 0 )
-                <h5 class="pt-4">Posts:</h5>
-                <ul class="list-group">
-                    @foreach($nav_items as $link => $nav_title)
-                        @if (in_array($nav_title, $posts))
+                <div id="accordion">
+                    <button
+                        class="btn btn-primary btn-block collapsed text-left rounded-0 border border-secondary"
+                        data-toggle="collapse"
+                        data-target="#collapsePost"
+                        aria-expanded="false"
+                        aria-controls="collapsePost"
+                    >
+                        Posts
+                    </button>
+                    <ul
+                        class="list-group collapse pl-4"
+                        id="collapsePost"
+                        data-parent="#accordion"
+                    >
+                        @foreach($nav_items as $link => $nav_title)
+                            @if (in_array($nav_title, $posts))
 
-                            @php $count++; @endphp
-                            <a href="/easy-admin/{{ $link }}/index">
-                                <li class="list-group-item">{{ $nav_title }}</li>
-                            </a>
-                        @endif
-                    @endforeach
-                </ul>
+                                @php $count++; @endphp
+                                <a href="/easy-admin/{{ $link }}/index">
+                                    <li class="list-group-item rounded-0">
+                                        <i class="fas fa-angle-right"></i>
+                                        {{ $nav_title }}
+                                    </li>
+                                </a>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
             {{-- Section Models  --}}
             @if(count($partials) > 0 )
-                @foreach($partials as $partial)
-                    @if(strpos($partial, "Global.") !== false)
-                        <h5 class="pt-4">Partials:</h5>
-                        @break
-                    @endif
-                @endforeach
+                <div id="accordion">
+                    <button
+                        class="btn btn-primary btn-block collapsed text-left rounded-0 border border-secondary"
+                        data-toggle="collapse"
+                        data-target="#collapsePartial"
+                        aria-expanded="false"
+                        aria-controls="collapsePartial"
+                    >
+                        Partials
+                    </button>
+                    <ul
+                        class="list-group collapse pl-4"
+                        id="collapsePartial"
+                        data-parent="#accordion"
+                    >
+                        @foreach($nav_items as $link => $nav_title)
+                            @if (in_array("Global.$nav_title", $partials))
 
-                <ul class="list-group">
-                    @foreach($nav_items as $link => $nav_title)
-                        @if (in_array("Global.$nav_title", $partials))
-                            <a href="/easy-admin/{{ $link }}/index">
-                                <li class="list-group-item">{{ $nav_title }}</li>
-                            </a>
-                        @endif
-                    @endforeach
-                </ul>
-
-                @php $count += count($partials); @endphp
+                                @php $count++; @endphp
+                                <a href="/easy-admin/{{ $link }}/index">
+                                    <li class="list-group-item rounded-0">
+                                        <i class="fas fa-angle-right"></i>
+                                        {{ $nav_title }}
+                                    </li>
+                                </a>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
             {{-- General Models  --}}
             @if(count($nav_items) - $count > 0 )
-                <h5 class="pt-4">
-                    {{ $count > 0 ? 'Global:' : 'Models:' }}
-                </h5>
-                <ul class="list-group">
-                    @foreach($nav_items as $link => $nav_title)
-                        @if (!in_array($nav_title, $pages) && !in_array($nav_title, $posts) && !in_array($nav_title, $partial_models))
-                            <a href="/easy-admin/{{ $link }}/index">
-                                <li class="list-group-item">{{ $nav_title }}</li>
-                            </a>
-                        @endif
-                    @endforeach
-                </ul>
+                <div id="accordion">
+                    <button
+                        class="btn btn-primary btn-block collapsed text-left rounded-0 border border-secondary"
+                        data-toggle="collapse"
+                        data-target="#collapseGlobal"
+                        aria-expanded="false"
+                        aria-controls="collapseGlobal"
+                    >
+                        {{ $count > 0 ? 'Global' : 'Models' }}
+                    </button>
+                    <ul
+                        class="list-group collapse pl-4"
+                        id="collapseGlobal"
+                        data-parent="#accordion"
+                    >
+                        @foreach($nav_items as $link => $nav_title)
+                            @if (!in_array($nav_title, $pages) && !in_array($nav_title, $posts) && !in_array($nav_title, $partial_models))
+                                <a href="/easy-admin/{{ $link }}/index">
+                                    <li class="list-group-item rounded-0">
+                                        <i class="fas fa-angle-right"></i>
+                                        {{ $nav_title }}
+                                    </li>
+                                </a>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
             {{-- Custom Links --}}
             @if (count($custom_links) > 0)
-                <h5 class="pt-4">
-                    Links:
-                </h5>
-                <ul class="list-group">
-                    @foreach($custom_links as $title => $link)
-                        <a href="{{ $link }}">
-                            <li class="list-group-item">{{ $title }}</li>
-                        </a>
-                    @endforeach
-                </ul>
+                <div id="accordion">
+                    <button
+                        class="btn btn-primary btn-block collapsed text-left rounded-0 border border-secondary"
+                        data-toggle="collapse"
+                        data-target="#collapseLinks"
+                        aria-expanded="false"
+                        aria-controls="collapseLinks"
+                    >
+                        Links
+                    </button>
+                    <ul
+                        class="list-group collapse pl-4"
+                        id="collapseLinks"
+                        data-parent="#accordion"
+                    >
+                        @foreach($custom_links as $nav_title => $link)
+                            <a href="{{ $link }}">
+                                <li class="list-group-item rounded-0">
+                                    <i class="fas fa-angle-right"></i>
+                                    {{ $nav_title }}
+                                </li>
+                            </a>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
             {{-- No Results --}}
@@ -115,3 +190,38 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <style>
+        .btn {
+            position: relative;
+        }
+        .btn:focus, .btn:active:focus, .btn.active:focus {
+            outline:none;
+            box-shadow:none;
+        }
+        .btn:focus, .btn:active:focus, .btn.active:focus{
+            background-color: #007bff;
+        }
+
+        .btn[aria-expanded="true"] {
+            background-color: #28a745;
+        }
+        .btn[aria-expanded="true"]::after {
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            content: "\f106";
+            position: absolute;
+            right: 1rem;
+            top: 0.3rem;
+        }
+        .btn[aria-expanded="false"]::after {
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            content: "\f107";
+            position: absolute;
+            right: 1rem;
+            top: 0.3rem;
+        }
+    </style>
+@endpush

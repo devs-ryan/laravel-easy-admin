@@ -376,6 +376,24 @@ class HelperService
     }
 
     /**
+     * Return all global partial models added to admin area
+     * Format Model
+     *
+     * @return Array
+     */
+    public function getGlobalPartialModels()
+    {
+        $global_partials = [];
+        $partials = $this->getAllPartialModels();
+
+        foreach($partials as $partial)
+            if(strpos($partial, "Global.") !== false)
+                $global_partials[] = $partial;
+
+        return $global_partials;
+    }
+
+    /**
      * Return all partial models added to admin area
      * Format Model
      *
