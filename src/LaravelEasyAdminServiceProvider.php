@@ -47,6 +47,7 @@ class LaravelEasyAdminServiceProvider extends ServiceProvider
     {
         $this->app->make('DevsRyan\LaravelEasyAdmin\Controllers\AdminController');
         $this->app->make('DevsRyan\LaravelEasyAdmin\Controllers\AuthController');
+        $this->app->make('DevsRyan\LaravelEasyAdmin\Controllers\ImageApiController');
 
         $this->loadViewsFrom(__DIR__.'/Views', 'easy-admin');
     }
