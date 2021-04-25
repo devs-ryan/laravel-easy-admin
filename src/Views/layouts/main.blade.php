@@ -22,6 +22,7 @@
 	</header>
 	<main>
 	    @yield('content')
+        @stack('modals')
 	</main>
 	<footer>
 	    @include('easy-admin::partials.footer')

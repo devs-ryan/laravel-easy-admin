@@ -99,7 +99,9 @@
 
 @if (count($wysiwyg_fields) > 0)
 
-    @include('easy-admin::partials.upload-handler-modal')
+    @push('modals')
+        @include('easy-admin::partials.upload-handler-modal')
+    @endpush
 
     @push('scripts')
         <script>

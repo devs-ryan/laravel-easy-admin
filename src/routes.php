@@ -16,8 +16,10 @@ Route::group(['middleware' => ['web'], 'prefix' => env('EASY_ADMIN_BASE_URL', 'e
     Route::delete('{model}/{id}', 'AdminController@destroy');
 });
 
-Route::group(['middleware' => ['api'], 'prefix' => env('EASY_ADMIN_BASE_URL', 'easy-admin/api'), 'namespace' => 'DevsRyan\LaravelEasyAdmin\Controllers'], function() {
+Route::group(['middleware' => ['api'], 'prefix' => env('EASY_ADMIN_BASE_URL', 'easy-admin') . '/api', 'namespace' => 'DevsRyan\LaravelEasyAdmin\Controllers'], function() {
 
     //Image Api
-    Route::get('/images', 'ImageApiController@index');
+    Route::get('/images', 'ImageApiController@index')->name('easy-admin-image-index');
+    Route::get('/images/{id}', 'ImageApiController@show')->name('easy-admin-image-show');
+    Route::patch('/images/{id}', 'ImageApiController@update')->name('easy-admin-image-update');
 });

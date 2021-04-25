@@ -16,11 +16,12 @@ class CreateEasyAdminImagesTable extends Migration
         Schema::create('easy_admin_images', function (Blueprint $table) {
             $table->id();
             $table->string('file_name');
+            $table->string('file_path');
             $table->string('title');
             $table->string('alt')->nullable();
             $table->text('description')->nullable();
-            $table->string('width');
-            $table->string('height');
+            $table->integer('width');
+            $table->integer('height');
             $table->string('size');
             $table->string('model');
             $table->timestamps();
