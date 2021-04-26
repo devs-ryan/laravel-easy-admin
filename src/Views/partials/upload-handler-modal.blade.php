@@ -242,8 +242,28 @@
             document.execCommand("copy");
         }
 
+        //conver date string to month and year
+        function convertDate(date) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            date = date.substring(0, 10);
+            let seperated = date.split('-');
+            const year = seperated[0];
+            const month = months[parseInt(seperated[1], 10)];
+            const day = seperated[2];
+
+            return {
+                year, month, day
+            };
+        }
+
         // select an image
         function selectImage(imgId, src, fileName, title, alt, description, width, height, size, created_at) {
+            const dateInfo = convertDate(created_at);
+            let dayExt = 'th';
+            if (dateInfo.day == 1) dayExt = 'st';
+            if (dateInfo.day == 2) dayExt = 'nd';
+            if (dateInfo.day == 3) dayExt = 'rd';
+
             $('#image-result-file-name').html(title);
             $('#image-result-title').val(title);
             $('#image-result-alt').val(alt);
@@ -253,6 +273,7 @@
             $('#image-result-height').html(height);
             $('#image-result-copy-url').val(src);
             $('#image-result-preview').attr("src", src);
+            $('#image-result-date').html(`${dateInfo.month} ${dateInfo.day}, ${dateInfo.year}`)
 
             // update form action
             const currentAction = $('#image-result-update-form').attr('action');

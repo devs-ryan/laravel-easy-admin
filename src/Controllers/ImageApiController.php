@@ -108,6 +108,7 @@ class ImageApiController extends Controller
         $filesize = $this->fileService->getFileSize($file);
         $file_details = $this->fileService->storeUploadedFile($request, null, $request->model, 'general_storage', true);
 
+        $date_time = new \DateTime();
         DB::table('easy_admin_images')->insert([
             'title' => $file_name,
             'model' => $request->model,
@@ -115,7 +116,9 @@ class ImageApiController extends Controller
             'file_path' => $file_details['file_path'],
             'width' => $width,
             'height' => $height,
-            'size' => $filesize
+            'size' => $filesize,
+            'created_at' => $date_time->format('Y-m-d H:i:s'),
+            'updated_at' => $date_time->format('Y-m-d H:i:s')
         ]);
 
         return response()->json('Image record created successfully', 200);
