@@ -380,7 +380,7 @@
                                 id="image-list-item-btn-${value.id}"
                                 onclick="selectImage(
                                     ${value.id},
-                                    '${value.file_path}',
+                                    '${value.file_path.replace('/original/', '/square/')}',
                                     '${value.file_name}',
                                     '${value.title}',
                                     '${value.alt ? value.alt : ''}',
@@ -396,7 +396,7 @@
                                 <img
                                     id="image-list-item-img-${value.id}"
                                     class="image-list-img img-fluid${appendImg}"
-                                    src="${value.file_path}"
+                                    src="${value.file_path.replace('/original/', '/square/')}"
                                     alt="${value.alt}"
                                 />
                             </button>
