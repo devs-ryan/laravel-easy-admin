@@ -326,17 +326,20 @@ class FileService
      * Store an uploaded file and save the filename in DB
      *
      * @param Request $request
-     * @param Model $record
-     * @param string $field_name
+     * @param Model/Null $record
      * @param string $model
+     * @param string $field_name
+     * @param boolean $general_storage (set true for storage related to General/WYSIWYG)
      * @return void
      */
-    public function storeUploadedFile($request, $record, $field_name, $model) {
-        $file = $request->file($field_name);
+    public function storeUploadedFile($request, $record, $model, $field_name, $general_storage = false) {
+        $file = $request->file($general_storage ? 'img' : $field_name);
         $filename = sha1(time()) . '.' . $file->extension();
 
         // set file name in DB
-        $record->$field_name = $filename;
+        if ($record) {
+            $record->$field_name = $filename;
+        }
 
         // check if file is not an image
         $image_info = @getimagesize($file);
@@ -375,6 +378,11 @@ class FileService
             }
             $image_resize->save($path . '/' . $filename);
         }
+
+        return [
+            'file_name' => $filename,
+            'file_path' => explode("public", $original_path)[1] . '/' . $filename
+        ];
     }
 
     /**
@@ -540,6 +548,37 @@ class FileService
             $new_text = substr_replace($models_file_contents, '', $start, $len);
             file_put_contents($path, $new_text) or die("Unable to write to file!");
         }
+    }
+
+    /**
+     * Get width and height of image file in pixels
+     *
+     * @param file $file
+     * @return array
+     */
+    public function getImageDimensions($file) {
+        // get file dimensions
+        $data = getimagesize($file);
+
+        return [
+            'width' => $data[0],
+            'height' => $data[1]
+        ];
+    }
+
+    /**
+     * Get a file size in MB or KB
+     *
+     * @param file $file
+     * @return string
+     */
+    public function getFileSize($file) {
+        //get file size
+        $filesize = filesize($file); // bytes
+        $filesize_kb = round($filesize / 1024, 1); // kilabytes with 1 digit
+        $filesize_mb = round($filesize / 1024 / 1024, 1); // megabytes with 1 digit
+
+        return ($filesize_mb < 1) ? $filesize_kb . 'KB' : $filesize_mb . 'MB';
     }
 
     /**

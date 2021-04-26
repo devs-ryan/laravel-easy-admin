@@ -20,6 +20,7 @@ Route::group(['middleware' => ['api'], 'prefix' => env('EASY_ADMIN_BASE_URL', 'e
 
     //Image Api
     Route::get('/images', 'ImageApiController@index')->name('easy-admin-image-index');
+    Route::post('/store', 'ImageApiController@store')->name('easy-admin-image-store');
     Route::get('/images/{id}', 'ImageApiController@show')->name('easy-admin-image-show');
     Route::patch('/images/{id}', 'ImageApiController@update')->name('easy-admin-image-update');
 });

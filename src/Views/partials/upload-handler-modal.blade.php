@@ -130,7 +130,7 @@
                                         />
                                     </div>
                                     <div class="col-lg-6">
-                                        <small><strong id="image-result-file-name">Name.png</strong></small> <br>
+                                        <small><strong id="image-result-file-name" class="wrap">Name.png</strong></small> <br>
                                         <small id="image-result-date">April 20th, 6969</small> <br>
                                         <small id="image-result-size">9 KB</small> <br>
                                         <small>
@@ -198,12 +198,14 @@
 
                 {{-- upload form --}}
                 <div class="uploadForm d-none" id="uploadForm">
-                    <form class="drag-file-input" action="/">
+                    <form id="image-submit-form" method="POST" class="drag-file-input" action="{{ route('easy-admin-image-store') }}" enctype="multipart/form-data">
                         @csrf
                         <label class="upload-title text-center pt-5" for="img">
-                            <strong>Drag files to upload or click to choose file:</strong>
+                            <strong id="upload-message">Drag files to upload or click to choose file:</strong>
                         </label>
-                        <input class="drop-input" type="file" id="img" name="img" accept="image/*">
+                        <input onChange="document.getElementById('image-submit-button').click();" class="drop-input" type="file" id="img" name="img" accept="image/*">
+                        <input type="hidden" name="model" value="{{ $model }}">
+                        <button id="image-submit-button" class="d-none" type="submit">Submit</button>
                     </form>
                 </div>
             </div>
@@ -242,7 +244,7 @@
 
         // select an image
         function selectImage(imgId, src, fileName, title, alt, description, width, height, size, created_at) {
-            $('#image-result-file-name').html(fileName);
+            $('#image-result-file-name').html(title);
             $('#image-result-title').val(title);
             $('#image-result-alt').val(alt);
             $('#image-result-description').val(description);
@@ -263,6 +265,32 @@
             $(`#image-list-item-col-${imgId}`).addClass("image-list-col--selected");
             $(`#image-list-item-img-${imgId}`).addClass("image-list-img--selected");
         }
+
+        //submit
+        $("#image-submit-form").submit(function(e) {
+            e.preventDefault();
+
+            $('#upload-message').html('Uploading...<br><i class="fas fa-spinner fa-pulse fa-2x"></i>');
+
+            var form = $(this);
+            var formData = new FormData(this);
+            var url = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: formData,
+                success: function (data) {
+                    $('#img').val('');
+                    $('#upload-message').html('Drag files to upload or click to choose file:');
+                    getImages();
+                    showMediaGallery();
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
 
         //update
         $("#image-result-update-form").submit(function(e) {
@@ -392,6 +420,13 @@
 
 @push('styles')
     <style>
+        .wrap {
+            white-space: pre-wrap;      /* CSS3 */
+            white-space: -moz-pre-wrap; /* Firefox */
+            white-space: -pre-wrap;     /* Opera <7 */
+            white-space: -o-pre-wrap;   /* Opera 7 */
+            word-wrap: break-word;      /* IE */
+        }
         .drag-file-input {
             display: flex;
             flex-direction: column;
@@ -407,12 +442,22 @@
             z-index: 6;
         }
         .drop-input {
+            position: relative;
             z-index: 9;
             width: 80%;
             height: 12rem;
             border-style: dashed;
             margin: 2rem auto;
             background-color: transparent;
+        }
+        .drop-input::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2rem;
+            background-color: white;
+            left: 0;
+            top: 0;
         }
         @media only screen and (min-width : 992px) {
             .detail-list, .image-list {

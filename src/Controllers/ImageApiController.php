@@ -55,7 +55,7 @@ class ImageApiController extends Controller
      */
     public function index(Request $request)
     {
-        $query = DB::table('easy_admin_images');
+        $query = DB::table('easy_admin_images')->orderBy('id', 'desc');
 
         // model filter
         if ($request->has('model_filter')) {
@@ -91,7 +91,34 @@ class ImageApiController extends Controller
      */
     public function store(Request $request)
     {
-        return 'todo';
+        $request->validate([
+            'model' => 'required|max:255',
+            'img' => 'required|file' //!! if this name changes fileService->storeUploadedFile needs updated
+        ]);
+
+        $file = $request->file('img');
+
+        // get file dimensions
+        $file_name = $file->getClientOriginalName();
+        $dimensions = $this->fileService->getImageDimensions($file);
+        $width = $dimensions['width'];
+        $height = $dimensions['height'];
+
+        //get file size
+        $filesize = $this->fileService->getFileSize($file);
+        $file_details = $this->fileService->storeUploadedFile($request, null, $request->model, 'general_storage', true);
+
+        DB::table('easy_admin_images')->insert([
+            'title' => $file_name,
+            'model' => $request->model,
+            'file_name' => $file_details['file_name'],
+            'file_path' => $file_details['file_path'],
+            'width' => $width,
+            'height' => $height,
+            'size' => $filesize
+        ]);
+
+        return response()->json('Image record created successfully', 200);
     }
 
     /**
@@ -131,7 +158,7 @@ class ImageApiController extends Controller
             'description' => $validated['description']
         ]);
 
-        return response()->json('Record updated successfully', 200);
+        return response()->json('Image record updated successfully', 200);
     }
 
     /**

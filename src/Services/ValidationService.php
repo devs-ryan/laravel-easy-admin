@@ -46,7 +46,7 @@ class ValidationService
                 }
                 else if (in_array($key, $file_fields)) {
                     if ($request->hasFile($key)) {
-                        $this->file_service->storeUploadedFile($request, $record, $key, $model);
+                        $this->file_service->storeUploadedFile($request, $record, $model, $key);
                     }
                 }
                 else {
@@ -85,7 +85,7 @@ class ValidationService
                 else if (in_array($key, $file_fields)) {
                     if ($request->hasFile($key)) {
                         $this->file_service->unlinkFiles($record, $model, $file_fields, $key);
-                        $this->file_service->storeUploadedFile($request, $record, $key, $model);
+                        $this->file_service->storeUploadedFile($request, $record, $model, $key);
                     }
                 }
                 else {
