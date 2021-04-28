@@ -105,6 +105,8 @@
 
     @push('scripts')
         <script>
+            var ID = 0;
+
             const appendHtml = `
                 <hr>
                 <div class="d-flex flex-row-reverse">
@@ -113,7 +115,7 @@
                         class="btn btn-primary"
                         data-toggle="modal"
                         data-target="#uploadHandlerModal"
-                        onclick="dismissModal();"
+                        onclick="openUploadModal(this);"
                     >
                         Select/Upload Image
                     </button>
@@ -126,8 +128,13 @@
                 uploadTarget.append(appendHtml);
             });
 
-            function dismissModal() {
+            function openUploadModal(sender) {
+                const input = $(sender).closest('.note-editor');
+                const editorArea = input.find('.note-editable');
+                editorArea.attr('id', 'wysiwyg-content-' + ID);
+                $('#uploadHandlerModal').attr('data-target', ID);
                 $('.note-modal .modal-header button').click();
+                ID += 1;
             }
         </script>
     @endpush

@@ -386,7 +386,7 @@ class FileService
     }
 
     /**
-     * Unlink files from field
+     * Unlink multiple files from model/field
      *
      * @param model $model
      * @param string $model_name
@@ -397,22 +397,29 @@ class FileService
         $attributes = $model->attributesToArray();
 
         foreach($attributes as $field_name => $value) {
-
             if ($target !== null && $field_name != $target) continue; // Do not erase file when targetting a specific file that needs erased
+            if (in_array($field_name, $file_fields)) $this->unlinkFile($model_name, $field_name, $value);
+        }
+    }
 
-            if (in_array($field_name, $file_fields)) {
+    /**
+     * Unlink files from field
+     *
+     * @param string $model_name
+     * @param string $field_name
+     * @param string $file_name
+     * @return void
+     */
+    public function unlinkFile($model_name, $field_name, $file_name) {
 
-                // unlink all file paths
-                $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $value;
-                if (file_exists($path)) unlink($path);
+        // unlink all file paths
+        $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/files/' . $model_name . '-' .  $field_name . '/' . $file_name;
+        if (file_exists($path)) unlink($path);
 
-
-                // unlink all image paths
-                foreach($this->image_sizes as $name => $size) {
-                    $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $name . '/' . $value;
-                    if (file_exists($path)) unlink($path);
-                }
-            }
+        // unlink all image paths
+        foreach($this->image_sizes as $name => $size) {
+            $path = public_path() . '/devsryan/LaravelEasyAdmin/storage/img/' . $model_name . '-' .  $field_name . '/' . $name . '/' . $file_name;
+            if (file_exists($path)) unlink($path);
         }
     }
 

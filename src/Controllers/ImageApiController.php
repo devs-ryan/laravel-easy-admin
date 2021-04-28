@@ -28,6 +28,13 @@ class ImageApiController extends Controller
     protected $fileService;
 
     /**
+     * General storage name
+     *
+     * @var class
+     */
+    protected $general_storage_name = 'general_storage';
+
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -106,7 +113,7 @@ class ImageApiController extends Controller
 
         //get file size
         $filesize = $this->fileService->getFileSize($file);
-        $file_details = $this->fileService->storeUploadedFile($request, null, $request->model, 'general_storage', true);
+        $file_details = $this->fileService->storeUploadedFile($request, null, $request->model, $this->general_storage_name, true);
 
         $date_time = new \DateTime();
         DB::table('easy_admin_images')->insert([
@@ -172,7 +179,12 @@ class ImageApiController extends Controller
      */
     public function destroy($id)
     {
-        return 'todo';
+        $record = DB::table('easy_admin_images')->where('id', $id)->first();
+        if (!$record) return response()->json('Image record not found', 404);
+
+        $this->fileService->unlinkFile($record->model, $this->general_storage_name, $record->file_name);
+        DB::table('easy_admin_images')->where('id', $id)->delete();
+        return response()->json('Image record deleted successfully', 200);
     }
 
 }

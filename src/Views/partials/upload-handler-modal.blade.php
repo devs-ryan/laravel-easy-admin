@@ -1,4 +1,10 @@
-<div id="uploadHandlerModal" class="modal fade" tabindex="-1" role="dialog">
+<div
+    id="uploadHandlerModal"
+    data-target="69420"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+>
     <div class="modal-dialog modal-xl py-2 py-md-4 my-0" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -89,9 +95,18 @@
                             </div>
 
                             <div class="container image-list-main py-3">
+                                {{-- delete message --}}
+                                <div id="img-delete-msg" class="form-group d-none">
+                                    <div class="alert alert-success w-100 d-inline-block" role="alert">
+                                        <small>
+                                            <i class="far fa-check-square"></i>
+                                            Image deleted successfully
+                                        </small>
+                                    </div>
+                                </div>
                                 {{-- Results --}}
                                 <div class="row d-none" id="image-results-container"></div>
-                                {{-- Messages --}}
+                                {{-- Loading/NoResults Messages --}}
                                 <div class="row" id="image-messages-container">
                                     <div class="col-12">
                                         <div class="jumbotron jumbotron-fluid mb-0">
@@ -118,7 +133,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 bg-grey detail-list border-left">
-                            <div class="container image-details">
+                            <div id="image-details" class="container image-details">
                                 <strong class="text-secondary">DETAILS:</strong>
                                 <div class="row mt-3">
                                     <div class="col-lg-6">
@@ -141,9 +156,13 @@
                                                 250
                                             </span>h
                                         </small> <br>
-                                        <button type="button" class="text-danger btn btn-sm btn-link p-0 m-0">
-                                            Delete
-                                        </button>
+                                        <form id="image-result-delete-form" method="POST" action="{{ route('easy-admin-image-delete', 0) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-danger btn btn-sm btn-link p-0 m-0">
+                                                Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -210,7 +229,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">Insert Image</button>
+                <button id="insert-image-button" onclick="insertImage();" type="button" class="btn btn-info" data-dismiss="modal">Insert Image</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -219,6 +238,15 @@
 
 @push('scripts')
     <script>
+        // insert image
+        function insertImage() {
+            const targetId = $('#uploadHandlerModal').attr('data-target');
+            const inputBox = $('#wysiwyg-content-' + targetId);
+            const currentHtml = inputBox.html();
+            const imgPath = $('#image-result-preview').attr('src').replace('/square/', '/original/');
+            inputBox.html(currentHtml.replace('<p><br></p>', '') + `<p><img style="width: 25%;" src="${imgPath}"/></p>`);
+        }
+
         // changes tab to image gallery
         function showMediaGallery() {
             $('#mediaGallery').removeClass('d-none');
@@ -275,10 +303,11 @@
             $('#image-result-preview').attr("src", src);
             $('#image-result-date').html(`${dateInfo.month} ${dateInfo.day}, ${dateInfo.year}`)
 
-            // update form action
+            // update form actions
             const currentAction = $('#image-result-update-form').attr('action');
             const newAction = currentAction.substr(0, currentAction.lastIndexOf("/")) + `/${imgId}`;
             $('#image-result-update-form').attr('action', newAction);
+            $('#image-result-delete-form').attr('action', newAction);
 
             //selected outline update
             $(".image-list-col--selected").removeClass("image-list-col--selected");
@@ -360,6 +389,29 @@
             });
         });
 
+        // delete
+        $("#image-result-delete-form").submit(function(e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+            var form = $(this);
+            var url = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data) {
+                    // show success
+                    $('#img-delete-msg').removeClass('d-none');
+                    setTimeout(function(){
+                        $('#img-delete-msg').addClass('d-none');
+                    }, 3000);
+
+                    getImages();
+                }
+            });
+        });
+
         // index
         function getImages({ page = 1, modelFilter = 'all', dateFilter = 'all', search = null } = {}) {
             let results = "";
@@ -367,12 +419,16 @@
             $('#image-results-loading').removeClass('d-none');
             $("#image-results-container").addClass('d-none');
             $('#image-results-no-results').addClass('d-none');
+            $('#image-details').removeClass('d-none');
+            $('#insert-image-button').removeClass('d-none');
 
             $.ajax({url: "/easy-admin/api/images", success: function(result) {
                 const images = result.data;
                 if (images.length == 0) {
                     $('#image-results-loading').addClass('d-none');
                     $('#image-results-no-results').removeClass('d-none');
+                    $('#image-details').addClass('d-none');
+                    $('#insert-image-button').addClass('d-none');
                     return;
                 }
                 // build up image results
