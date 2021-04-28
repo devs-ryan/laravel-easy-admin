@@ -50,7 +50,7 @@ class ImageApiController extends Controller
 
             if ($request->has('token') && $key === $request->token) { // token needs to be URL encoded
                 return $next($request);
-            }return $next($request);
+            }
             return abort(403, 'You are not authorized to perform this action');
         });
     }
@@ -62,13 +62,19 @@ class ImageApiController extends Controller
      */
     public function index(Request $request)
     {
-        $query = DB::table('easy_admin_images')->orderBy('id', 'desc');
+        $image_query = DB::table('easy_admin_images')->orderBy('id', 'desc');
+        $dates = DB::table('easy_admin_images')
+            ->select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, MONTHNAME(created_at) month_name'))
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
 
         // model filter
         if ($request->has('model_filter')) {
             $filter = $request->model_filter;
             $model = $filter != 'all' ? $filter : null;
-            if ($model) $query = $query->where('model', $model);
+            if ($model) $image_query = $image_query->where('model', $model);
         }
 
         // date filter
@@ -78,7 +84,7 @@ class ImageApiController extends Controller
             if ($date) {
                 $pieces = explode('|', $date);
                 $month = $pieces[0]; $year = $pieces[1];
-                $query = $query->whereYear('created_at', $year)
+                $image_query = $image_query->whereYear('created_at', $year)
                     ->whereMonth('created_at', $month);
             }
         }
@@ -87,7 +93,12 @@ class ImageApiController extends Controller
             // TODO
         }
 
-        return response()->json($query->paginate(24), 200);
+        $data = [
+            'image_results' => $image_query->paginate(24),
+            'dates' => $dates
+        ];
+
+        return response()->json($data, 200);
     }
 
     /**

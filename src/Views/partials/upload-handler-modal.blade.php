@@ -1,3 +1,8 @@
+@php
+    $token = urlencode((substr(env('APP_KEY'), 0, 7) === "base64:") ? substr(env('APP_KEY'), 7) : env('APP_KEY'));
+@endphp
+
+
 <div
     id="uploadHandlerModal"
     data-target="69420"
@@ -328,7 +333,7 @@
 
             $.ajax({
                 type: "POST",
-                url: url,
+                url: url + '/?token={{$token}}',
                 data: formData,
                 success: function (data) {
                     $('#img').val('');
@@ -352,7 +357,7 @@
 
             $.ajax({
                 type: "POST",
-                url: url,
+                url: url + '/?token={{$token}}',
                 data: form.serialize(), // serializes the form's elements.
                 success: function(data) {
                     // show success
@@ -398,7 +403,7 @@
 
             $.ajax({
                 type: "POST",
-                url: url,
+                url: url + '/?token={{$token}}',
                 data: form.serialize(), // serializes the form's elements.
                 success: function(data) {
                     // show success
@@ -422,8 +427,9 @@
             $('#image-details').removeClass('d-none');
             $('#insert-image-button').removeClass('d-none');
 
-            $.ajax({url: "/easy-admin/api/images", success: function(result) {
-                const images = result.data;
+            $.ajax({url: "/easy-admin/api/images/?token={{$token}}", success: function(result) {
+
+                const images = result.image_results.data;
                 if (images.length == 0) {
                     $('#image-results-loading').addClass('d-none');
                     $('#image-results-no-results').removeClass('d-none');
