@@ -1,0 +1,19 @@
+@extends('easy-admin::layouts.custom')
+
+@section('title', 'TODO: Page Title Here')
+
+@section('content')
+    TODO: Your Content here
+@endsection
+
+@push('styles')
+    {{-- Optional: Custom styles can go here --}}
+@endpush
+
+@push('scripts')
+    {{-- Optional: Custom scripts can go here --}}
+@endpush
+
+@push('modals')
+    {{-- Optional: Custom modals can go here --}}
+@endpush

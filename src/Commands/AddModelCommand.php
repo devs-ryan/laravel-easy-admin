@@ -110,7 +110,7 @@ class AddModelCommand extends Command
 
         //check if model has `id` column
         if (!$this->helperService->checkModelHasId($model_path)) {
-            $this->info('This version of East Admin only supports models with the `id` field present.. terminating.');
+            $this->info('This version of Easy Admin only supports models with the `id` field present.. terminating.');
             return;
         }
 

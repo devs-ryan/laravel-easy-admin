@@ -33,7 +33,8 @@ class LaravelEasyAdminServiceProvider extends ServiceProvider
                 Commands\RemoveUserCommand::class,
                 Commands\ListImageSizesCommand::class,
                 Commands\MakeSeedCommand::class,
-                Commands\CustomLink::class
+                Commands\CustomLink::class,
+                Commands\CreateAdminViewTemplate::class
             ]);
         }
     }
