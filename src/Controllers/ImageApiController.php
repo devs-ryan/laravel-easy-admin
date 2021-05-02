@@ -89,8 +89,21 @@ class ImageApiController extends Controller
             }
         }
 
+        // search filter
         if ($request->has('search')) {
-            // TODO
+            $filter = $request->search;
+            $search = $filter != '' ? $filter : null;
+
+            if ($search) {
+                $keywords = explode(" ", $search);
+                $image_query = $image_query->where(function ($q) use ($keywords) {
+                    foreach ($keywords as $word) {
+                        $q->orWhere('title', 'like', '%' . $word . '%');
+                        $q->orWhere('alt', 'like', '%' . $word . '%');
+                        $q->orWhere('description', 'like', '%' . $word . '%');
+                    }
+                });
+            }
         }
 
         $data = [
