@@ -1,17 +1,24 @@
 <div class="pb-2">
-    <img
-        class="img-preview"
-        width="80" height="80"
-        src="{{ asset(DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $field, $data->$field, true)) }}"
-        alt="thumbnail"
-    />
-    <br>
-    <a target="_blank" href="{{ DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $field, $data->$field) }}">
-        <small>
-            <i class="fas fa-eye"></i>
-            VIEW FILE
-        </small>
-    </a>
+    @if (isset($data->$field))
+        <img
+            class="img-preview"
+            width="80" height="80"
+            src="{{ asset(DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $field, $data->$field, true)) }}"
+            alt="thumbnail"
+        />
+        <br>
+        <a target="_blank" href="{{ DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $field, $data->$field) }}">
+            <small>
+                <i class="fas fa-eye"></i>
+                VIEW FILE
+            </small>
+        </a>
+    @else
+        <span>
+            <i class="fas fa-eye-slash"></i>
+            FILE NOT FOUND
+        </span>
+    @endif
 </div>
 <textarea
     style="resize: none;"

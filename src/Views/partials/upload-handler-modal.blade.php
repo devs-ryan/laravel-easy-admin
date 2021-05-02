@@ -478,7 +478,7 @@
 
             // check if this is for a specific field
             var appendText = "";
-            if ($('#uploadHandlerModal').attr('data-target-input')) {
+            if ($('#uploadHandlerModal').attr('data-target-input') == 'true') {
                 const field_name = $('#uploadHandlerModal').attr('data-target-input-name');
                 $('#img_model_filter').attr('disabled','disabled');
                 appendText = `&field_filter=${field_name}`;

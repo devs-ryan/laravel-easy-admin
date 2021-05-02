@@ -102,13 +102,13 @@
 
 @if (count($image_fields) > 0 || count($wysiwyg_fields) > 0)
     <script>var ID = 0;</script>
-@endif
 
-@if (count($image_fields) > 0)
     @push('modals')
         @include('easy-admin::partials.upload-handler-modal')
     @endpush
+@endif
 
+@if (count($image_fields) > 0)
     @push('scripts')
         <script>
             function openFieldUploadModal(sender) {
@@ -127,11 +127,6 @@
 @endif
 
 @if (count($wysiwyg_fields) > 0)
-
-    @push('modals')
-        @include('easy-admin::partials.upload-handler-modal')
-    @endpush
-
     @push('scripts')
         <script>
 
