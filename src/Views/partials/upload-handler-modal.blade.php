@@ -56,6 +56,7 @@
 
                             <div class="container image-filters">
                                 <strong class="text-secondary">FILTERS:</strong>
+                                <input id="current_page_number" type="hidden" name="current_page_number" value="1">
                                 <div class="row mt-2">
                                     <div class="col-lg-3">
                                         <div class="form-group">
@@ -69,7 +70,6 @@
                                         <div class="form-group">
                                             <select id="img_date_filter" name="date_filter" class="form-control form-control-sm">
                                                 <option value="all">All dates</option>
-                                                <option value="July|2021">July, 2021</option>
                                             </select>
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <button class="btn btn-sm btn-primary btn-block">
+                                        <button onclick="filtersUpdated();" class="btn btn-sm btn-primary btn-block">
                                             <i class="fas fa-search"></i> Search
                                         </button>
                                     </div>
@@ -249,6 +249,12 @@
 
 @push('scripts')
     <script>
+        // filters updated
+        function filtersUpdated() {
+            page = $('#current_page_number').val();
+            getImages(page);
+        }
+
         //reset search inputs
         function resetSearch() {
             $('#img_model_filter').val('all');
@@ -311,6 +317,10 @@
             if (dateInfo.day == 1) dayExt = 'st';
             if (dateInfo.day == 2) dayExt = 'nd';
             if (dateInfo.day == 3) dayExt = 'rd';
+
+            // get base URL
+            const getUrl = window.location;
+            const baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
             $('#image-result-file-name').html(title);
             $('#image-result-title').val(title);
@@ -442,6 +452,7 @@
             $('#image-results-no-results').addClass('d-none');
             $('#image-details').removeClass('d-none');
             $('#insert-image-button').removeClass('d-none');
+            $('#current_page_number').val(page);
 
             // get search inputs
             const model_filter = $('#img_model_filter').val();

@@ -381,7 +381,7 @@ class FileService
 
         return [
             'file_name' => $filename,
-            'file_path' => explode("public", $original_path)[1] . '/' . $filename
+            'file_path' => rtrim(env('APP_URL'), '/') . '/' . explode("/public/", $original_path)[1] . '/' . $filename
         ];
     }
 

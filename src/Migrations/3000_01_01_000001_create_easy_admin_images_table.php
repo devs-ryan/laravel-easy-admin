@@ -24,6 +24,7 @@ class CreateEasyAdminImagesTable extends Migration
             $table->integer('height');
             $table->string('size');
             $table->string('model');
+            $table->string('field')->default('general_storage');
             $table->timestamps();
         });
     }
