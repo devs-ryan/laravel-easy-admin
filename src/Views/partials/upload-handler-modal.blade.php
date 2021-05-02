@@ -59,7 +59,7 @@
                                 <div class="row mt-2">
                                     <div class="col-lg-3">
                                         <div class="form-group">
-                                            <select name="model_filter" class="form-control form-control-sm">
+                                            <select id="img_model_filter" name="model_filter" class="form-control form-control-sm">
                                                 <option value="all">All images</option>
                                                 <option value="{{ $model }}">Uploaded to this model</option>
                                             </select>
@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group">
-                                            <select name="date_filter" class="form-control form-control-sm">
+                                            <select id="img_date_filter" name="date_filter" class="form-control form-control-sm">
                                                 <option value="all">All dates</option>
                                                 <option value="July|2021">July, 2021</option>
                                             </select>
@@ -76,7 +76,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <div class="input-group input-group-sm">
-                                                <input type="text" name="search" class="form-control form-control-sm" placeholder="Search">
+                                                <input id="img_search" type="text" name="search" class="form-control form-control-sm" placeholder="Search">
                                                 <div class="input-group-append clear-button" onclick="this.previousElementSibling.value = '';">
                                                     <span class="input-group-text">
                                                         <i class="fas fa-eraser"></i>
@@ -135,6 +135,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="container">
+                                <nav class="d-flex justify-content-center" aria-label="Image Results Links">
+                                    <ul id="img-results-links" class="pagination">
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                         <div class="col-lg-4 bg-grey detail-list border-left">
@@ -243,6 +249,13 @@
 
 @push('scripts')
     <script>
+        //reset search inputs
+        function resetSearch() {
+            $('#img_model_filter').val('all');
+            $('#img_date_filter').val('all');
+            $('#img_search').val('');
+        }
+
         // insert image
         function insertImage() {
             const targetId = $('#uploadHandlerModal').attr('data-target');
@@ -258,6 +271,7 @@
             $('#uploadForm').addClass('d-none');
             $('#mediaGalleyToggle').addClass('active');
             $('#uploadFormToggle').removeClass('active');
+            $('#insert-image-button').removeClass('d-none');
         }
 
         // changes tab to upload form
@@ -266,6 +280,7 @@
             $('#uploadForm').removeClass('d-none');
             $('#mediaGalleyToggle').removeClass('active');
             $('#uploadFormToggle').addClass('active');
+            $('#insert-image-button').addClass('d-none');
         }
 
         function copyImgFileUrl() {
@@ -326,6 +341,7 @@
             e.preventDefault();
 
             $('#upload-message').html('Uploading...<br><i class="fas fa-spinner fa-pulse fa-2x"></i>');
+            resetSearch();
 
             var form = $(this);
             var formData = new FormData(this);
@@ -418,7 +434,7 @@
         });
 
         // index
-        function getImages({ page = 1, modelFilter = 'all', dateFilter = 'all', search = null } = {}) {
+        function getImages(page = 1) {
             let results = "";
             $('#image-messages-container').removeClass('d-none');
             $('#image-results-loading').removeClass('d-none');
@@ -427,7 +443,14 @@
             $('#image-details').removeClass('d-none');
             $('#insert-image-button').removeClass('d-none');
 
-            $.ajax({url: "/easy-admin/api/images/?token={{$token}}", success: function(result) {
+            // get search inputs
+            const model_filter = $('#img_model_filter').val();
+            const date_filter = $('#img_date_filter').val();
+            const search = $('#img_search').val();
+
+            $.ajax({
+                url: `/easy-admin/api/images/?token={{$token}}&page=${page}&model_filter=${model_filter}&date_filter=${date_filter}&search=${search}`,
+                success: function(result) {
 
                 const images = result.image_results.data;
                 if (images.length == 0) {
@@ -486,6 +509,49 @@
                         </div>
                     `;
                 });
+
+                // build up search dates
+                var date_options = '<option value="all">All dates</option>';
+                $.each(result.dates, function( index, value ) {
+                    const val = `${value.month}|${value.year}`;
+
+                    date_options += `<option value="${val}" ${val == date_filter ? ' selected' : ''}>
+                        ${value.month_name}, ${value.year}
+                    </option>`;
+                });
+                $('#img_date_filter').html(date_options);
+
+                // build up paginators
+                if (result.image_results.links.length > 3) {
+                    const links = result.image_results.links;
+                    var linksHtml = "";
+
+                    $.each(links, function( index, value ) {
+                        var page = null;
+                        var model_filter = null;
+                        var date_filter = null;
+                        var search = null;
+
+                        if (value.url) {
+                            const url = new URL(value.url);
+                            const urlParams = new URLSearchParams(url.search);
+                            page = urlParams.get('page');
+                        }
+
+                        const functionClick = page ? `onclick="getImages(${page});"` : '';
+
+                        linksHtml += `<li class="page-item${value.active ? ' active' : ''}">
+                            <a
+                                class="page-link"
+                                href="javascript:void(0);"
+                                ${functionClick}
+                            >
+                                ${value.label}
+                            </a>
+                        </li>`;
+                    });
+                    $('#img-results-links').html(linksHtml);
+                }
 
                 $("#image-results-container").html(results);
                 $('#image-results-loading').addClass('d-none');
