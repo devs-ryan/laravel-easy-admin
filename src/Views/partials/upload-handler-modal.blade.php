@@ -266,7 +266,7 @@
         function insertImage() {
             const targetId = $('#uploadHandlerModal').attr('data-target');
 
-            if ($('#uploadHandlerModal').attr('data-target-input')) {
+            if ($('#uploadHandlerModal').attr('data-target-input') == 'true') {
                 const inputBox = $('#input-text-' + targetId);
                 const imageName = $('#image-result-preview').attr('src').replace('/square/', '/original/').split('/').pop();
                 inputBox.val(imageName);
@@ -367,7 +367,7 @@
 
             // check if this is for a specific field
             var appendText = "";
-            if ($('#uploadHandlerModal').attr('data-target-input')) {
+            if ($('#uploadHandlerModal').attr('data-target-input') == 'true') {
                 const field_name = $('#uploadHandlerModal').attr('data-target-input-name');
                 appendText = `&field=${field_name}`;
             }
@@ -444,7 +444,7 @@
 
             // check if this is for a specific field
             var appendText = "";
-            if ($('#uploadHandlerModal').attr('data-target-input')) {
+            if ($('#uploadHandlerModal').attr('data-target-input') == 'true') {
                 const field_name = $('#uploadHandlerModal').attr('data-target-input-name');
                 appendText = `&field=${field_name}`;
             }
