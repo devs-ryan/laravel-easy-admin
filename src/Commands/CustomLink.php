@@ -19,7 +19,7 @@ class CustomLink extends Command
      *
      * @var string
      */
-    protected $description = 'Add a custom link to Easy Admin, append "--remove" for removing a custom link';
+    protected $description = 'Add a custom link to Easy Admin (OPTIONS: --remove)';
 
     /**
      * Exit Commands.

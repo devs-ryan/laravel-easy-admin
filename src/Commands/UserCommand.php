@@ -20,8 +20,8 @@ class UserCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Add a user to Easy Admin, append "--remove" for removing a user';
-    
+    protected $description = 'Add Easy Admin privleges to an existing user (OPTIONS: --remove)';
+
     /**
      * Exit Commands.
      *
@@ -50,43 +50,43 @@ class UserCommand extends Command
         $email_entered = true;
         if ($remove_option) $action = 'removed from';
         else $action = 'added to';
-        
+
         $this->info("<<<!!!Info!!!>>>\nAt any time enter 'q', 'quit', or 'exit' to cancel.");
-        
+
         //get user input
         $user_input = $this->ask("Enter a user email or id to be" . $action . 'Easy Admin');
         if (in_array($user_input, $this->exit_commands)) {
             $this->info("Command exit code entered.. terminating.");
             return;
         }
-        
+
         //find user
         $user = DB::table('users')->where('email', $user_input)->first();
         if (!$user) {
             $user = DB::table('users')->where('id', $user_input)->first();
             $email_entered = false;
         }
-        
+
         //check user found
         if (!$user) {
             $this->info("User not found with the credentials provided.. terminating.");
             return;
         }
-        
+
         //check migration has been run
         if (!Schema::hasColumn('users', 'is_easy_admin')) {
             $this->info("`is_easy_admin` column not found in users table..");
             $this->info("run `php artisan migrate` before using this command.. terminating");
             return;
         }
-        
+
         //update user
         if ($email_entered)
             DB::table('users')->where('email', $user_input)->update(['is_easy_admin' => !$remove_option]);
         else
             DB::table('users')->where('id', $user_input)->update(['is_easy_admin' => !$remove_option]);
         $this->info("User was updated successfully!");
-        
+
     }
 }
 

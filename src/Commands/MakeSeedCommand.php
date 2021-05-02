@@ -20,7 +20,7 @@ class MakeSeedCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Generate a seed file for all EasyAdmin models added';
+    protected $description = 'Generate a seed file for all EasyAdmin models that have seed allowed';
 
     /**
      * Continue Commands.
