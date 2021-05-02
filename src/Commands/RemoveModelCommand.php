@@ -69,7 +69,7 @@ class RemoveModelCommand extends Command
         else {
             $namespace = $this->ask("Enter the model namespace(Default: App\Models\)");
             if (in_array($namespace, $this->exit_commands)) {
-                $this->info("Command exit code entered.. terminating.");
+                $this->warn("Command exit code entered.. terminating.");
                 return;
             }
             if ($namespace == '') $namespace = 'App\Models';
@@ -79,7 +79,7 @@ class RemoveModelCommand extends Command
         //get model
         $model = $this->ask("Enter the model name");
         if (in_array($model, $this->exit_commands)) {
-            $this->info("Command exit code entered.. terminating.");
+            $this->warn("Command exit code entered.. terminating.");
             return;
         }
         $model = $this->filterInput($model);
@@ -88,7 +88,7 @@ class RemoveModelCommand extends Command
         $model_path = $namespace . $model;
         $this->info('Removing Model from Easy Admin..' . $model_path);
         if (!class_exists($model_path)) {
-            $this->info('Model does not exist.. terminating.');
+            $this->warn('Model does not exist.. terminating.');
             return;
         }
 

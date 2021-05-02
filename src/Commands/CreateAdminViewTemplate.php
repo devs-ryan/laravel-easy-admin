@@ -59,7 +59,7 @@ class CreateAdminViewTemplate extends Command
         $name = $this->ask("Enter a name for your view");
 
         if (in_array($name, $this->exit_commands)) {
-            $this->info("Command exit code entered.. terminating.");
+            $this->warn("Command exit code entered.. terminating.");
             return;
         }
 

@@ -56,7 +56,7 @@ class UserCommand extends Command
         //get user input
         $user_input = $this->ask("Enter a user email or id to be" . $action . 'Easy Admin');
         if (in_array($user_input, $this->exit_commands)) {
-            $this->info("Command exit code entered.. terminating.");
+            $this->warn("Command exit code entered.. terminating.");
             return;
         }
 
@@ -69,14 +69,14 @@ class UserCommand extends Command
 
         //check user found
         if (!$user) {
-            $this->info("User not found with the credentials provided.. terminating.");
+            $this->warn("User not found with the credentials provided.. terminating.");
             return;
         }
 
         //check migration has been run
         if (!Schema::hasColumn('users', 'is_easy_admin')) {
-            $this->info("`is_easy_admin` column not found in users table..");
-            $this->info("run `php artisan migrate` before using this command.. terminating");
+            $this->warn("`is_easy_admin` column not found in users table..");
+            $this->warn("run `php artisan migrate` before using this command.. terminating");
             return;
         }
 

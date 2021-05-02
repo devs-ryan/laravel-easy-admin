@@ -57,7 +57,7 @@ class RemoveUserCommand extends Command
         //get user input
         $user_input = $this->ask("Enter a user email or id to be removed from the database");
         if (in_array($user_input, $this->exit_commands)) {
-            $this->info("Command exit code entered.. terminating.");
+            $this->warn("Command exit code entered.. terminating.");
             return;
         }
 
@@ -69,7 +69,7 @@ class RemoveUserCommand extends Command
 
         //check user found
         if (!$user) {
-            $this->info("User not found with the credentials provided.. terminating.");
+            $this->warn("User not found with the credentials provided.. terminating.");
             return;
         }
 
@@ -77,7 +77,7 @@ class RemoveUserCommand extends Command
 
         //continue check
         if (!in_array(strtolower($continue), $this->continue_commands)) {
-             $this->info("Command exit code entered.. terminating.");
+             $this->warn("Command exit code entered.. terminating.");
              return;
         }
 

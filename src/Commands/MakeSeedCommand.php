@@ -73,7 +73,7 @@ class MakeSeedCommand extends Command
 
         //continue check
         if (!in_array(strtolower($continue), $this->continue_commands)) {
-            $this->info("Command exit code entered.. terminating.");
+            $this->warn("Command exit code entered.. terminating.");
             return;
         }
 

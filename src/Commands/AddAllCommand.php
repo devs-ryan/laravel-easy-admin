@@ -77,7 +77,7 @@ class AddAllCommand extends Command
         else {
             $namespace = $this->ask("Enter the model namespace(Default: App\Models\)");
             if (in_array($namespace, $this->exit_commands)) {
-                $this->info("Command exit code entered.. terminating.");
+                $this->warn("Command exit code entered.. terminating.");
                 return;
             }
             if ($namespace == '') $namespace = 'App\Models';
@@ -98,13 +98,13 @@ class AddAllCommand extends Command
                 $model_path = $namespace . $model;
                 $this->info('Adding Model to Easy Admin..' . $model_path);
                 if (!class_exists($model_path)) {
-                    $this->info('Model does not exist.. terminating.');
+                    $this->warn('Model does not exist.. terminating.');
                     return;
                 }
 
                 //check if model has `id` column
                 if (!$this->helperService->checkModelHasId($model_path)) {
-                    $this->info('This version of East Admin only supports models with the `id` field present.. terminating.');
+                    $this->warn('This version of East Admin only supports models with the `id` field present.. skipping.');
                     continue;
                 }
 

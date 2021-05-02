@@ -57,7 +57,7 @@ class CreateUserCommand extends Command
         foreach($required_inputs as $input) {
             $answer = $this->ask($input);
             if (in_array($answer, $this->exit_commands)) {
-                $this->info("Command exit code entered.. terminating.");
+                $this->warn("Command exit code entered.. terminating.");
                 return;
             }
             if ($input == 'password') {
