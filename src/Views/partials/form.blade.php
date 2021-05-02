@@ -58,8 +58,11 @@
                 @case('select')
                     @include('easy-admin::partials.form-inputs.select')
                     @break
+                @case('textarea')
+                    @include('easy-admin::partials.form-inputs.text', ['textarea' => true])
+                    @break
                 @default
-                    @include('easy-admin::partials.form-inputs.text')
+                    @include('easy-admin::partials.form-inputs.text', ['textarea' => false])
                     @break
             @endswitch
         </div>

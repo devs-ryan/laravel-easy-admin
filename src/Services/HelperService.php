@@ -65,6 +65,10 @@ class HelperService
         if (strpos($column_type, 'date') !== false) {
             return 'date';
         }
+        //check text
+        if (strpos($column_type, 'text') !== false) {
+            return 'textarea';
+        }
 
         //default to text
         return 'text';
