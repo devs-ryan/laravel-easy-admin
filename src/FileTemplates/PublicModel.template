@@ -88,6 +88,22 @@ class {{model_name}}
     /**
      * Fields expected to bet treated as images.
      * Fields to be type 'string' to store path data
+     * Adds image manager functionality in addition to file storage abilities
+     * Images will be stored in 'public/devsryan/LaravelEasyAdmin/storage/img'
+     *
+     * @return Array
+     */
+    public static function images()
+    {
+        return [
+            /* Note: List field names below (leave this comment) */
+            // 'field_name'
+        ];
+    }
+
+    /**
+     * Fields expected to bet treated as general file updloads.
+     * Fields to be type 'string' to store path data
      * Images will be stored in 'public/devsryan/LaravelEasyAdmin/storage/img'
      * Files will be stored in 'public/devsryan/LaravelEasyAdmin/storage/files'
      *

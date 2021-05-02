@@ -51,7 +51,7 @@
                                         (DevsRyan\LaravelEasyAdmin\Services\HelperService::inputType($key, $model_path) === 'boolean')
                                     )
                                         {{ ($column == true) ? 'true' : 'false' }}
-                                    @elseif(in_array($key, $file_fields))
+                                    @elseif(in_array($key, $image_fields) || in_array($key, $file_fields))
                                         @if (DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column) !== null)
                                             @if(DevsRyan\LaravelEasyAdmin\Services\FileService::checkIsImage($model, $key, $column))
                                                 <img class="img-preview" width="80" height="80" src="{{ asset(DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $key, $column, true)) }}" alt="thumbnail">

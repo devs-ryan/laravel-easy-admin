@@ -99,6 +99,7 @@ class AdminController extends Controller
         $appModel = "App\\EasyAdmin\\" . $model;
         $index_columns = $appModel::index();
         $allowed = $appModel::allowed();
+        $image_fields = $appModel::images();
         $file_fields = $appModel::files();
         $limits = $appModel::limits();
         $model_count = $model_path::count();
@@ -158,6 +159,7 @@ class AdminController extends Controller
             ->with('index_columns', $index_columns)
             ->with('allowed', $allowed)
             ->with('url_model', $url_model)
+            ->with('image_fields', $image_fields)
             ->with('file_fields', $file_fields)
             ->with('parent_id', $parent_id)
             ->with('relationship_column_name', $relationship_column_name ?? null)
@@ -198,6 +200,7 @@ class AdminController extends Controller
         $wysiwyg_editors = $appModel::wysiwyg_editors();
 
         // files
+        $image_fields = $appModel::images();
         $file_fields = $appModel::files();
 
         // select fields
@@ -231,6 +234,7 @@ class AdminController extends Controller
             ->with('required_fields', $required_fields)
             ->with('select_fields', $select_fields)
             ->with('wysiwyg_fields', $wysiwyg_editors)
+            ->with('image_fields', $image_fields)
             ->with('file_fields', $file_fields)
             ->with('model_partials', $model_partials)
             ->with('parent_id', $parent_id)
@@ -335,6 +339,7 @@ class AdminController extends Controller
         $wysiwyg_editors = $appModel::wysiwyg_editors();
 
         // files
+        $image_fields = $appModel::images();
         $file_fields = $appModel::files();
 
         // select fields
@@ -365,6 +370,7 @@ class AdminController extends Controller
             ->with('data', $data)
             ->with('select_fields', $select_fields)
             ->with('wysiwyg_fields', $wysiwyg_editors)
+            ->with('image_fields', $image_fields)
             ->with('file_fields', $file_fields)
             ->with('model_partials', $model_partials)
             ->with('parent_id', $parent_id)

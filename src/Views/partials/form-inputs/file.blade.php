@@ -1,8 +1,8 @@
-<div class="pb-3">
+<div class="pb-2">
     @if (isset($data->$field) && DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $field, $data->$field))
         @if(DevsRyan\LaravelEasyAdmin\Services\FileService::checkIsImage($model, $field, $data->$field))
             <img
-                class="img-preview mt-3"
+                class="img-preview"
                 width="80" height="80"
                 src="{{ asset(DevsRyan\LaravelEasyAdmin\Services\FileService::getFileLink($model, $field, $data->$field, true)) }}"
                 alt="thumbnail"

@@ -16,9 +16,10 @@ class HelperService
      * @param string $model
      * @return string
      */
-    public static function inputType($field, $model, $select_fields = null, $file_fields = null)
+    public static function inputType($field, $model, $select_fields = null, $image_fields = null, $file_fields = null)
     {
         // special types
+        if ($image_fields && in_array($field, $image_fields)) return 'image';
         if ($file_fields && in_array($field, $file_fields)) return 'file';
         if ($select_fields && array_key_exists($field, $select_fields)) return 'select';
 

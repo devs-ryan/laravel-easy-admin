@@ -61,8 +61,8 @@
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <select id="img_model_filter" name="model_filter" class="form-control form-control-sm">
-                                                <option value="all">All images</option>
-                                                <option value="{{ $model }}">Uploaded to this model</option>
+                                                <option value="all">All Images</option>
+                                                <option id="img_model_filter_model_option" value="{{ $model }}" selected>Current Model</option>
                                             </select>
                                         </div>
                                     </div>
@@ -257,7 +257,7 @@
 
         //reset search inputs
         function resetSearch() {
-            $('#img_model_filter').val('all');
+            $('#img_model_filter').val($('#img_model_filter_model_option').val());
             $('#img_date_filter').val('all');
             $('#img_search').val('');
         }
@@ -265,10 +265,18 @@
         // insert image
         function insertImage() {
             const targetId = $('#uploadHandlerModal').attr('data-target');
-            const inputBox = $('#wysiwyg-content-' + targetId);
-            const currentHtml = inputBox.html();
-            const imgPath = $('#image-result-preview').attr('src').replace('/square/', '/original/');
-            inputBox.html(currentHtml.replace('<p><br></p>', '') + `<p><img style="width: 25%;" src="${imgPath}"/></p>`);
+
+            if ($('#uploadHandlerModal').attr('data-target-input')) {
+                const inputBox = $('#input-text-' + targetId);
+                const imageName = $('#image-result-preview').attr('src').replace('/square/', '/original/').split('/').pop();
+                inputBox.val(imageName);
+            }
+            else {
+                const inputBox = $('#wysiwyg-content-' + targetId);
+                const currentHtml = inputBox.html();
+                const imgPath = $('#image-result-preview').attr('src').replace('/square/', '/original/');
+                inputBox.html(currentHtml.replace('<p><br></p>', '') + `<p><img style="width: 25%;" src="${imgPath}"/></p>`);
+            }
         }
 
         // changes tab to image gallery
@@ -346,7 +354,7 @@
             $(`#image-list-item-img-${imgId}`).addClass("image-list-img--selected");
         }
 
-        //submit
+        // store
         $("#image-submit-form").submit(function(e) {
             e.preventDefault();
 
@@ -357,9 +365,16 @@
             var formData = new FormData(this);
             var url = form.attr('action');
 
+            // check if this is for a specific field
+            var appendText = "";
+            if ($('#uploadHandlerModal').attr('data-target-input')) {
+                const field_name = $('#uploadHandlerModal').attr('data-target-input-name');
+                appendText = `&field=${field_name}`;
+            }
+
             $.ajax({
                 type: "POST",
-                url: url + '/?token={{$token}}',
+                url: `${url}/?token={{$token}}${appendText}`,
                 data: formData,
                 success: function (data) {
                     $('#img').val('');
@@ -373,7 +388,7 @@
             });
         });
 
-        //update
+        // update
         $("#image-result-update-form").submit(function(e) {
 
             e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -427,9 +442,16 @@
             var form = $(this);
             var url = form.attr('action');
 
+            // check if this is for a specific field
+            var appendText = "";
+            if ($('#uploadHandlerModal').attr('data-target-input')) {
+                const field_name = $('#uploadHandlerModal').attr('data-target-input-name');
+                appendText = `&field=${field_name}`;
+            }
+
             $.ajax({
                 type: "POST",
-                url: url + '/?token={{$token}}',
+                url: `${url}/?token={{$token}}${appendText}`,
                 data: form.serialize(), // serializes the form's elements.
                 success: function(data) {
                     // show success
@@ -454,13 +476,21 @@
             $('#insert-image-button').removeClass('d-none');
             $('#current_page_number').val(page);
 
+            // check if this is for a specific field
+            var appendText = "";
+            if ($('#uploadHandlerModal').attr('data-target-input')) {
+                const field_name = $('#uploadHandlerModal').attr('data-target-input-name');
+                $('#img_model_filter').attr('disabled','disabled');
+                appendText = `&field_filter=${field_name}`;
+            }
+
             // get search inputs
             const model_filter = $('#img_model_filter').val();
             const date_filter = $('#img_date_filter').val();
             const search = $('#img_search').val();
 
             $.ajax({
-                url: `/easy-admin/api/images/?token={{$token}}&page=${page}&model_filter=${model_filter}&date_filter=${date_filter}&search=${search}`,
+                url: `/easy-admin/api/images/?token={{$token}}&page=${page}&model_filter=${model_filter}&date_filter=${date_filter}&search=${search}${appendText}`,
                 success: function(result) {
 
                 const images = result.image_results.data;
@@ -571,10 +601,6 @@
 
             }});
         }
-
-        $( document ).ready(function() {
-            getImages();
-        });
     </script>
 @endpush
 

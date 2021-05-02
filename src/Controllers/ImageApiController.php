@@ -67,14 +67,26 @@ class ImageApiController extends Controller
             ->select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, MONTHNAME(created_at) month_name'))
             ->distinct()
             ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->get();
+            ->orderBy('month', 'desc');
 
         // model filter
         if ($request->has('model_filter')) {
             $filter = $request->model_filter;
             $model = $filter != 'all' ? $filter : null;
-            if ($model) $image_query = $image_query->where('model', $model);
+            if ($model) {
+                $dates = $dates->where('model', $model);
+                $image_query = $image_query->where('model', $model);
+            }
+        }
+
+        // field filter
+        if ($request->has('field_filter')) {
+            $filter = $request->field_filter;
+            $field = $filter != 'general_storage' ? $filter : null;
+            if ($field) {
+                $image_query = $image_query->where('field', $field);
+                $dates = $dates->where('field', $field);
+            }
         }
 
         // date filter
@@ -108,7 +120,7 @@ class ImageApiController extends Controller
 
         $data = [
             'image_results' => $image_query->paginate(24),
-            'dates' => $dates
+            'dates' => $dates->get()
         ];
 
         return response()->json($data, 200);
@@ -137,12 +149,14 @@ class ImageApiController extends Controller
 
         //get file size
         $filesize = $this->fileService->getFileSize($file);
-        $file_details = $this->fileService->storeUploadedFile($request, null, $request->model, $this->general_storage_name, true);
+        $field = $request->has('field') ? $request->field : $this->general_storage_name;
+        $file_details = $this->fileService->storeUploadedFile($request, null, $request->model, $field, true);
 
         $date_time = new \DateTime();
-        DB::table('easy_admin_images')->insert([
+        $insert_data = [
             'title' => $file_name,
             'model' => $request->model,
+            'field' => $field,
             'file_name' => $file_details['file_name'],
             'file_path' => $file_details['file_path'],
             'width' => $width,
@@ -150,8 +164,9 @@ class ImageApiController extends Controller
             'size' => $filesize,
             'created_at' => $date_time->format('Y-m-d H:i:s'),
             'updated_at' => $date_time->format('Y-m-d H:i:s')
-        ]);
+        ];
 
+        DB::table('easy_admin_images')->insert($insert_data);
         return response()->json('Image record created successfully', 200);
     }
 
@@ -201,12 +216,13 @@ class ImageApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $record = DB::table('easy_admin_images')->where('id', $id)->first();
         if (!$record) return response()->json('Image record not found', 404);
 
-        $this->fileService->unlinkFile($record->model, $this->general_storage_name, $record->file_name);
+        $field = $request->has('field') ? $request->field : $this->general_storage_name;
+        $this->fileService->unlinkFile($record->model, $field, $record->file_name);
         DB::table('easy_admin_images')->where('id', $id)->delete();
         return response()->json('Image record deleted successfully', 200);
     }

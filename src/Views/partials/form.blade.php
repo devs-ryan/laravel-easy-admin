@@ -32,7 +32,7 @@
             {{ ucwords(str_replace('_', ' ', $field)) }}:
         </label>
         <div class="col-sm-12">
-            @switch(DevsRyan\LaravelEasyAdmin\Services\HelperService::inputType($field, $model_path, $select_fields, $file_fields))
+            @switch(DevsRyan\LaravelEasyAdmin\Services\HelperService::inputType($field, $model_path, $select_fields, $image_fields, $file_fields))
                 @case('password')
                     @include('easy-admin::partials.form-inputs.password')
                     @break
@@ -48,6 +48,9 @@
                     @break
                 @case('timestamp')
                     @include('easy-admin::partials.form-inputs.timestamp')
+                    @break
+                @case('image')
+                    @include('easy-admin::partials.form-inputs.image')
                     @break
                 @case('file')
                     @include('easy-admin::partials.form-inputs.file')
@@ -97,6 +100,32 @@
     @endpush
 @endif
 
+@if (count($image_fields) > 0 || count($wysiwyg_fields) > 0)
+    <script>var ID = 0;</script>
+@endif
+
+@if (count($image_fields) > 0)
+    @push('modals')
+        @include('easy-admin::partials.upload-handler-modal')
+    @endpush
+
+    @push('scripts')
+        <script>
+            function openFieldUploadModal(sender) {
+                const input = $(sender).prev();
+                input.attr('id', 'input-text-' + ID);
+                $('#uploadHandlerModal').attr('data-target', ID);
+                $('#uploadHandlerModal').attr('data-target-input', 'true');
+                $('#uploadHandlerModal').attr('data-target-input-name', input.attr('name'));
+                ID += 1;
+
+                // trigger get images (defined inside modal)
+                getImages();
+            }
+        </script>
+    @endpush
+@endif
+
 @if (count($wysiwyg_fields) > 0)
 
     @push('modals')
@@ -105,7 +134,6 @@
 
     @push('scripts')
         <script>
-            var ID = 0;
 
             const appendHtml = `
                 <hr>
@@ -133,8 +161,12 @@
                 const editorArea = input.find('.note-editable');
                 editorArea.attr('id', 'wysiwyg-content-' + ID);
                 $('#uploadHandlerModal').attr('data-target', ID);
+                $('#uploadHandlerModal').attr('data-target-input', 'false');
                 $('.note-modal .modal-header button').click();
                 ID += 1;
+
+                // trigger get images (defined inside modal)
+                getImages();
             }
         </script>
     @endpush
