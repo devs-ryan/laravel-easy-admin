@@ -78,6 +78,11 @@ Lists the supported image sizes that are generated when uploading an image file.
 Used to retrieve an image that was created using Easy Admin (see size options using command above)
 - `easyImg($model_name, $field_name, $file_name, $size = 'original')`
 
+#### Get Image Details Helper
+Used to retrieve an image that was created using Easy Admin (with full image details, does not work with general storage)
+- `easyImgDetails($model_name, $field_name, $file_name)`
+- Note: $field_name argument can be set to `null` or `general_storage` for WYSIWYG related images
+
 #### Get File Helper
 Used to retrieve a file that was created using Easy Admin
 - `easyFile($model_name, $field_name, $file_name)`
