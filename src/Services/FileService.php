@@ -431,14 +431,21 @@ class FileService
     public function generateModelSeeds() {
 
         $models = $this->helperService->getAllConvertedModels();
-        foreach($models as $model) {
-            $model_name = $this->helperService->stripPathFromModel($model);
-            $required_fields = $this->helperService->getRequiredFields($model);
-            $appModel = "App\\EasyAdmin\\" . $model_name;
-            $allowed = $appModel::allowed();
+        $models[] = 'DevsRyan\LaravelEasyAdmin\Models\EasyAdminImage';
 
-            // skip when seed is commented out in allowed array
-            if (!in_array('seed', $allowed)) continue;
+        foreach($models as $model) {
+
+            $required_fields = [];
+            $model_name = $this->helperService->stripPathFromModel($model);
+
+            if ($model != 'DevsRyan\LaravelEasyAdmin\Models\EasyAdminImage') { // skip for Easy Admin Image Model
+                $required_fields = $this->helperService->getRequiredFields($model);
+                $appModel = "App\\EasyAdmin\\" . $model_name;
+                $allowed = $appModel::allowed();
+
+                // skip when seed is commented out in allowed array
+                if (!in_array('seed', $allowed)) continue;
+            }
 
             $str = "";
             $end = "        ]);\n";
@@ -452,7 +459,11 @@ class FileService
                     if ($key === 'password') Hash::make(env('EASY_ADMIN_DEFAULT_PASSWORD', 'secret'));
                     elseif (is_numeric($value)) $str .= "            '$key' => $value,\n";
                     elseif (!in_array($key, $required_fields) && (!$value || $value === '')) $str .= "            '$key' => null,\n";
-                    else $str .= "            '$key' => '" . str_replace("'", "\'", $value) . "',\n";
+                    else {
+                        $value = str_replace("'", "\'", $value);
+                        $value = str_replace(env('APP_URL', null), "' . env('APP_URL') . '", $value);
+                        $str .= "            '$key' => '" . $value . "',\n";
+                    }
                 }
                 $str .= $end;
             }
