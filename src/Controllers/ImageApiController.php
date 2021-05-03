@@ -2,7 +2,7 @@
 namespace DevsRyan\LaravelEasyAdmin\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use DevsRyan\LaravelEasyAdmin\Models\EasyAdminImage;
 use App\Http\Controllers\Controller;
 use DevsRyan\LaravelEasyAdmin\Services\HelperService;
 use DevsRyan\LaravelEasyAdmin\Services\FileService;
@@ -62,9 +62,9 @@ class ImageApiController extends Controller
      */
     public function index(Request $request)
     {
-        $image_query = DB::table('easy_admin_images')->orderBy('id', 'desc');
-        $dates = DB::table('easy_admin_images')
-            ->select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, MONTHNAME(created_at) month_name'))
+        $image_query = EasyAdminImage::orderBy('id', 'desc');
+        $dates = EasyAdminImage
+            ::select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, MONTHNAME(created_at) month_name'))
             ->distinct()
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc');
@@ -161,12 +161,10 @@ class ImageApiController extends Controller
             'file_path' => $file_details['file_path'],
             'width' => $width,
             'height' => $height,
-            'size' => $filesize,
-            'created_at' => $date_time->format('Y-m-d H:i:s'),
-            'updated_at' => $date_time->format('Y-m-d H:i:s')
+            'size' => $filesize
         ];
 
-        DB::table('easy_admin_images')->insert($insert_data);
+        EasyAdminImage::create($insert_data);
         return response()->json('Image record created successfully', 200);
     }
 
@@ -178,7 +176,7 @@ class ImageApiController extends Controller
      */
     public function show($id)
     {
-        $record = DB::table('easy_admin_images')->where('id', $id)->first();
+        $record = EasyAdminImage::where('id', $id)->first();
         if (!$record) return response()->json('Image record not found', 404);
         return response()->json($record, 200);
     }
@@ -198,10 +196,10 @@ class ImageApiController extends Controller
             'description' => 'nullable|max:4000'
         ]);
 
-        $record = DB::table('easy_admin_images')->where('id', $id)->get();
+        $record = EasyAdminImage::where('id', $id)->get();
         if (!count($record)) return response()->json('Image record not found', 404);
 
-        DB::table('easy_admin_images')->where('id', $id)->update([
+        EasyAdminImage::where('id', $id)->update([
             'alt' => $validated['alt'],
             'title' => $validated['title'],
             'description' => $validated['description']
@@ -218,12 +216,12 @@ class ImageApiController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $record = DB::table('easy_admin_images')->where('id', $id)->first();
+        $record = EasyAdminImage::where('id', $id)->first();
         if (!$record) return response()->json('Image record not found', 404);
 
         $field = $request->has('field') ? $request->field : $this->general_storage_name;
         $this->fileService->unlinkFile($record->model, $field, $record->file_name);
-        DB::table('easy_admin_images')->where('id', $id)->delete();
+        EasyAdminImage::where('id', $id)->delete();
         return response()->json('Image record deleted successfully', 200);
     }
 
