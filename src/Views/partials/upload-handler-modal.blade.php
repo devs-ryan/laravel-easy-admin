@@ -151,7 +151,7 @@
                                         <img
                                             id="image-result-preview"
                                             class="details-img img-fluid"
-                                            src="https://picsum.photos/300"
+                                            src=""
                                             alt="Image Preview"
                                         />
                                     </div>

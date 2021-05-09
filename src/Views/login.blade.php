@@ -4,15 +4,15 @@
 @section('title', env('EASY_ADMIN_APP_NAME', 'Laravel Easy Admin'))
 
 @section('content')
-    <div class="px-md-5 py-md-3">
-        <div class="jumbotron pt-3">
+    <div class="p-md-5">
+        <div class="jumbotron pt-3 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
             <h3>
                 <i class="fas fa-door-open"></i>
                 {{ env('EASY_ADMIN_APP_NAME', 'Welcome') }}
             </h3>
             <p class="lead"><i>Please log in using the form below:</i></p>
             <hr class="my-4">
-            
+
             <div class="row">
                 <div class="col-md-6 offset-md-3">
                     <div class="card">
