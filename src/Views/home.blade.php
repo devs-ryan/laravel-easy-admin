@@ -182,7 +182,7 @@
                             <a target="_blank" href="mailto:{{ env('EASY_ADMIN_SUPPORT_EMAIL') }}?subject=Easy Admin Help Request">{{ env('EASY_ADMIN_SUPPORT_EMAIL') }}</a>
                         @endif
                         to add new assets or lean how by visiting: <br>
-                            <a href="https://github.com/devsryan/laravel-easy-admin" target="_blank">https://github.com/devsryan/laravel-easy-admin</a>
+                            <a href="https://github.com/devs-ryan/laravel-easy-admin" target="_blank">https://github.com/devs-ryan/laravel-easy-admin</a>
                     </p>
                 </ul>
             @endif
