@@ -47,8 +47,8 @@
                 </div>
             @endif
         </nav>
+        @include('easy-admin::partials.messages')
 	</header>
-	@include('easy-admin::partials.messages')
 	<main>
 	    @yield('content')
 	</main>
