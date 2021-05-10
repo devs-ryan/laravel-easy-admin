@@ -19,7 +19,7 @@ class CreateAdminViewTemplate extends Command
      *
      * @var string
      */
-    protected $description = 'Create an Easy Admin view template in resources/views/easy-admin directory';
+    protected $description = 'Create a custom view template in resources/views/easy-admin directory';
 
     /**
      * Exit Commands.
