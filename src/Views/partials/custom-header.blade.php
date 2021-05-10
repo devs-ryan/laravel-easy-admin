@@ -36,4 +36,5 @@
             </div>
         @endif
     </nav>
+    @include('easy-admin::partials.messages')
 </header>

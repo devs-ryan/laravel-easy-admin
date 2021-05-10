@@ -2,6 +2,8 @@
 
 @section('title', 'TODO: Page Title Here')
 
+{{-- NOTE: use `message` variable to flash messages to user --}}
+
 @section('content')
     TODO: Your Content here
 @endsection
