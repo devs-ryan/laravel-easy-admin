@@ -1,5 +1,6 @@
 <h2 align="center">Laravel Easy Admin</h2>
 <h3 align="center">~ A simple admin panel for Laravel projects.</h3>
+<h4 align="center"><a target="_blank" href="https://www.youtube.com/watch?v=QFzzwpDsQ0U" align="center">YouTube Demo / Tutorial</a></h4>
 <br><br>
 <p align="center"><img src="https://raw.githubusercontent.com/devs-ryan/img-storage/master/easy-admin-header.png"></p>
 <p align="center">
