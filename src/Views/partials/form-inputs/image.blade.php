@@ -20,13 +20,12 @@
         </span>
     @endif
 </div>
-<textarea
-    style="resize: none;"
+<input
     readonly
 @if(in_array($field, $required_fields))
     required
 @endif
-name="{{ $field }}" rows="1" class="form-control">{{ old($field) ?? $data->$field ?? '' }}</textarea>
+name="{{ $field }}" value="{{ old($field) ?? $data->$field ?? '' }}" class="form-control">
 @if(!(!in_array('update', $allowed) and Request::is('easy-admin/*/*/edit')) or !(!in_array('create', $allowed) and !Request::is('easy-admin/*/*/edit')))
     <button
         type="button"
