@@ -17,7 +17,7 @@
 
 ## Installation
 - `composer require devs_ryan/laravel-easy-admin`
-- `php artisan vendor:publish --tag=public --force`
+- `php artisan vendor:publish --tag="public" --provider="DevsRyan\LaravelEasyAdmin\LaravelEasyAdminServiceProvider"`
 - `php artisan migrate` (Your app is assumed to have a users table at this point)
 - Access from <a href="https://github.com/devs-ryan/laravel-easy-admin">http(s)://your-project-url.com/easy-admin</a>
 
