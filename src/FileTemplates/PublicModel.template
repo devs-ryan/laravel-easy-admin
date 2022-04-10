@@ -72,8 +72,8 @@ class {{model_name}}
 
     /**
      * Fields expected to bet treated as select inputs.
-     *  Format1: 'field' => 'Option, Option' (the option value is the same as name that the users see)
-     *  Format2: 'field' => 'value|Option, value|Option'
+     *  Format1: 'field' => 'Option,Option' (the option value is the same as name that the users see)
+     *  Format2: 'field' => 'value|Option,value|Option'
      *
      * @return Array
      */
