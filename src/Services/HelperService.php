@@ -524,6 +524,25 @@ class HelperService
         }
         return $required;
     }
+
+    /**
+     * Return the default value for a field
+     *
+     * @return mixed
+     */
+    public static function getDefaultValue($field, $model_path)
+    {
+
+        $query = 'SELECT COLUMN_DEFAULT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . app($model_path)->getTable() . '" AND COLUMN_NAME = "' . $field . '"';
+        
+        try {
+            $default = DB::select($query)[0]->COLUMN_DEFAULT;
+            return ($default !== null) ? $default : '';
+        }
+        catch(Exception $e) {
+            return '';
+        }
+    }
 }
 
 

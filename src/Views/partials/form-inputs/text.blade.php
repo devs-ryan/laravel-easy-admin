@@ -11,7 +11,9 @@
 @if (!$textarea)
     style="resize: none;"
 @endif
-name="{{ $field }}" rows="{{ $textarea ? '6' : '1' }}" class="form-control">{{ old($field) ?? $data->$field ?? '' }}</textarea>
+name="{{ $field }}" 
+rows="{{ $textarea ? '6' : '1' }}" 
+class="form-control">{{ old($field) ?? $data->$field ?? DevsRyan\LaravelEasyAdmin\Services\HelperService::getDefaultValue($field, $model_path) }}</textarea>
 
 @if (in_array($field, $wysiwyg_fields))
     @push('scripts')
